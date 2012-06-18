@@ -45,7 +45,6 @@ __version__ = '0.10'
 import sys
 import re
 from os import path
-from contextlib import closing
 from collections import namedtuple
 
 from docutils import nodes

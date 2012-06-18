@@ -39,8 +39,6 @@ from __future__ import (print_function, division, unicode_literals,
 import pytest
 from docutils import nodes
 
-from sphinxcontrib.issuetracker import TrackerConfig, Issue
-
 
 def pytest_funcarg__app(request):
     """

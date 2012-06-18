@@ -26,10 +26,7 @@
 from __future__ import (print_function, division, unicode_literals,
                         absolute_import)
 
-import os
-
 import pytest
-import py.path
 from mock import Mock
 from docutils import nodes
 from sphinx.application import Sphinx
