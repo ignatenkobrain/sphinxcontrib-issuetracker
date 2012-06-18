@@ -2,7 +2,7 @@
 sphinxcontrib-issuetracker
 ##########################
 
-http://packages.python.org/sphinxcontrib-issuetracker
+http://sphinxcontrib-issuetracker.readthedocs.org/
 
 A Sphinx_ extension to reference issues in issue trackers, either explicitly
 with an "issue" role or optionally implicitly by issue ids like ``#10`` in

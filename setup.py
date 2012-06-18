@@ -50,8 +50,7 @@ def read_version_number():
 setup(
     name='sphinxcontrib-issuetracker',
     version=read_version_number(),
-    url='http://packages.python.org/sphinxcontrib-issuetracker',
-    download_url='http://pypi.python.org/pypi/sphinxcontrib-issuetracker',
+    url='http://sphinxcontrib-issuetracker.readthedocs.org/',
     license='BSD',
     author='Sebastian Wiesner',
     author_email='lunaryorn@googlemail.com',
