@@ -25,7 +25,8 @@ Use ``pip`` to install this extension straight from the Python Package Index::
 Usage
 -----
 
-Add this extension to :confval:`extensions` and configure the issue tracker to use and the project in your :file:`conf.py`::
+Add this extension to :confval:`extensions` and configure the issue tracker to
+use and the project in your :file:`conf.py`::
 
    extensions = ['sphinxcontrib.issuetracker']
 
