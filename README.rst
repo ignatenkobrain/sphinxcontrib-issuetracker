@@ -33,7 +33,26 @@ This extension can be installed from the Python Package Index::
 Usage
 -----
 
-Please refer to the documentation_ for further information.
+Just add this extension to ``extensions`` and configure your issue tracker::
+
+   extensions = ['sphinxcontrib.issuetracker']
+
+   issuetracker = 'github'
+   issuetracker_project = 'lunaryorn/sphinxcontrib-issuetracker'
+
+Now issue references like ``#10`` are replaced with links to the issue tracker
+of this extension, unless the reference occurs in literal text like inline
+literals or code blocks.
+
+You can disable this magic behaviour by setting issuetracker_plaintext_issues
+to ``False``::
+
+   issuetracker_plaintext_issues = False
+
+Now textual references are no longer replaced. However, you can still explicitly
+reference issues with the ``issue`` role.
+
+For more details refer to the documentation_.
 
 
 .. _Sphinx: http://sphinx.pocoo.org/latest
