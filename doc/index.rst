@@ -80,6 +80,7 @@ features, but respect the following rules:
   <http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html>`_.
 - Squash commits on the topic branch before opening a pull request.
 - Respect :pep:`8` (use `pep8`_ to check your coding style compliance)
+- Add unit tests
 - Open a `pull request <https://help.github.com/articles/using-pull-requests>`_
   that relates to but one subject with a clear title and description in
   grammatically correct, complete sentences.
