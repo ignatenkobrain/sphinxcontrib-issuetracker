@@ -60,10 +60,11 @@ intersphinx_mapping = {'python': ('http://docs.python.org/', None),
 issuetracker = 'github'
 issuetracker_project = 'lunaryorn/sphinxcontrib-issuetracker'
 
-event_sig_re = re.compile(r'([a-zA-Z-]+)\s*\((.*)\)')
+EVENT_SIG_RE = re.compile(r'([a-zA-Z-]+)\s*\((.*)\)')
+
 
 def parse_event(env, sig, signode):
-    m = event_sig_re.match(sig)
+    m = EVENT_SIG_RE.match(sig)
     if not m:
         signode += addnodes.desc_name(sig, sig)
         return sig

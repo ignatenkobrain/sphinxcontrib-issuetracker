@@ -104,4 +104,5 @@ def test_transform_not_added(app):
     """
     Test that the transformer is not added if transformations are disabled.
     """
-    assert issuetracker.IssueReferences not in SphinxStandaloneReader.transforms
+    transforms = SphinxStandaloneReader.transforms
+    assert issuetracker.IssueReferences not in transforms

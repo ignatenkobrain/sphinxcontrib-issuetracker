@@ -140,7 +140,8 @@ def pytest_configure(config):
 
 def pytest_runtest_setup(item):
     """
-    Evaluate ``needs_network`` and ``slow`` markers with respect to ``--offline`` and ``--fast``
+    Evaluate ``needs_network`` and ``slow`` markers with respect to
+    ``--offline`` and ``--fast``
     """
     if item.config.run_offline and 'needs_network' in item.keywords:
         pytest.skip('network test in offline mode')
@@ -305,8 +306,8 @@ def pytest_funcarg__app(request):
     doctreedir = request.getfuncargvalue('doctreedir')
     confoverrides = request.getfuncargvalue('confoverrides')
     app = Sphinx(str(srcdir), str(srcdir), str(outdir), str(doctreedir),
-                 'html',confoverrides=confoverrides, status=None, warning=None,
-                 freshenv=True)
+                 'html', confoverrides=confoverrides, status=None,
+                 warning=None, freshenv=True)
     request.addfinalizer(reset_global_state)
     if 'mock_lookup' in request.keywords:
         lookup_mock_issue = request.getfuncargvalue('mock_lookup')
