@@ -37,7 +37,7 @@ tracker`_ of this extension, unless the reference occurs in literal text like
 inline literals or code blocks.
 
 You can disable this magic behaviour by setting
-:confval:`ìssuetracker_plaintext_issues` to ``False``::
+:confval:`issuetracker_plaintext_issues` to ``False``::
 
    issuetracker_plaintext_issues = False
 
