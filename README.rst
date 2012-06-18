@@ -2,6 +2,9 @@
 sphinxcontrib-issuetracker
 ##########################
 
+.. image:: https://secure.travis-ci.org/lunaryorn/sphinxcontrib-issuetracker.png
+   :target: http://travis-ci.org/lunaryorn/sphinxcontrib-issuetracker
+
 http://sphinxcontrib-issuetracker.readthedocs.org/
 
 A Sphinx_ extension to reference issues in issue trackers, either explicitly
