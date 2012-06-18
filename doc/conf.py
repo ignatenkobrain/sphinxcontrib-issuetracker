@@ -57,8 +57,8 @@ html_static_path = []
 intersphinx_mapping = {'python': ('http://docs.python.org/', None),
                        'sphinx': ('http://sphinx.pocoo.org/', None)}
 
-issuetracker = 'bitbucket'
-issuetracker_project = 'birkenfeld/sphinx-contrib'
+issuetracker = 'github'
+issuetracker_project = 'lunaryorn/sphinxcontrib-issuetracker'
 
 event_sig_re = re.compile(r'([a-zA-Z-]+)\s*\((.*)\)')
 

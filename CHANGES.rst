@@ -1,6 +1,8 @@
 0.10 (in development)
 =====================
 
+- Extension now hosted at
+  https://github.com/lunaryorn/sphinxcontrib-issuetracker
 - Use requests library for HTTP requests
 - Consider launchpad issues closed only if all referenced tasks are completed
 - Support Python 3 (with exception of ``launchpad`` and ``debianbts`` trackers)
@@ -73,7 +75,7 @@ Other changes
 0.7.2 (Mar 10, 2011)
 ====================
 
-- #13: Fixed source distribution to include tests again
+- Fixed source distribution to include tests again
 - Fixed extraction of issue state for open issues from bitbucket
 - Ignore references in inline literals and literal blocks
 
@@ -81,8 +83,8 @@ Other changes
 0.7.1 (Jan 19, 2011)
 ====================
 
-- Fixed #8: Copy the stylesheet after build again to avoid exceptions on
-  non-existing build directories
+- Copy the stylesheet after build again to avoid exceptions on non-existing
+  build directories
 
 
 0.7 (Jan 08, 2011)
@@ -119,7 +121,7 @@ Other changes
 - Issue reference resolvers get the application object now as fourth
   argument.  The environment is availabe in the ``.env`` attribute of this
   object.
-- #4: Fixed the URL of Google Code issues (thanks to Denis Bilenko)
+- Fixed the URL of Google Code issues (thanks to Denis Bilenko)
 - Fixed detection of closed issues in Google Code (thanks to Denis Bilenko)
 - Improved error message, if ``issuetracker_issue_pattern`` has too many
   groups (thanks to Denis Bilenko)
@@ -138,7 +140,7 @@ Other changes
 
 - Closed issues are automatically struck trough in HTML output
 - Require Sphinx 1.0 now
-- Fixed #2:  Installation on windows
+- Installation on windows
 
 
 0.4 (May 21, 2010)

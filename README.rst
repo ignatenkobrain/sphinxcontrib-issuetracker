@@ -29,13 +29,6 @@ This extension can be installed from the Python Package Index::
 
    pip install sphinxcontrib-issuetracker
 
-Alternatively, you can clone the sphinx-contrib_ repository from BitBucket,
-and install the extension directly from the repository::
-
-   hg clone http://bitbucket.org/birkenfeld/sphinx-contrib
-   cd sphinx-contrib/issuetracker
-   python setup.py install
-
 
 Usage
 -----
@@ -44,5 +37,4 @@ Please refer to the documentation_ for further information.
 
 
 .. _Sphinx: http://sphinx.pocoo.org/latest
-.. _sphinx-contrib: http://bitbucket.org/birkenfeld/sphinx-contrib
 .. _documentation: http://packages.python.org/sphinxcontrib-issuetracker

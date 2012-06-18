@@ -29,7 +29,7 @@ import re
 from setuptools import setup, find_packages
 
 
-with open('README') as stream:
+with open('README.rst') as stream:
     long_desc = stream.read()
 
 

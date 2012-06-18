@@ -295,6 +295,6 @@ extension.  Patches and pull requests are always welcome!
 .. _launchpadlib: http://pypi.python.org/pypi/launchpadlib/
 .. _debianbts: http://pypi.python.org/pypi/python-debianbts/
 .. _SOAPpy: http://pypi.python.org/pypi/SOAPpy/
-.. _sphinx-contrib: https://bitbucket.org/birkenfeld/sphinx-contrib
-.. _issue tracker: https://bitbucket.org/birkenfeld/sphinx-contrib/issues/
+.. _sphinx-contrib: https://github.com/lunaryorn/sphinxcontrib-issuetracker
+.. _issue tracker: https://github.com/lunaryorn/sphinxcontrib-issuetracker/issues/
 .. _format string: http://docs.python.org/library/string.html#format-string-syntax
