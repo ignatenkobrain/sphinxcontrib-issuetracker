@@ -1,5 +1,5 @@
-0.10 (in development)
-=====================
+0.10 (Jun 18, 2012)
+===================
 
 - Extension now hosted at
   https://github.com/lunaryorn/sphinxcontrib-issuetracker
