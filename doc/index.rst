@@ -79,7 +79,7 @@ features, but respect the following rules:
 - Write `good commit messages
   <http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html>`_.
 - Squash commits on the topic branch before opening a pull request.
-- Use the same coding style and spacing.
+- Respect :pep:`8` (use `pep8`_ to check your coding style compliance)
 - Open a `pull request <https://help.github.com/articles/using-pull-requests>`_
   that relates to but one subject with a clear title and description in
   grammatically correct, complete sentences.
@@ -102,3 +102,4 @@ Contents
 .. _Github: https://github.com/lunaryorn/sphinxcontrib-issuetracker
 .. _Sphinx: http://sphinx.pocoo.org/
 .. _issue tracker: https://github.com/lunaryorn/sphinxcontrib-issuetracker/issues/
+.. _pep8: http://pypi.python.org/pypi/pep8/
