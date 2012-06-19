@@ -10,17 +10,17 @@ The extension is available under the terms of the BSD license, see
 Installation
 ------------
 
-This extension needs Sphinx 1.0 and Python 2.6 or newer, including Python 3.
+Use ``pip`` to install this extension straight from the `Python Package
+Index`_::
+
+   pip install sphinx-contrib.issuetracker
+
+This extension requires Sphinx 1.1 and Python 2.6 or Python 3.1.
 
 .. note::
 
    Some builtin issue trackers do *not* support Python 3 currently. Refer to
    :confval:`issuetracker` for more information.
-
-Use ``pip`` to install this extension straight from the `Python Package
-Index`_::
-
-   pip install sphinx-contrib.issuetracker
 
 
 Usage

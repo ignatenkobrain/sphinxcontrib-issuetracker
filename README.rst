@@ -32,6 +32,8 @@ This extension can be installed from the `Python Package Index`_::
 
    pip install sphinxcontrib-issuetracker
 
+This extension requires Sphinx 1.1 and Pythonn 2.6 or Python 3.1.
+
 
 Usage
 -----
