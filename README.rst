@@ -59,4 +59,4 @@ For more details refer to the documentation_.
 
 
 .. _Sphinx: http://sphinx.pocoo.org/latest
-.. _documentation: http://packages.python.org/sphinxcontrib-issuetracker
+.. _documentation: http://sphinxcontrib-issuetracker.readthedocs.org
