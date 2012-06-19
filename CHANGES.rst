@@ -2,6 +2,7 @@
 =======================
 
 - Fix README rendering on PyPI
+- #1: Fix test failure on Python 3
 
 
 0.10 (Jun 18, 2012)
