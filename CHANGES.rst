@@ -1,6 +1,8 @@
 0.10.1 (in development)
 =======================
 
+- Fix README rendering on PyPI
+
 
 0.10 (Jun 18, 2012)
 ===================

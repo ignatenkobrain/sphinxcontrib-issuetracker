@@ -13,7 +13,7 @@ plaintext.
 
 Currently the following issue trackers are supported:
 
-- `GitHub <http//github.com>`_
+- `GitHub <http://github.com>`_
 - `BitBucket <http://bitbucket.org>`_
 - `Launchpad <https://launchpad.net>`_
 - `Google Code <http://code.google.com>`_
