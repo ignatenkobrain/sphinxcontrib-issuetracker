@@ -20,9 +20,9 @@
 Incompatible changes
 --------------------
 
-- Removed :confval:`issuetracker_expandtitle`, use
+- Remove :confval:`issuetracker_expandtitle`, use
   ``issuetracker_title_template = '{issue.title}'`` instead
-- Renamed :event:`issuetracker-resolve-issue` to
+- Rename :event:`issuetracker-resolve-issue` to
   :event:`issuetracker-lookup-issue`
 
 Other changes
@@ -30,17 +30,17 @@ Other changes
 
 * New features:
 
-  - Added :rst:role:`issue` role for explicit issue references
-  - Added :confval:`issuetracker_title_template`
-  - Added :confval:`issuetracker_plaintext_issues`
+  - Add :rst:role:`issue` role for explicit issue references
+  - Add :confval:`issuetracker_title_template`
+  - Add :confval:`issuetracker_plaintext_issues`
   - Use issue title as link title
 
 * Bug fixes and improvements:
 
-  - Fixed TypeError caused by ``launchpad`` issue tracker
-  - Fixed issue title in ``launchpad`` issue tracker
-  - Fixed detection of closed issues in ``launchpad`` issue tracker
-  - Fixed CSS classes for issue references to be more compatible with Sphinx
+  - Fix TypeError caused by ``launchpad`` issue tracker
+  - Fix issue title in ``launchpad`` issue tracker
+  - Fix detection of closed issues in ``launchpad`` issue tracker
+  - Fix CSS classes for issue references to be more compatible with Sphinx
     themes
 
 
@@ -51,11 +51,11 @@ Incompatible changes
 --------------------
 
 - Require Python 2.6 or newer now
-- Removed ``issuetracker_user`` configuration value, GitHub and BitBucket
+- Remove ``issuetracker_user`` configuration value, GitHub and BitBucket
   projects must include the username now
 - Custom resolvers must return :class:`~sphinxcontrib.issuetracker.Issue`
   objects instead of dictionaries now
-- Signature of :event:`issuetracker-resolve-issue` changed
+- Change signature of :event:`issuetracker-resolve-issue`
 
 Other changes
 -------------
@@ -66,9 +66,9 @@ Other changes
 
 * New features:
 
-  - Added Jira_ support
-  - Added :confval:`issuetracker_url`
-  - Added :confval:`issuetracker_expandtitle`
+  - Add Jira_ support
+  - Add :confval:`issuetracker_url`
+  - Add :confval:`issuetracker_expandtitle`
 
 * Bugs fixes and improvements:
 
@@ -81,8 +81,8 @@ Other changes
 0.7.2 (Mar 10, 2011)
 ====================
 
-- Fixed source distribution to include tests again
-- Fixed extraction of issue state for open issues from bitbucket
+- Fix source distribution to include tests again
+- Fix extraction of issue state for open issues from bitbucket
 - Ignore references in inline literals and literal blocks
 
 
@@ -104,21 +104,21 @@ Other changes
 0.6 (Jan 04, 2011)
 ==================
 
-- Added support for the debian bugtracker (thanks to Fladischer Michael)
-- Fixed NameError in launchpad issue tracker
-- Bitbucket also uses HTTPS urls now
+- Add support for the debian bugtracker (thanks to Fladischer Michael)
+- Fix NameError in launchpad issue tracker
+- Use HTTPS for BitBucket
 
 
 0.5.4 (Nov 15, 2010)
 ====================
 
-- Github uses HTTPS urls now
+- Use HTTPS for Github
 
 
 0.5.3 (Nov 14, 2010)
 ====================
 
-- Added license text to source tarball
+- Add license text to source tarball
 
 
 0.5.2 (Sep 17, 2010)
@@ -127,18 +127,18 @@ Other changes
 - Issue reference resolvers get the application object now as fourth
   argument.  The environment is availabe in the ``.env`` attribute of this
   object.
-- Fixed the URL of Google Code issues (thanks to Denis Bilenko)
-- Fixed detection of closed issues in Google Code (thanks to Denis Bilenko)
-- Improved error message, if ``issuetracker_issue_pattern`` has too many
-  groups (thanks to Denis Bilenko)
-- Added warnings for unexpected HTTP status codes in BitBucket and Google
-  Code issue trackers
+- Fix the URL of Google Code issues (thanks to Denis Bilenko)
+- Fix detection of closed issues in Google Code (thanks to Denis Bilenko)
+- Improve error message, if ``issuetracker_issue_pattern`` has too many groups
+  (thanks to Denis Bilenko)
+- Add warnings for unexpected HTTP status codes in BitBucket and Google Code
+  issue trackers
 
 
 0.5.1 (Jul 25, 2010)
 ====================
 
-- Fixed client string for launchpad access
+- Fix client string for launchpad access
 
 
 0.5 (Jul 21, 2010)
@@ -146,7 +146,7 @@ Other changes
 
 - Closed issues are automatically struck trough in HTML output
 - Require Sphinx 1.0 now
-- Installation on windows
+- Fix installation on Windows
 
 
 0.4 (May 21, 2010)
@@ -158,8 +158,8 @@ Other changes
 0.3 (May 02, 2010)
 ==================
 
-- Added support for Google Code
-- Added support for Launchpad
+- Add support for Google Code
+- Add support for Launchpad
 - Issue tracker callbacks get the build environment now
 
 
