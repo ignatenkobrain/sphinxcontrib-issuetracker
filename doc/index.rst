@@ -1,5 +1,5 @@
-:mod:`sphinxcontrib.issuetracker` -- Reference issues in issue trackers
-=======================================================================
+sphinxcontrib.issuetracker -- Reference issues in issue trackers
+================================================================
 
 A Sphinx_ extension to to reference issues in an issue tracker.
 
