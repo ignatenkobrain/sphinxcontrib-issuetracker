@@ -39,7 +39,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 project = u'sphinxcontrib-issuetracker'
-copyright = u'2010, 2011, Sebastian Wiesner'
+copyright = u'2010, 2011, 2012 Sebastian Wiesner'
 version = '.'.join(issuetracker.__version__.split('.')[:2])
 release = issuetracker.__version__
 
