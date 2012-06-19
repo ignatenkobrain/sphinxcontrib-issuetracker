@@ -28,7 +28,7 @@ available to other users of this extension.
 Installation
 ------------
 
-This extension can be installed from the Python Package Index::
+This extension can be installed from the `Python Package Index`_::
 
    pip install sphinxcontrib-issuetracker
 
@@ -60,3 +60,4 @@ For more details refer to the documentation_.
 
 .. _Sphinx: http://sphinx.pocoo.org/latest
 .. _documentation: http://sphinxcontrib-issuetracker.readthedocs.org
+.. _Python package index: http://pypi.python.org/pypi/sphinxcontrib-issuetracker
