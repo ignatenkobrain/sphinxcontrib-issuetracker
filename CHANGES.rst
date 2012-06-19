@@ -1,5 +1,5 @@
-0.10.1 (in development)
-=======================
+0.10.1 (Jun 19, 2012)
+=====================
 
 - Fix README rendering on PyPI
 - #1: Fix test failure on Python 3
