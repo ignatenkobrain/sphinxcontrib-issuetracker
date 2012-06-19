@@ -1,7 +1,7 @@
 sphinxcontrib.issuetracker -- Reference issues in issue trackers
 ================================================================
 
-A Sphinx_ extension to to reference issues in an issue tracker.
+A Sphinx_ extension to reference issues in an issue tracker.
 
 The extension is available under the terms of the BSD license, see
 :doc:`license` for more information.
