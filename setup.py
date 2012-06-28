@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (c) 2011, 2012, Sebastian Wiesner <lunaryorn@googlemail.com>
+# Copyright (c) 2011, 2012, Sebastian Wiesner <lunaryorn@gmail.com>
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -53,7 +53,7 @@ setup(
     url='http://sphinxcontrib-issuetracker.readthedocs.org/',
     license='BSD',
     author='Sebastian Wiesner',
-    author_email='lunaryorn@googlemail.com',
+    author_email='lunaryorn@gmail.com',
     description='Sphinx integration with different issuetrackers',
     long_description=long_desc,
     zip_safe=False,
