@@ -60,6 +60,44 @@ reference issues with the ``issue`` role.
 For more details refer to the documentation_.
 
 
+Support
+-------
+
+Please report issues to the `issue tracker`_ if you have trouble, found a bug in
+this extension or lack support for a specific issue tracker, but respect the
+following rules:
+
+- Check that the issue has not already been reported.
+- Check that the issue is not already fixed in the ``master`` branch.
+- Open issues with clear title and a detailed description in grammatically
+  correct, complete sentences.
+
+
+Development
+-----------
+
+The source code is hosted on Github_:
+
+   git clone https://github.com/lunaryorn/sphinxcontrib-issuetracker
+
+Please fork the repository and send pull requests with your fixes or cool new
+features, but respect the following rules:
+
+- Read `how to properly contribute to open source projects on GitHub
+  <http://gun.io/blog/how-to-github-fork-branch-and-pull-request/>`_.
+- Use a topic branch to easily amend a pull request later, if necessary.
+- Write `good commit messages
+  <http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html>`_.
+- Squash commits on the topic branch before opening a pull request.
+- Respect :pep:`8` (use `pep8`_ to check your coding style compliance)
+- Add unit tests
+- Open a `pull request <https://help.github.com/articles/using-pull-requests>`_
+  that relates to but one subject with a clear title and description in
+  grammatically correct, complete sentences.
+
+
 .. _Sphinx: http://sphinx.pocoo.org/latest
 .. _documentation: http://sphinxcontrib-issuetracker.readthedocs.org
 .. _Python package index: http://pypi.python.org/pypi/sphinxcontrib-issuetracker
+.. _issue tracker: https://github.com/lunaryorn/sphinxcontrib-issuetracker/issues/
+.. _pep8: http://pypi.python.org/pypi/pep8/
