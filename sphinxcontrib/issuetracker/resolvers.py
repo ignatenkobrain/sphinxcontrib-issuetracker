@@ -127,8 +127,7 @@ def lookup_debian_issue(app, tracker_config, issue_id):
 
 def lookup_launchpad_issue(app, tracker_config, issue_id):
     from launchpadlib.launchpad import Launchpad
-    launchpad = Launchpad.login_anonymously(
-        'sphinxcontrib.issuetracker', service_root='production')
+    launchpad = Launchpad.login_anonymously('sphinxcontrib.issuetracker')
     try:
         # get the bug
         bug = launchpad.bugs[issue_id]
