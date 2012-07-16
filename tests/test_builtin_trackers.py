@@ -308,15 +308,16 @@ class TestLaunchpad(TrackerTest):
     default_tracker_config = TrackerConfig('inkscape')
 
     tracker_config = {'wrong project': TrackerConfig('foo'),
-                      'invalid': TrackerConfig('null')}
+                      'invalid': TrackerConfig('eject (Ubuntu)')}
 
     issues = {
         'closed': Issue('647789', title='tries to install file(s) outside of '
                         './configure\'s --prefix', closed=True,
                         url='https://bugs.launchpad.net/bugs/647789'),
-        'invalid': Issue('1000', closed=True,
-                         title='There are too many bug reports in Malone',
-                         url='https://bugs.launchpad.net/bugs/1000'),
+        'invalid': Issue('173307', closed=True,
+                         title='All users should be able to eject CDs and '
+                         'removable media',
+                         url='https://bugs.launchpad.net/bugs/173307'),
         'wrong project': '1000',
         'no issue': '1000000',
     }
