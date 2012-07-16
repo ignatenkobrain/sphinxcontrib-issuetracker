@@ -139,3 +139,14 @@ def process_description(source, output_encoding='unicode'):
         output = output.encode(output_encoding)
 
     return output
+
+
+def main():
+    filename = sys.argv[1]
+    with open(filename) as source:
+        output = process_description(source.read().decode('utf-8'))
+    print(output)
+
+
+if __name__ == '__main__':
+    main()

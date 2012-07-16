@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (c) 2011, Sebastian Wiesner <lunaryorn@gmail.com>
+# Copyright (c) 2011, 2012 Sebastian Wiesner <lunaryorn@gmail.com>
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -36,6 +36,8 @@ from __future__ import (print_function, division, unicode_literals,
                         absolute_import)
 
 import os
+import sys
+from subprocess import Popen, PIPE, CalledProcessError
 
 import pytest
 
@@ -44,12 +46,19 @@ import pytest
 def test_description_rendering():
     """
     If this test raises any exception ReST rendering on PyPI will fail.
+
+    It calls out to the renderer via subprocess to get a clean docutils import.
+    Sphinx heavily monkey-patches some docutils internals, which causes
+    different rendering and sometimes even exceptions.
     """
-    from pypi import process_description
     test_directory = os.path.abspath(os.path.dirname(__file__))
     source_directory = os.path.abspath(os.path.join(test_directory, os.pardir))
+    pypi = os.path.join(test_directory, 'pypi.py')
     readme = os.path.join(source_directory, 'README.rst')
-    with open(readme) as source:
-        output = process_description(source.read().decode('utf-8'))
-    assert output is not None
-    assert output != ''
+
+    cmd = [sys.executable, pypi, readme]
+    proc = Popen(cmd, stdout=PIPE)
+    stdout = proc.communicate()[0]
+    if proc.returncode != 0:
+        raise CalledProcessError(proc.returncode, cmd)
+    assert stdout
