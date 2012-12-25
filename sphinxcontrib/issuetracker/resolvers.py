@@ -184,4 +184,4 @@ BUILTIN_ISSUE_TRACKERS = {
     'launchpad': lookup_launchpad_issue,
     'google code': lookup_google_code_issue,
     'jira': lookup_jira_issue,
-    }
+}
