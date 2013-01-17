@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (c) 2011, 2012, Sebastian Wiesner <lunaryorn@gmail.com>
+# Copyright (c) 2011, 2012, 2013, Sebastian Wiesner <lunaryorn@gmail.com>
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -73,6 +73,6 @@ setup(
     platforms='any',
     packages=find_packages(),
     include_package_data=True,
-    install_requires=['Sphinx>=1.1', 'requests>=0.13'],
+    install_requires=['Sphinx>=1.1', 'requests>=1.1'],
     namespace_packages=['sphinxcontrib'],
 )

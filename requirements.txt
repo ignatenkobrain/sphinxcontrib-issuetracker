@@ -1,5 +1,5 @@
 -r doc/requirements.txt
-requests>=0.13
+requests>=1.1
 
 launchpadlib
 SOAPpy>=0.12.5

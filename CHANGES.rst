@@ -1,6 +1,8 @@
 0.11 (in development)
 =====================
 
+- #5: Fix compatibility with requests 1.0
+
 
 0.10.1 (Jun 19, 2012)
 =====================
@@ -178,4 +180,3 @@ Other changes
 ==================
 
 - Initial release
-

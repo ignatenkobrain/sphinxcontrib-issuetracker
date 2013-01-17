@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (c) 2010, 2011, 2012 Sebastian Wiesner <lunaryorn@gmail.com>
+# Copyright (c) 2010, 2011, 2012, 2013 Sebastian Wiesner <lunaryorn@gmail.com>
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -91,7 +91,7 @@ def lookup_github_issue(app, tracker_config, issue_id):
     url = GITHUB_API_URL.format(tracker_config, issue_id)
     response = get(app, url)
     if response:
-        issue = response.json
+        issue = response.json()
         closed = issue['state'] == 'closed'
         return Issue(id=issue_id, title=issue['title'], closed=closed,
                      url=issue['html_url'])
@@ -103,7 +103,7 @@ def lookup_bitbucket_issue(app, tracker_config, issue_id):
     url = BITBUCKET_API_URL.format(tracker_config, issue_id)
     response = get(app, url)
     if response:
-        issue = response.json
+        issue = response.json()
         closed = issue['status'] not in ('new', 'open')
         url = BITBUCKET_URL.format(tracker_config, issue_id)
         return Issue(id=issue_id, title=issue['title'], closed=closed, url=url)
