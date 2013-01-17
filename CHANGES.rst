@@ -1,5 +1,5 @@
-0.11 (in development)
-=====================
+0.11 (Jan 17, 2013)
+===================
 
 - Send proper user agent in API requests
 - #4: Respect Github rate limits
