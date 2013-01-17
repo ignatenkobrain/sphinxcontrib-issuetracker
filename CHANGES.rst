@@ -1,6 +1,7 @@
 0.11 (in development)
 =====================
 
+- #4: Respect Github rate limits
 - #5: Fix compatibility with requests 1.0
 
 

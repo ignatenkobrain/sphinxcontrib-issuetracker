@@ -36,6 +36,8 @@
 from __future__ import (print_function, division, unicode_literals,
                         absolute_import)
 
+import time
+
 import requests
 from xml.etree import ElementTree as etree
 
@@ -88,13 +90,29 @@ def get(app, url):
 def lookup_github_issue(app, tracker_config, issue_id):
     check_project_with_username(tracker_config)
 
-    url = GITHUB_API_URL.format(tracker_config, issue_id)
-    response = get(app, url)
-    if response:
-        issue = response.json()
-        closed = issue['state'] == 'closed'
-        return Issue(id=issue_id, title=issue['title'], closed=closed,
-                     url=issue['html_url'])
+    # Get rate limit information from the environment
+    timestamp, limit_hit = getattr(app.env, 'github_rate_limit', (0, False))
+
+    if limit_hit and time.time() - timestamp > 3600:
+        # Github limits applications hourly
+        limit_hit = False
+
+    if not limit_hit:
+        url = GITHUB_API_URL.format(tracker_config, issue_id)
+        response = get(app, url)
+        if response:
+            rate_remaining = response.headers.get('X-RateLimit-Remaining')
+            if rate_remaining.isdigit() and int(rate_remaining) == 0:
+                app.warn('Github rate limit hit')
+                app.env.github_rate_limit = (time.time(), True)
+            issue = response.json()
+            closed = issue['state'] == 'closed'
+            return Issue(id=issue_id, title=issue['title'], closed=closed,
+                         url=issue['html_url'])
+    else:
+        app.warn('Github rate limit exceeded, not resolving issue {0}'.format(
+            issue_id))
+        return None
 
 
 def lookup_bitbucket_issue(app, tracker_config, issue_id):
