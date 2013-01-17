@@ -101,13 +101,13 @@ def process_description(source, output_encoding='unicode'):
         'file_insertion_enabled': 0,  # no file/URL access
         'halt_level': 2,  # at warnings or errors, raise an exception
         'report_level': 5,  # never report problems with the reST code
-        }
+    }
 
     parts = None
 
     # Convert reStructuredText to HTML using Docutils.
     document = publish_doctree(source=source,
-        settings_overrides=settings_overrides)
+                               settings_overrides=settings_overrides)
 
     for node in document.traverse():
         if node.tagname == '#text':
@@ -125,7 +125,7 @@ def process_description(source, output_encoding='unicode'):
     # now turn the transformed document into HTML
     reader = readers.doctree.Reader(parser_name='null')
     pub = Publisher(reader, source=io.DocTreeInput(document),
-        destination_class=io.StringOutput)
+                    destination_class=io.StringOutput)
     pub.set_writer('html')
     pub.process_programmatic_settings(None, settings_overrides, None)
     pub.set_destination(None, None)
