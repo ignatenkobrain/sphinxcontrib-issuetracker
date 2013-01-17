@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (c) 2011, 2012, Sebastian Wiesner <lunaryorn@gmail.com>
+# Copyright (c) 2011, 2012, 2013, Sebastian Wiesner <lunaryorn@gmail.com>
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -236,7 +236,7 @@ class TestBitBucket(ScopedProjectTrackerTest):
     SPHINX_URL = 'https://bitbucket.org/birkenfeld/sphinx/issue/{0}/'
     issues = {
         'resolved': Issue(id='478', closed=True, url=SPHINX_URL.format('478'),
-                           title='Adapt py:decorator from Python docs'),
+                          title='Adapt py:decorator from Python docs'),
         'invalid': Issue(id='327', closed=True, url=SPHINX_URL.format('327'),
                          title='Spaces at the end of console messages'),
         'duplicate': Issue(id='733', closed=True, url=SPHINX_URL.format('733'),
@@ -331,9 +331,6 @@ class TestJira(TrackerTest):
         'resolved': Issue('SHERPA-15', closed=True, title='Breadcrumbs and '
                           'page title missing from admin screens',
                           url='https://studio.atlassian.com/browse/SHERPA-15'),
-        'open': Issue('PYO-84', closed=False,
-                      title='Implement LLSD login in pyogp',
-                      url='https://jira.secondlife.com/browse/PYO-84'),
     }
 
     tracker_config = {
