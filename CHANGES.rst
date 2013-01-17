@@ -1,6 +1,7 @@
 0.11 (in development)
 =====================
 
+- Send proper user agent in API requests
 - #4: Respect Github rate limits
 - #5: Fix compatibility with requests 1.0
 

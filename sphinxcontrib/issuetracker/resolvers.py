@@ -41,7 +41,7 @@ import time
 import requests
 from xml.etree import ElementTree as etree
 
-from sphinxcontrib.issuetracker import Issue
+from sphinxcontrib.issuetracker import Issue, __version__
 
 
 GITHUB_API_URL = 'https://api.github.com/repos/{0.project}/issues/{1}'
@@ -68,6 +68,11 @@ def check_project_with_username(tracker_config):
                 tracker_config))
 
 
+HEADERS = {
+    'User-Agent': 'sphinxcontrib-issuetracker v{0}'.format(__version__)
+}
+
+
 def get(app, url):
     """
     Get a response from the given ``url``.
@@ -79,7 +84,7 @@ def get(app, url):
     ``None`` otherwise. If the status code is not 200 or 404, a warning is
     emitted via ``app``.
     """
-    response = requests.get(url)
+    response = requests.get(url, headers=HEADERS)
     if response.status_code == requests.codes.ok:
         return response
     elif response.status_code != requests.codes.not_found:
