@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-# Copyright (c) 2009, 2013 Python Software Foundation
+# Copyright (c) 2009 Python Software Foundation
+# Copyright (c) 2013 Sebastian Wiesner <lunaryorn@gmail.com>
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
@@ -41,6 +42,9 @@ from __future__ import (print_function, unicode_literals, absolute_import,
 import sys
 from urlparse import urlparse
 
+# Work around docutils #3596884, see
+# http://sourceforge.net/tracker/?func=detail&aid=3596884&group_id=38414&atid=422030
+import docutils.utils
 from docutils import io, readers
 from docutils.core import publish_doctree, Publisher
 from docutils.transforms import TransformError
