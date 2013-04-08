@@ -29,8 +29,8 @@ generated HTML.
 
 You can provide your own styles for issue references by adding them to the
 ``.xref.issue`` and ``.xref.issue.closed`` selectors (the latter are closed
-issues).  For instance, the following stylesheet uses red color for open, and
-green color for closed issues::
+issues).  For instance, the following stylesheet uses green color for open, and
+red color for closed issues::
 
    .xref.issue {
        color: green;
