@@ -40,6 +40,7 @@ import time
 
 import requests
 from xml.etree import ElementTree as etree
+import xmlrpclib
 
 from sphinxcontrib.issuetracker import Issue, __version__
 
@@ -48,6 +49,8 @@ GITHUB_API_URL = 'https://api.github.com/repos/{0.project}/issues/{1}'
 BITBUCKET_URL = 'https://bitbucket.org/{0.project}/issue/{1}/'
 BITBUCKET_API_URL = ('https://api.bitbucket.org/1.0/repositories/'
                      '{0.project}/issues/{1}/')
+BUGZILLA_XMLRPC_URL = '{0.url}/xmlrpc.cgi'
+BUGZILLA_URL = '{0.url}/showbug.cgi?id={1}'
 DEBIAN_URL = 'http://bugs.debian.org/cgi-bin/bugreport.cgi?bug={0}'
 LAUNCHPAD_URL = 'https://bugs.launchpad.net/bugs/{0}'
 GOOGLE_CODE_URL = 'http://code.google.com/p/{0.project}/issues/detail?id={1}'
@@ -130,6 +133,22 @@ def lookup_bitbucket_issue(app, tracker_config, issue_id):
         closed = issue['status'] not in ('new', 'open')
         url = BITBUCKET_URL.format(tracker_config, issue_id)
         return Issue(id=issue_id, title=issue['title'], closed=closed, url=url)
+
+
+def lookup_bugzilla_issue(app, tracker_config, issue_id):
+    if not tracker_config.url:
+        raise ValueError('URL required')
+    proxy = xmlrpclib.ServerProxy(BUGZILLA_XMLRPC_URL.format(tracker_config))
+    response = proxy.Bug.get({'ids': [issue_id]})
+    if not response.get('bugs'):
+        msg = 'Bugzilla lookup for {0} failed: {1}'
+        app.warn(msg.format(issue_id, faults))
+        return
+    bug = response['bugs'][0]
+    title = bug['summary']
+    closed = not bug['is_open']
+    return Issue(id=issue_id, title=title, closed=closed,
+            url=BUGZILLA_URL.format(tracker_config, issue_id))
 
 
 def lookup_debian_issue(app, tracker_config, issue_id):
@@ -215,9 +234,11 @@ def lookup_redmine_issue(app, tracker_config, issue_id):
                      closed=issue.status is "Closed",
                      url=issue.url)
 
+
 BUILTIN_ISSUE_TRACKERS = {
     'github': lookup_github_issue,
     'bitbucket': lookup_bitbucket_issue,
+    'bugzilla': lookup_bugzilla_issue,
     'debian': lookup_debian_issue,
     'launchpad': lookup_launchpad_issue,
     'google code': lookup_google_code_issue,
