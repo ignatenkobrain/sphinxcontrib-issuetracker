@@ -200,6 +200,21 @@ def lookup_jira_issue(app, tracker_config, issue_id):
         return Issue(id=issue_id, title=title, closed=closed, url=url)
 
 
+def lookup_redmine_issue(app, tracker_config, issue_id):
+    from redmine import Redmine
+    if not tracker_config.url:
+        raise ValueError('URL required')
+    redmine = Redmine(tracker_config.url,
+                      key=app.config.issuetracker_redmine_key,
+                      username=app.config.issuetracker_redmine_username,
+                      password=app.config.issuetracker_redmine_password,
+                      requests=app.config.issuetracker_redmine_requests)
+    if redmine:
+        issue = redmine.issue.get(issue_id)
+        return Issue(id=issue_id, title=issue.subject,
+                     closed=issue.status is "Closed",
+                     url=issue.url)
+
 BUILTIN_ISSUE_TRACKERS = {
     'github': lookup_github_issue,
     'bitbucket': lookup_bitbucket_issue,
@@ -207,4 +222,5 @@ BUILTIN_ISSUE_TRACKERS = {
     'launchpad': lookup_launchpad_issue,
     'google code': lookup_google_code_issue,
     'jira': lookup_jira_issue,
+    'redmine': lookup_redmine_issue,
 }

@@ -318,6 +318,10 @@ def setup(app):
     app.add_config_value('issuetracker', None, 'env')
     app.add_config_value('issuetracker_project', None, 'env')
     app.add_config_value('issuetracker_url', None, 'env')
+    app.add_config_value('issuetracker_redmine_key', None, 'env')
+    app.add_config_value('issuetracker_redmine_username', None, 'env')
+    app.add_config_value('issuetracker_redmine_password', None, 'env')
+    app.add_config_value('issuetracker_redmine_requests', {}, 'env')
     # configuration specific to plaintext issue references
     app.add_config_value('issuetracker_plaintext_issues', True, 'env')
     app.add_config_value('issuetracker_issue_pattern',
