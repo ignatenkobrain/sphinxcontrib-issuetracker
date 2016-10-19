@@ -332,4 +332,10 @@ def setup(app):
     app.connect(str('builder-inited'), init_transformer)
     app.connect(str('doctree-read'), lookup_issues)
     app.connect(str('missing-reference'), resolve_issue_reference)
-    app.connect(str('build-finished'), copy_stylesheet)
+    app.connect(str('build-finished'), copy_stylesheet) 
+    # return metadata to sphinx
+    metadata = dict(version=__version__,
+                    parallel_read_safe=True,
+                    parallel_write_safe=True,
+                   )
+    return metadata
