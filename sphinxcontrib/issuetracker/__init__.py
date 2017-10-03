@@ -158,6 +158,7 @@ class IssueReferences(Transform):
                 issue_id = match.group(1)
                 # turn the issue reference into a reference node
                 refnode = pending_xref()
+                refnode['refdomain'] = None
                 refnode['reftarget'] = issue_id
                 refnode['reftype'] = 'issue'
                 refnode['trackerconfig'] = tracker_config
