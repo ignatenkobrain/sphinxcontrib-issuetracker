@@ -59,6 +59,8 @@ ATOM_NS = '{http://www.w3.org/2005/Atom}'
 JIRA_API_URL = ('{0.url}/si/jira.issueviews:issue-xml/{1}/{1}.xml?'
                 # only request the required fields
                 'field=link&field=resolution&field=summary&field=project')
+PAGURE_URL = '{0.url}/{0.project}/issue/{1}'
+PAGURE_API_URL = '{0.url}/api/0/{0.project}/issue/{1}'
 
 
 def check_project_with_username(tracker_config):
@@ -200,6 +202,19 @@ def lookup_jira_issue(app, tracker_config, issue_id):
         return Issue(id=issue_id, title=title, closed=closed, url=url)
 
 
+def lookup_pagure_issue(app, tracker_config, issue_id):
+    if not tracker_config.url:
+        raise ValueError('URL required, try: https://pagure.io/')
+    response = get(app, PAGURE_API_URL.format(tracker_config, issue_id))
+    if response:
+        title = response.json()['title']
+        closed = response.json()['status'] != 'Open'
+        issue_url = PAGURE_URL.format(tracker_config, issue_id)
+        return Issue(id=issue_id, title=title, closed=closed, url=issue_url)
+    else:
+        return Issue(id=issue_id, title=None, closed=False, url=issue_url)
+
+
 def lookup_redmine_issue(app, tracker_config, issue_id):
     from redmine import Redmine
     if not tracker_config.url:
@@ -222,5 +237,6 @@ BUILTIN_ISSUE_TRACKERS = {
     'launchpad': lookup_launchpad_issue,
     'google code': lookup_google_code_issue,
     'jira': lookup_jira_issue,
+    'pagure': lookup_pagure_issue,
     'redmine': lookup_redmine_issue,
 }
