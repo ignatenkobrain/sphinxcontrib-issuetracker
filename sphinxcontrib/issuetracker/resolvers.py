@@ -81,15 +81,20 @@ def get(app, url):
     Sphinx application object.
 
     Return the :class:`~requests.Response` object on status code 200, or
-    ``None`` otherwise. If the status code is not 200 or 404, a warning is
-    emitted via ``app``.
+    ``None`` otherwise. If the status code is not 200 or 404,
+    or if the request failed due to a network error,
+    a warning is emitted via ``app``.
     """
-    response = requests.get(url, headers=HEADERS)
-    if response.status_code == requests.codes.ok:
-        return response
-    elif response.status_code != requests.codes.not_found:
-        msg = 'GET {0.url} failed with code {0.status_code}'
-        app.warn(msg.format(response))
+    try:
+        response = requests.get(url, headers=HEADERS)
+        if response.status_code == requests.codes.ok:
+            return response
+        elif response.status_code != requests.codes.not_found:
+            msg = 'GET {0.url} failed with code {0.status_code}'
+            app.warn(msg.format(response))
+    except IOError as e:
+        msg = 'GET {0} failed with error: {1}'
+        app.warn(msg.format(url, e))
 
 
 def lookup_github_issue(app, tracker_config, issue_id):
