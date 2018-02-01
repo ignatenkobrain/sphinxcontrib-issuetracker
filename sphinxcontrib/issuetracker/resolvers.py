@@ -211,8 +211,9 @@ def lookup_redmine_issue(app, tracker_config, issue_id):
                       requests=app.config.issuetracker_redmine_requests)
     if redmine:
         issue = redmine.issue.get(issue_id)
+        is_closed = str(issue.status).title() == "Closed"
         return Issue(id=issue_id, title=issue.subject,
-                     closed=issue.status is "Closed",
+                     closed=is_closed,
                      url=issue.url)
 
 BUILTIN_ISSUE_TRACKERS = {
