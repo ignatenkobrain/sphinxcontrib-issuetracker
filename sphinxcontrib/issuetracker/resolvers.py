@@ -202,6 +202,7 @@ def lookup_jira_issue(app, tracker_config, issue_id):
 
 def lookup_redmine_issue(app, tracker_config, issue_id):
     from redmine import Redmine
+    import redmine.exceptions as redmine_exceptions
     if not tracker_config.url:
         raise ValueError('URL required')
     redmine = Redmine(tracker_config.url,
@@ -210,7 +211,11 @@ def lookup_redmine_issue(app, tracker_config, issue_id):
                       password=app.config.issuetracker_redmine_password,
                       requests=app.config.issuetracker_redmine_requests)
     if redmine:
-        issue = redmine.issue.get(issue_id)
+        try:
+            issue = redmine.issue.get(issue_id)
+        except redmine_exceptions.ResourceNotFoundError:
+            # requested issue number not found
+            return None
         return Issue(id=issue_id, title=issue.subject,
                      closed=issue.status is "Closed",
                      url=issue.url)
