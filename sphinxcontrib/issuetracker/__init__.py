@@ -135,6 +135,9 @@ class IssueReferences(Transform):
             if isinstance(parent, (nodes.literal, nodes.FixedTextElement)):
                 # ignore inline and block literal text
                 continue
+            if isinstance(parent, nodes.reference):
+                # we don't want to inject a link inside another link
+                continue
             text = text_type(node)
             new_nodes = []
             last_issue_ref_end = 0
