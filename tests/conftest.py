@@ -32,7 +32,7 @@ from mock import Mock
 from sphinx.addnodes import pending_xref
 from sphinx.application import Sphinx
 from sphinx.builders.html import StandaloneHTMLBuilder
-from sphinx.environment import SphinxStandaloneReader
+from sphinx.io import SphinxStandaloneReader
 
 from sphinxcontrib.issuetracker import Issue, IssueReferences
 
