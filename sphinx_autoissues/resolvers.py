@@ -39,8 +39,11 @@ import time
 from xml.etree import ElementTree as etree
 
 import requests
+from sphinx.util import logging
 
 from sphinx_autoissues import Issue, __version__
+
+logger = logging.getLogger(__name__)
 
 GITHUB_API_URL = "https://api.github.com/repos/{0.project}/issues/{1}"
 BITBUCKET_URL = "https://bitbucket.org/{0.project}/issue/{1}/"
@@ -89,7 +92,7 @@ def get(app, url):
         return response
     elif response.status_code != requests.codes.not_found:
         msg = "GET {0.url} failed with code {0.status_code}"
-        app.warn(msg.format(response))
+        logger.warn(msg.format(response))
 
 
 def lookup_github_issue(app, tracker_config, issue_id):
@@ -108,7 +111,7 @@ def lookup_github_issue(app, tracker_config, issue_id):
         if response:
             rate_remaining = response.headers.get("X-RateLimit-Remaining")
             if rate_remaining.isdigit() and int(rate_remaining) == 0:
-                app.warn("Github rate limit hit")
+                logger.warn("Github rate limit hit")
                 app.env.github_rate_limit = (time.time(), True)
             issue = response.json()
             closed = issue["state"] == "closed"
@@ -116,7 +119,9 @@ def lookup_github_issue(app, tracker_config, issue_id):
                 id=issue_id, title=issue["title"], closed=closed, url=issue["html_url"]
             )
     else:
-        app.warn("Github rate limit exceeded, not resolving issue {0}".format(issue_id))
+        logger.warn(
+            "Github rate limit exceeded, not resolving issue {0}".format(issue_id)
+        )
         return None
 
 
