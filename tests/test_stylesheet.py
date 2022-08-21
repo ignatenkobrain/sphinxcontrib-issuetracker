@@ -57,7 +57,7 @@ def app(request: pytest.FixtureRequest):
     Application with mocked lookup.
     """
     request.applymarker(pytest.mark.mock_lookup)
-    return request.getfuncargvalue("app")
+    return request.getfixturevalue("app")
 
 
 @pytest.fixture
@@ -73,13 +73,13 @@ def web_page(request: pytest.FixtureRequest):
     """
     Return a web page object for the rendered ``content``.
     """
-    request.getfuncargvalue("qt_app")
+    request.getfixturevalue("qt_app")
     # keep the web page alive during execution of the current test.  Prevents
     # the python GC from cleaning the web_page object at the end of this
     # function and thus prevents segfaults when accessing elements in the page.
     web_page = request.cached_setup(QtWebKit.QWebPage, scope="function")
     main_frame = web_page.mainFrame()
-    index_html_file = request.getfuncargvalue("index_html_file")
+    index_html_file = request.getfixturevalue("index_html_file")
     # wait for "loadFinished" signal to make sure that the whole content is
     # parsed before we run the test.  see
     # http://www.developer.nokia.com/Community/Wiki/How_to_wait_synchronously_for_a_Signal_in_Qt
@@ -95,7 +95,7 @@ def reference(request: pytest.FixtureRequest):
     """
     Return the issue reference element in the ``main_frame``.
     """
-    web_page = request.getfuncargvalue("web_page")
+    web_page = request.getfixturevalue("web_page")
     issue_element = web_page.mainFrame().findFirstElement(".xref.issue")
     if issue_element.isNull():
         raise ValueError("null element")
@@ -107,7 +107,7 @@ def text_decoration(request: pytest.FixtureRequest):
     """
     Return the ``text-decoration`` style property of the ``reference`` element.
     """
-    reference = request.getfuncargvalue("reference")
+    reference = request.getfixturevalue("reference")
     resolve_strategy = QtWebKit.QWebElement.CascadedStyle
     return reference.styleProperty("text-decoration", resolve_strategy)
 

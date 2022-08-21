@@ -165,7 +165,7 @@ def content(request: pytest.FixtureRequest):
     if content_mark:
         return content_mark.args[0]
     else:
-        issue_id = request.getfuncargvalue("issue_id")
+        issue_id = request.getfixturevalue("issue_id")
         if issue_id:
             return "#{0}".format(issue_id)
     raise ValueError("no content provided")
@@ -180,11 +180,11 @@ def srcdir(request: pytest.FixtureRequest):
     named ``index.rst``.  The content of this document is the return value of
     the ``content`` funcarg.
     """
-    tmpdir = request.getfuncargvalue("tmpdir")
+    tmpdir = request.getfixturevalue("tmpdir")
     srcdir = tmpdir.join("src")
     srcdir.ensure(dir=True)
     srcdir.join("conf.py").write(CONF_PY.encode("utf-8"), "wb")
-    content = request.getfuncargvalue("content")
+    content = request.getfixturevalue("content")
     srcdir.join("index.rst").write(content.encode("utf-8"), "wb")
     return srcdir
 
@@ -194,7 +194,7 @@ def outdir(request: pytest.FixtureRequest):
     """
     The Sphinx output directory for the current test as path.
     """
-    tmpdir = request.getfuncargvalue("tmpdir")
+    tmpdir = request.getfixturevalue("tmpdir")
     return tmpdir.join("html")
 
 
@@ -203,7 +203,7 @@ def doctreedir(request: pytest.FixtureRequest):
     """
     The Sphinx doctree directory for the current test as path.
     """
-    tmpdir = request.getfuncargvalue("tmpdir")
+    tmpdir = request.getfixturevalue("tmpdir")
     return tmpdir.join("doctrees")
 
 
@@ -216,7 +216,7 @@ def doctree(request: pytest.FixtureRequest):
 
        This funcarg builds the application before test execution.
     """
-    app = request.getfuncargvalue("app")
+    app = request.getfixturevalue("app")
     app.build()
     return app.env.get_doctree("index")
 
@@ -230,7 +230,7 @@ def resolved_doctree(request: pytest.FixtureRequest):
 
        This funcarg builds the application before test execution.
     """
-    app = request.getfuncargvalue("app")
+    app = request.getfixturevalue("app")
     app.build()
     return app.env.get_and_resolve_doctree("index", app.builder)
 
@@ -244,7 +244,7 @@ def cache(request: pytest.FixtureRequest):
 
        This funcarg builds the application before test execution.
     """
-    app = request.getfuncargvalue("app")
+    app = request.getfixturevalue("app")
     app.build()
     return app.env.issuetracker_cache
 
@@ -257,9 +257,9 @@ def index_html_file(request: pytest.FixtureRequest):
     This file contains the ``content`` rendered as HTML.  The ``app`` is build
     by this funcarg to generate the ``index.html`` file.
     """
-    app = request.getfuncargvalue("app")
+    app = request.getfixturevalue("app")
     app.build()
-    outdir = request.getfuncargvalue("outdir")
+    outdir = request.getfixturevalue("outdir")
     return outdir.join("index.html")
 
 
@@ -309,10 +309,10 @@ def app(request: pytest.FixtureRequest):
     build before returning it.  Otherwise you need to build explicitly in order
     to get the output.
     """
-    srcdir = request.getfuncargvalue("srcdir")
-    outdir = request.getfuncargvalue("outdir")
-    doctreedir = request.getfuncargvalue("doctreedir")
-    confoverrides = request.getfuncargvalue("confoverrides")
+    srcdir = request.getfixturevalue("srcdir")
+    outdir = request.getfixturevalue("outdir")
+    doctreedir = request.getfixturevalue("doctreedir")
+    confoverrides = request.getfixturevalue("confoverrides")
     app = Sphinx(
         str(srcdir),
         str(srcdir),
@@ -326,7 +326,7 @@ def app(request: pytest.FixtureRequest):
     )
     request.addfinalizer(reset_global_state)
     if "mock_lookup" in request.keywords:
-        lookup_mock_issue = request.getfuncargvalue("mock_lookup")
+        lookup_mock_issue = request.getfixturevalue("mock_lookup")
         app.connect(str("issuetracker-lookup-issue"), lookup_mock_issue)
     if "build_app" in request.keywords:
         app.build()
@@ -362,7 +362,7 @@ def issue_id(request: pytest.FixtureRequest):
     the ``issue`` funcarg.  If the ``issue`` funcarg returns ``None``, this
     funcarg also returns ``None``.
     """
-    issue = request.getfuncargvalue("issue")
+    issue = request.getfixturevalue("issue")
     if issue:
         return issue.id
     else:
@@ -380,7 +380,7 @@ def mock_lookup(request: pytest.FixtureRequest):
     issue.  Otherwise it will always return ``None``.
     """
     lookup_mock_issue = Mock(name="lookup_mock_issue", return_value=None)
-    issue = request.getfuncargvalue("issue")
+    issue = request.getfixturevalue("issue")
     if issue:
 
         def lookup(app, tracker_config, issue_id):

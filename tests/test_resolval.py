@@ -47,7 +47,7 @@ def app(request: pytest.FixtureRequest):
     ``app``.
     """
     request.applymarker(pytest.mark.mock_lookup)
-    return request.getfuncargvalue("app")
+    return request.getfixturevalue("app")
 
 
 @pytest.mark.with_content("#10")

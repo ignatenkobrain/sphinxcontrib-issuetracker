@@ -130,11 +130,11 @@ def confoverrides(request: pytest.FixtureRequest):
     """
     # configure tracker and enable title expansion to test the title retrieval
     # of builtin trackers, too
-    tracker = request.getfuncargvalue("tracker")
+    tracker = request.getfixturevalue("tracker")
     confoverrides = dict(
         issuetracker=tracker, issuetracker_title_template="{issue.title}"
     )
-    tracker_config = request.getfuncargvalue("tracker_config")
+    tracker_config = request.getfixturevalue("tracker_config")
     if tracker_config:
         # bring tracker configuration in
         confoverrides.update(
@@ -145,7 +145,7 @@ def confoverrides(request: pytest.FixtureRequest):
     if request.cls:
         confoverrides.update(request.cls.confoverrides)
     # add overrides from the test itself
-    confoverrides.update(request.getfuncargvalue("confoverrides"))
+    confoverrides.update(request.getfixturevalue("confoverrides"))
     return confoverrides
 
 
@@ -158,7 +158,7 @@ def issue_id(request: pytest.FixtureRequest):
     The issue id is taken from the issue defined in the ``issues`` attribute of
     the class this test is defined in.
     """
-    testname = request.getfuncargvalue("testname")
+    testname = request.getfixturevalue("testname")
     if not testname:
         return None
     issue = request.cls.issues[testname]
@@ -174,7 +174,7 @@ def issue(request: pytest.FixtureRequest):
     The issue id is taken from the issue defined in the ``issues`` attribute of
     the class this test is defined in.
     """
-    testname = request.getfuncargvalue("testname")
+    testname = request.getfixturevalue("testname")
     issue = request.cls.issues[testname]
     return issue if isinstance(issue, Issue) else None
 
