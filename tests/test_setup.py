@@ -39,7 +39,7 @@ import re
 
 import pytest
 
-from sphinx.environment import SphinxStandaloneReader
+from sphinx.io import SphinxStandaloneReader
 
 import sphinx_autoissues
 from sphinx_autoissues import resolvers
