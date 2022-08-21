@@ -42,7 +42,8 @@ from sphinx.addnodes import pending_xref
 from sphinx_autoissues import Issue
 
 
-def pytest_funcarg__issue(request):
+@pytest.fixture
+def issue(request: pytest.FixtureRequest):
     """
     A dummy issue, just to trigger issue resolval so that transformations can
     be seen in the output.

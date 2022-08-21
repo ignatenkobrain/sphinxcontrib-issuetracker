@@ -47,7 +47,8 @@ from sphinx_autoissues import resolvers
 BUILTIN_TRACKER_NAME_PATTERN = re.compile("lookup_(.*)_issue")
 
 
-def pytest_funcarg__content(request):
+@pytest.fixture
+def content(request: pytest.FixtureRequest):
     """
     Dummy content for this test module, overrides the global ``content``
     funcarg.

@@ -39,7 +39,8 @@ import pytest
 from sphinx_autoissues import TrackerConfig
 
 
-def pytest_funcarg__content(request):
+@pytest.fixture
+def content(request: pytest.FixtureRequest):
     """
     Dummy content for this test module, overrides the global ``content``
     funcarg.

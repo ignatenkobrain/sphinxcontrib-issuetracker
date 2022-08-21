@@ -42,7 +42,8 @@ import pytest
 from sphinx_autoissues import TrackerConfig
 
 
-def pytest_funcarg__app(request):
+@pytest.fixture
+def app(request: pytest.FixtureRequest):
     """
     Adds the ``mock_lookup`` and ``build_app`` markers to the current test
     before creating the ``app``.

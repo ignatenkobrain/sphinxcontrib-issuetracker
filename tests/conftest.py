@@ -148,7 +148,8 @@ def pytest_runtest_setup(item):
         pytest.skip("skipping slow test in fast mode")
 
 
-def pytest_funcarg__content(request):
+@pytest.fixture
+def content(request: pytest.FixtureRequest):
     """
     The content for the test document as string.
 
@@ -171,7 +172,8 @@ def pytest_funcarg__content(request):
     raise ValueError("no content provided")
 
 
-def pytest_funcarg__srcdir(request):
+@pytest.fixture
+def srcdir(request: pytest.FixtureRequest):
     """
     The Sphinx source directory for the current test as path.
 
@@ -188,7 +190,8 @@ def pytest_funcarg__srcdir(request):
     return srcdir
 
 
-def pytest_funcarg__outdir(request):
+@pytest.fixture
+def outdir(request: pytest.FixtureRequest):
     """
     The Sphinx output directory for the current test as path.
     """
@@ -196,7 +199,8 @@ def pytest_funcarg__outdir(request):
     return tmpdir.join("html")
 
 
-def pytest_funcarg__doctreedir(request):
+@pytest.fixture
+def doctreedir(request: pytest.FixtureRequest):
     """
     The Sphinx doctree directory for the current test as path.
     """
@@ -204,7 +208,8 @@ def pytest_funcarg__doctreedir(request):
     return tmpdir.join("doctrees")
 
 
-def pytest_funcarg__doctree(request):
+@pytest.fixture
+def doctree(request: pytest.FixtureRequest):
     """
     The transformed doctree of the ``content``.
 
@@ -217,7 +222,8 @@ def pytest_funcarg__doctree(request):
     return app.env.get_doctree("index")
 
 
-def pytest_funcarg__resolved_doctree(request):
+@pytest.fixture
+def resolved_doctree(request: pytest.FixtureRequest):
     """
     The resolved doctree of the ``content``.
 
@@ -230,7 +236,8 @@ def pytest_funcarg__resolved_doctree(request):
     return app.env.get_and_resolve_doctree("index", app.builder)
 
 
-def pytest_funcarg__cache(request):
+@pytest.fixture
+def cache(request: pytest.FixtureRequest):
     """
     Return the issue tracker cache.
 
@@ -243,7 +250,8 @@ def pytest_funcarg__cache(request):
     return app.env.issuetracker_cache
 
 
-def pytest_funcarg__index_html_file(request):
+@pytest.fixture
+def index_html_file(request: pytest.FixtureRequest):
     """
     Return the path of the ``index.html`` created by building.
 
@@ -269,7 +277,8 @@ def reset_global_state():
     StandaloneHTMLBuilder.css_files.remove("_static/issuetracker.css")
 
 
-def pytest_funcarg__confoverrides(request):
+@pytest.fixture
+def confoverrides(request: pytest.FixtureRequest):
     """
     Configuration value overrides for the current test as dictionary.
 
@@ -283,7 +292,8 @@ def pytest_funcarg__confoverrides(request):
     return confoverrides_marker.kwargs if confoverrides_marker else {}
 
 
-def pytest_funcarg__app(request):
+@pytest.fixture
+def app(request: pytest.FixtureRequest):
     """
     A Sphinx application for testing.
 
@@ -324,7 +334,8 @@ def pytest_funcarg__app(request):
     return app
 
 
-def pytest_funcarg__issue(request):
+@pytest.fixture
+def issue(request: pytest.FixtureRequest):
     """
     An :class:`~sphinx_autoissues.Issue` for the current test, or
     ``None``, if no issue is to be used.
@@ -342,7 +353,8 @@ def pytest_funcarg__issue(request):
     return None
 
 
-def pytest_funcarg__issue_id(request):
+@pytest.fixture
+def issue_id(request: pytest.FixtureRequest):
     """
     The issue id for the current test, or ``None``, if no issue id is to be
     used.
@@ -358,7 +370,8 @@ def pytest_funcarg__issue_id(request):
         return None
 
 
-def pytest_funcarg__mock_lookup(request):
+@pytest.fixture
+def mock_lookup(request: pytest.FixtureRequest):
     """
     A mocked callback for the ``issuetracker-lookup-issue`` event as
     :class:`~mock.Mock` object.

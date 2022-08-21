@@ -51,7 +51,8 @@ QtWebKit = pytest.importorskip("PyQt4.QtWebKit")
 pytestmark = pytest.mark.slow
 
 
-def pytest_funcarg__app(request):
+@pytest.fixture
+def app(request: pytest.FixtureRequest):
     """
     Application with mocked lookup.
     """
@@ -59,14 +60,16 @@ def pytest_funcarg__app(request):
     return request.getfuncargvalue("app")
 
 
-def pytest_funcarg__qt_app(request):
+@pytest.fixture
+def qt_app(request: pytest.FixtureRequest):
     """
     A QApplication to drive rendering tests.
     """
     return request.cached_setup(lambda: QtGui.QApplication([]), scope="module")
 
 
-def pytest_funcarg__web_page(request):
+@pytest.fixture
+def web_page(request: pytest.FixtureRequest):
     """
     Return a web page object for the rendered ``content``.
     """
@@ -87,7 +90,8 @@ def pytest_funcarg__web_page(request):
     return web_page
 
 
-def pytest_funcarg__reference(request):
+@pytest.fixture
+def reference(request: pytest.FixtureRequest):
     """
     Return the issue reference element in the ``main_frame``.
     """
@@ -98,7 +102,8 @@ def pytest_funcarg__reference(request):
     return issue_element
 
 
-def pytest_funcarg__text_decoration(request):
+@pytest.fixture
+def text_decoration(request: pytest.FixtureRequest):
     """
     Return the ``text-decoration`` style property of the ``reference`` element.
     """

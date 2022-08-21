@@ -40,7 +40,8 @@ import pytest
 from docutils import nodes
 
 
-def pytest_funcarg__app(request):
+@pytest.fixture
+def app(request: pytest.FixtureRequest):
     """
     Adds the ``mock_lookup`` marker to the current test before creating the
     ``app``.

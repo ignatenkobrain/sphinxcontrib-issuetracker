@@ -68,7 +68,8 @@ def pytest_generate_tests(metafunc):
             metafunc.addcall(id=testname, param=testname)
 
 
-def pytest_funcarg__testname(request):
+@pytest.fixture
+def testname(request: pytest.FixtureRequest):
     """
     The testname as string, or ``None``, if no testname is known.
 
@@ -78,7 +79,8 @@ def pytest_funcarg__testname(request):
     return getattr(request, "param", None)
 
 
-def pytest_funcarg__tracker(request):
+@pytest.fixture
+def tracker(request: pytest.FixtureRequest):
     """
     The tracker name as string, or ``None``, if no tracker is known.
 
@@ -91,7 +93,8 @@ def pytest_funcarg__tracker(request):
     return request.cls.name
 
 
-def pytest_funcarg__tracker_config(request):
+@pytest.fixture
+def tracker_config(request: pytest.FixtureRequest):
     """
     The tracker configuration as ``TrackerConfig`` object, or ``None``, if
     there is no tracker configuration.
@@ -113,7 +116,8 @@ def pytest_funcarg__tracker_config(request):
         return cls.tracker_config.get(testname, cls.default_tracker_config)
 
 
-def pytest_funcarg__confoverrides(request):
+@pytest.fixture
+def confoverrides(request: pytest.FixtureRequest):
     """
     Confoverrides for this test as dictionary.
 
@@ -144,7 +148,8 @@ def pytest_funcarg__confoverrides(request):
     return confoverrides
 
 
-def pytest_funcarg__issue_id(request):
+@pytest.fixture
+def issue_id(request: pytest.FixtureRequest):
     """
     The issue id of this test as string, or ``None``, if this test doesn't have
     a ``testname``.
@@ -159,7 +164,8 @@ def pytest_funcarg__issue_id(request):
     return issue.id if isinstance(issue, Issue) else issue
 
 
-def pytest_funcarg__issue(request):
+@pytest.fixture
+def issue(request: pytest.FixtureRequest):
     """
     The issue object for this test, or ``None``, if the test is expected to be
     unable to resolve the issue.
