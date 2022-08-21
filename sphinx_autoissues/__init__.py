@@ -41,45 +41,51 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 __version__ = "0.11"
 
+import dataclasses
 import re
-from collections import namedtuple
+import typing as t
 from os import path
 
 from docutils import nodes
 from docutils.transforms import Transform
 from sphinx.addnodes import pending_xref
+from sphinx.config import Config
 from sphinx.roles import XRefRole
 from sphinx.util.console import bold
 from sphinx.util.osutil import copyfile
 
-Issue = namedtuple("Issue", "id title url closed")
+
+class Issue(t.NamedTuple):
+    id: str
+    title: str
+    url: str
+    closed: bool
 
 
-_TrackerConfig = namedtuple("_TrackerConfig", "project url")
+@dataclasses.dataclass
+class TrackerConfig:
+    project: str
+    url: t.Optional[str] = None
 
-
-class TrackerConfig(_TrackerConfig):
     """
     Issue tracker configuration.
-
     This class provides configuration for trackers, and is passed as
     ``tracker_config`` arguments to callbacks of
     :event:`issuetracker-lookup-issue`.
     """
 
-    def __new__(cls, project, url=None):
-        if url:
-            url = url.rstrip("/")
-        return _TrackerConfig.__new__(cls, project, url)
+    def __post_init__(self) -> None:
+        if self.url is not None:
+            self.url = self.url.rstrip("/")
 
     @classmethod
-    def from_sphinx_config(cls, config):
+    def from_sphinx_config(cls, config: Config) -> "TrackerConfig":
         """
         Get tracker configuration from ``config``.
         """
         project = config.issuetracker_project or config.project
         url = config.issuetracker_url
-        return cls(project, url)
+        return cls(project=project, url=url)
 
 
 class IssueRole(XRefRole):
