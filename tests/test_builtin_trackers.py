@@ -64,8 +64,9 @@ def pytest_generate_tests(metafunc):
     unable to resolve the issue.
     """
     if "issue" in metafunc.fixturenames:
-        for testname in sorted(metafunc.cls.issues):
-            metafunc.addcall(id=testname, param=testname)
+        metafunc.parametrize(
+            "issue", sorted(metafunc.cls.issues), ids=sorted(metafunc.cls.issues)
+        )
 
 
 @pytest.fixture
