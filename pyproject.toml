@@ -1,0 +1,111 @@
+[tool.poetry]
+name = "sphinx-autoissues"
+version = "0.11"
+description = "Sphinx integration with different issuetrackers"
+
+license = "MIT"
+authors = ["Tony Narlock <tony@git-pull.com>"]
+
+classifiers = [
+  "Development Status :: 5 - Production/Stable",
+  "License :: OSI Approved :: BSD License",
+  "Environment :: Web Environment",
+  "Intended Audience :: Developers",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.7",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: Implementation :: PyPy",
+  "Topic :: Software Development :: Internationalization",
+  "Topic :: Software Development :: Localization",
+  "Topic :: Utilities",
+  "Typing :: Typed",
+]
+keywords = [
+  "sphinx",
+  "docutils",
+  "issues",
+  "pull requests"
+]
+homepage = "https://sphinx-autoissues.git-pull.com"
+readme = "README.rst"
+
+packages = [
+  { include = "sphinxcontrib" },
+]
+include = [
+  { path = "tests", format = "sdist" },
+]
+
+[tool.poetry.urls]
+"Bug Tracker" = "https://github.com/tony/sphinx-autoissues/issues"
+Documentation = "https://sphinx-autoissues.git-pull.com"
+Repository = "https://github.com/tony/sphinx-autoissues"
+Changes = "https://github.com/tony/sphinx-autoissues/blob/master/CHANGES"
+
+[tool.poetry.dependencies]
+python = "^3.7"
+
+[tool.poetry.dev-dependencies]
+### Docs ###
+sphinx = "*"
+sphinx-argparse = "*"
+furo = "*"
+sphinx-autobuild = "*"
+sphinx-autodoc-typehints = "*"
+sphinx-inline-tabs = { version = "*", python = "^3.7" }
+sphinxext-opengraph = "*"
+sphinx-copybutton = "*"
+sphinxext-rediraffe = "*"
+myst_parser = "*"
+docutils = "~0.18.0"
+
+### Testing ###
+pytest = "*"
+pytest-rerunfailures = "*"
+pytest-watcher = "^0.2.3"
+mock = "^4.0.3"
+
+### Coverage ###
+codecov = "*"
+coverage = "*"
+pytest-cov = "*"
+
+### Format ###
+black = "*"
+isort = "*"
+
+### Lint ###
+flake8 = "*"
+mypy = "*"
+types-docutils = "^0.19.0"
+types-requests = "^2.28.9"
+types-mock = "^4.0.15"
+
+[tool.poetry.extras]
+docs = [
+  "docutils",
+  "sphinx",
+  "sphinx-argparse",
+  "sphinx-autodoc-typehints",
+  "sphinx-autobuild",
+  "sphinx-copybutton",
+  "sphinxext-opengraph",
+  "sphinx-inline-tabs",
+  "sphinxext-rediraffe",
+  "myst_parser",
+  "furo",
+]
+test = ["pytest", "pytest-rerunfailures", "pytest-watcher", "mock"]
+coverage = ["codecov", "coverage", "pytest-cov"]
+format = ["black", "isort"]
+lint = ["flake8", "mypy", "types-docutils", "types-requests", "types-mock"]
+
+[tool.mypy]
+strict = true
+
+[build-system]
+requires = ["poetry_core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
