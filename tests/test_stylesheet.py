@@ -32,24 +32,22 @@
     .. moduleauthor::  Sebastian Wiesner  <lunaryorn@gmail.com>
 """
 
-from __future__ import (print_function, division, unicode_literals,
-                        absolute_import)
+from __future__ import absolute_import, division, print_function, unicode_literals
 
 import sys
 
 import pytest
 
-
 if sys.version_info[0] < 3:
-    sip = pytest.importorskip('sip')
-    sip.setapi('QString', 2)
+    sip = pytest.importorskip("sip")
+    sip.setapi("QString", 2)
     text_type = unicode
 else:
     text_type = str
 
-QtCore = pytest.importorskip('PyQt4.QtCore')
-QtGui = pytest.importorskip('PyQt4.QtGui')
-QtWebKit = pytest.importorskip('PyQt4.QtWebKit')
+QtCore = pytest.importorskip("PyQt4.QtCore")
+QtGui = pytest.importorskip("PyQt4.QtGui")
+QtWebKit = pytest.importorskip("PyQt4.QtWebKit")
 
 
 # Qt application setup and rendering takes time, these tests are slow
@@ -61,27 +59,27 @@ def pytest_funcarg__app(request):
     Application with mocked lookup.
     """
     request.applymarker(pytest.mark.mock_lookup)
-    return request.getfuncargvalue('app')
+    return request.getfuncargvalue("app")
 
 
 def pytest_funcarg__qt_app(request):
     """
     A QApplication to drive rendering tests.
     """
-    return request.cached_setup(lambda: QtGui.QApplication([]), scope='module')
+    return request.cached_setup(lambda: QtGui.QApplication([]), scope="module")
 
 
 def pytest_funcarg__web_page(request):
     """
     Return a web page object for the rendered ``content``.
     """
-    request.getfuncargvalue('qt_app')
+    request.getfuncargvalue("qt_app")
     # keep the web page alive during execution of the current test.  Prevents
     # the python GC from cleaning the web_page object at the end of this
     # function and thus prevents segfaults when accessing elements in the page.
-    web_page = request.cached_setup(QtWebKit.QWebPage, scope='function')
+    web_page = request.cached_setup(QtWebKit.QWebPage, scope="function")
     main_frame = web_page.mainFrame()
-    index_html_file = request.getfuncargvalue('index_html_file')
+    index_html_file = request.getfuncargvalue("index_html_file")
     # wait for "loadFinished" signal to make sure that the whole content is
     # parsed before we run the test.  see
     # http://www.developer.nokia.com/Community/Wiki/How_to_wait_synchronously_for_a_Signal_in_Qt
@@ -96,10 +94,10 @@ def pytest_funcarg__reference(request):
     """
     Return the issue reference element in the ``main_frame``.
     """
-    web_page = request.getfuncargvalue('web_page')
-    issue_element = web_page.mainFrame().findFirstElement('.xref.issue')
+    web_page = request.getfuncargvalue("web_page")
+    issue_element = web_page.mainFrame().findFirstElement(".xref.issue")
     if issue_element.isNull():
-        raise ValueError('null element')
+        raise ValueError("null element")
     return issue_element
 
 
@@ -107,12 +105,12 @@ def pytest_funcarg__text_decoration(request):
     """
     Return the ``text-decoration`` style property of the ``reference`` element.
     """
-    reference = request.getfuncargvalue('reference')
+    reference = request.getfuncargvalue("reference")
     resolve_strategy = QtWebKit.QWebElement.CascadedStyle
-    return reference.styleProperty('text-decoration', resolve_strategy)
+    return reference.styleProperty("text-decoration", resolve_strategy)
 
 
-@pytest.mark.with_issue(id='10', title='Eggs', closed=False, url='eggs')
+@pytest.mark.with_issue(id="10", title="Eggs", closed=False, url="eggs")
 def test_open_issue(text_decoration):
     """
     Test that an open issue is not struck through.
@@ -120,9 +118,9 @@ def test_open_issue(text_decoration):
     assert not text_decoration
 
 
-@pytest.mark.with_issue(id='10', title='Eggs', closed=True, url='eggs')
+@pytest.mark.with_issue(id="10", title="Eggs", closed=True, url="eggs")
 def test_closed_issue(text_decoration):
     """
     Test that a closed issue is struck through.
     """
-    assert text_decoration == 'line-through'
+    assert text_decoration == "line-through"

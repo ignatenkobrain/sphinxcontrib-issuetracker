@@ -33,44 +33,44 @@
     .. moduleauthor::  Sebastian Wiesner  <lunaryorn@gmail.com>
 """
 
-from __future__ import (print_function, division, unicode_literals,
-                        absolute_import)
+from __future__ import absolute_import, division, print_function, unicode_literals
 
 import time
+from xml.etree import ElementTree as etree
 
 import requests
-from xml.etree import ElementTree as etree
 
 from sphinxcontrib.issuetracker import Issue, __version__
 
-
-GITHUB_API_URL = 'https://api.github.com/repos/{0.project}/issues/{1}'
-BITBUCKET_URL = 'https://bitbucket.org/{0.project}/issue/{1}/'
-BITBUCKET_API_URL = ('https://api.bitbucket.org/1.0/repositories/'
-                     '{0.project}/issues/{1}/')
-DEBIAN_URL = 'http://bugs.debian.org/cgi-bin/bugreport.cgi?bug={0}'
-LAUNCHPAD_URL = 'https://bugs.launchpad.net/bugs/{0}'
-GOOGLE_CODE_URL = 'http://code.google.com/p/{0.project}/issues/detail?id={1}'
-GOOGLE_CODE_API_URL = ('http://code.google.com/feeds/issues/p/'
-                       '{0.project}/issues/full/{1}')
+GITHUB_API_URL = "https://api.github.com/repos/{0.project}/issues/{1}"
+BITBUCKET_URL = "https://bitbucket.org/{0.project}/issue/{1}/"
+BITBUCKET_API_URL = (
+    "https://api.bitbucket.org/1.0/repositories/" "{0.project}/issues/{1}/"
+)
+DEBIAN_URL = "http://bugs.debian.org/cgi-bin/bugreport.cgi?bug={0}"
+LAUNCHPAD_URL = "https://bugs.launchpad.net/bugs/{0}"
+GOOGLE_CODE_URL = "http://code.google.com/p/{0.project}/issues/detail?id={1}"
+GOOGLE_CODE_API_URL = (
+    "http://code.google.com/feeds/issues/p/" "{0.project}/issues/full/{1}"
+)
 # namespaces required to parse XML returned by Google Code
-GOOGLE_ISSUE_NS = '{http://schemas.google.com/projecthosting/issues/2009}'
-ATOM_NS = '{http://www.w3.org/2005/Atom}'
-JIRA_API_URL = ('{0.url}/si/jira.issueviews:issue-xml/{1}/{1}.xml?'
-                # only request the required fields
-                'field=link&field=resolution&field=summary&field=project')
+GOOGLE_ISSUE_NS = "{http://schemas.google.com/projecthosting/issues/2009}"
+ATOM_NS = "{http://www.w3.org/2005/Atom}"
+JIRA_API_URL = (
+    "{0.url}/si/jira.issueviews:issue-xml/{1}/{1}.xml?"
+    # only request the required fields
+    "field=link&field=resolution&field=summary&field=project"
+)
 
 
 def check_project_with_username(tracker_config):
-    if '/' not in tracker_config.project:
+    if "/" not in tracker_config.project:
         raise ValueError(
-            'username missing in project name: {0.project}'.format(
-                tracker_config))
+            "username missing in project name: {0.project}".format(tracker_config)
+        )
 
 
-HEADERS = {
-    'User-Agent': 'sphinxcontrib-issuetracker v{0}'.format(__version__)
-}
+HEADERS = {"User-Agent": "sphinxcontrib-issuetracker v{0}".format(__version__)}
 
 
 def get(app, url):
@@ -88,7 +88,7 @@ def get(app, url):
     if response.status_code == requests.codes.ok:
         return response
     elif response.status_code != requests.codes.not_found:
-        msg = 'GET {0.url} failed with code {0.status_code}'
+        msg = "GET {0.url} failed with code {0.status_code}"
         app.warn(msg.format(response))
 
 
@@ -96,7 +96,7 @@ def lookup_github_issue(app, tracker_config, issue_id):
     check_project_with_username(tracker_config)
 
     # Get rate limit information from the environment
-    timestamp, limit_hit = getattr(app.env, 'github_rate_limit', (0, False))
+    timestamp, limit_hit = getattr(app.env, "github_rate_limit", (0, False))
 
     if limit_hit and time.time() - timestamp > 3600:
         # Github limits applications hourly
@@ -106,17 +106,17 @@ def lookup_github_issue(app, tracker_config, issue_id):
         url = GITHUB_API_URL.format(tracker_config, issue_id)
         response = get(app, url)
         if response:
-            rate_remaining = response.headers.get('X-RateLimit-Remaining')
+            rate_remaining = response.headers.get("X-RateLimit-Remaining")
             if rate_remaining.isdigit() and int(rate_remaining) == 0:
-                app.warn('Github rate limit hit')
+                app.warn("Github rate limit hit")
                 app.env.github_rate_limit = (time.time(), True)
             issue = response.json()
-            closed = issue['state'] == 'closed'
-            return Issue(id=issue_id, title=issue['title'], closed=closed,
-                         url=issue['html_url'])
+            closed = issue["state"] == "closed"
+            return Issue(
+                id=issue_id, title=issue["title"], closed=closed, url=issue["html_url"]
+            )
     else:
-        app.warn('Github rate limit exceeded, not resolving issue {0}'.format(
-            issue_id))
+        app.warn("Github rate limit exceeded, not resolving issue {0}".format(issue_id))
         return None
 
 
@@ -127,13 +127,14 @@ def lookup_bitbucket_issue(app, tracker_config, issue_id):
     response = get(app, url)
     if response:
         issue = response.json()
-        closed = issue['status'] not in ('new', 'open')
+        closed = issue["status"] not in ("new", "open")
         url = BITBUCKET_URL.format(tracker_config, issue_id)
-        return Issue(id=issue_id, title=issue['title'], closed=closed, url=url)
+        return Issue(id=issue_id, title=issue["title"], closed=closed, url=url)
 
 
 def lookup_debian_issue(app, tracker_config, issue_id):
     import debianbts
+
     try:
         # get the bug
         bug = debianbts.get_status(issue_id)[0]
@@ -144,28 +145,35 @@ def lookup_debian_issue(app, tracker_config, issue_id):
     if tracker_config.project not in (bug.package, bug.source):
         return None
 
-    return Issue(id=issue_id, title=bug.subject, closed=bug.done,
-                 url=DEBIAN_URL.format(issue_id))
+    return Issue(
+        id=issue_id, title=bug.subject, closed=bug.done, url=DEBIAN_URL.format(issue_id)
+    )
 
 
 def lookup_launchpad_issue(app, tracker_config, issue_id):
     from launchpadlib.launchpad import Launchpad
-    launchpad = Launchpad.login_anonymously('sphinxcontrib.issuetracker')
+
+    launchpad = Launchpad.login_anonymously("sphinxcontrib.issuetracker")
     try:
         # get the bug
         bug = launchpad.bugs[issue_id]
     except KeyError:
         return None
 
-    project_tasks = [task for task in bug.bug_tasks
-                     if task.bug_target_name == tracker_config.project]
+    project_tasks = [
+        task for task in bug.bug_tasks if task.bug_target_name == tracker_config.project
+    ]
     if not project_tasks:
         # no matching task found
         return None
 
     is_complete = all(t.is_complete for t in project_tasks)
-    return Issue(id=issue_id, title=bug.title, closed=is_complete,
-                 url=LAUNCHPAD_URL.format(issue_id))
+    return Issue(
+        id=issue_id,
+        title=bug.title,
+        closed=is_complete,
+        url=LAUNCHPAD_URL.format(issue_id),
+    )
 
 
 def lookup_google_code_issue(app, tracker_config, issue_id):
@@ -173,54 +181,65 @@ def lookup_google_code_issue(app, tracker_config, issue_id):
     response = get(app, url)
     if response:
         issue = etree.fromstring(response.content)
-        state = issue.find('{0}state'.format(GOOGLE_ISSUE_NS))
-        title_node = issue.find('{0}title'.format(ATOM_NS))
+        state = issue.find("{0}state".format(GOOGLE_ISSUE_NS))
+        title_node = issue.find("{0}title".format(ATOM_NS))
         title = title_node.text if title_node is not None else None
-        closed = state is not None and state.text == 'closed'
-        return Issue(id=issue_id, title=title, closed=closed,
-                     url=GOOGLE_CODE_URL.format(tracker_config, issue_id))
+        closed = state is not None and state.text == "closed"
+        return Issue(
+            id=issue_id,
+            title=title,
+            closed=closed,
+            url=GOOGLE_CODE_URL.format(tracker_config, issue_id),
+        )
 
 
 def lookup_jira_issue(app, tracker_config, issue_id):
     if not tracker_config.url:
-        raise ValueError('URL required')
+        raise ValueError("URL required")
     url = JIRA_API_URL.format(tracker_config, issue_id)
     response = get(app, url)
     if response:
         issue = etree.fromstring(response.content)
-        project = issue.find('*/item/project').text
+        project = issue.find("*/item/project").text
         if project != tracker_config.project:
             return None
 
-        url = issue.find('*/item/link').text
-        state = issue.find('*/item/resolution').text
+        url = issue.find("*/item/link").text
+        state = issue.find("*/item/resolution").text
         # summary contains the title without the issue id
-        title = issue.find('*/item/summary').text
-        closed = state.lower() != 'unresolved'
+        title = issue.find("*/item/summary").text
+        closed = state.lower() != "unresolved"
         return Issue(id=issue_id, title=title, closed=closed, url=url)
 
 
 def lookup_redmine_issue(app, tracker_config, issue_id):
     from redmine import Redmine
+
     if not tracker_config.url:
-        raise ValueError('URL required')
-    redmine = Redmine(tracker_config.url,
-                      key=app.config.issuetracker_redmine_key,
-                      username=app.config.issuetracker_redmine_username,
-                      password=app.config.issuetracker_redmine_password,
-                      requests=app.config.issuetracker_redmine_requests)
+        raise ValueError("URL required")
+    redmine = Redmine(
+        tracker_config.url,
+        key=app.config.issuetracker_redmine_key,
+        username=app.config.issuetracker_redmine_username,
+        password=app.config.issuetracker_redmine_password,
+        requests=app.config.issuetracker_redmine_requests,
+    )
     if redmine:
         issue = redmine.issue.get(issue_id)
-        return Issue(id=issue_id, title=issue.subject,
-                     closed=issue.status is "Closed",
-                     url=issue.url)
+        return Issue(
+            id=issue_id,
+            title=issue.subject,
+            closed=issue.status is "Closed",
+            url=issue.url,
+        )
+
 
 BUILTIN_ISSUE_TRACKERS = {
-    'github': lookup_github_issue,
-    'bitbucket': lookup_bitbucket_issue,
-    'debian': lookup_debian_issue,
-    'launchpad': lookup_launchpad_issue,
-    'google code': lookup_google_code_issue,
-    'jira': lookup_jira_issue,
-    'redmine': lookup_redmine_issue,
+    "github": lookup_github_issue,
+    "bitbucket": lookup_bitbucket_issue,
+    "debian": lookup_debian_issue,
+    "launchpad": lookup_launchpad_issue,
+    "google code": lookup_google_code_issue,
+    "jira": lookup_jira_issue,
+    "redmine": lookup_redmine_issue,
 }

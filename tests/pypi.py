@@ -36,18 +36,17 @@
     different license of this file.
 """
 
-from __future__ import (print_function, unicode_literals, absolute_import,
-                        division)
+from __future__ import absolute_import, division, print_function, unicode_literals
 
 import sys
-from urlparse import urlparse
 
 # Work around docutils #3596884, see
 # http://sourceforge.net/tracker/?func=detail&aid=3596884&group_id=38414&atid=422030
 import docutils.utils
 from docutils import io, readers
-from docutils.core import publish_doctree, Publisher
+from docutils.core import Publisher, publish_doctree
 from docutils.transforms import TransformError
+from urlparse import urlparse
 
 
 def trim_docstring(text):
@@ -78,15 +77,15 @@ def trim_docstring(text):
     while trimmed and not trimmed[0]:
         trimmed.pop(0)
     # Return a single string:
-    return '\n'.join(trimmed)
+    return "\n".join(trimmed)
 
 
-ALLOWED_SCHEMES = '''file ftp gopher hdl http https imap mailto mms news nntp
+ALLOWED_SCHEMES = """file ftp gopher hdl http https imap mailto mms news nntp
 prospero rsync rtsp rtspu sftp shttp sip sips snews svn svn+ssh telnet
-wais'''.split()
+wais""".split()
 
 
-def process_description(source, output_encoding='unicode'):
+def process_description(source, output_encoding="unicode"):
     """Given an source string, returns an HTML fragment as a string.
 
     The return value is the contents of the <body> tag.
@@ -101,44 +100,44 @@ def process_description(source, output_encoding='unicode'):
     source = trim_docstring(source)
 
     settings_overrides = {
-        'raw_enabled': 0,  # no raw HTML code
-        'file_insertion_enabled': 0,  # no file/URL access
-        'halt_level': 2,  # at warnings or errors, raise an exception
-        'report_level': 5,  # never report problems with the reST code
+        "raw_enabled": 0,  # no raw HTML code
+        "file_insertion_enabled": 0,  # no file/URL access
+        "halt_level": 2,  # at warnings or errors, raise an exception
+        "report_level": 5,  # never report problems with the reST code
     }
 
     parts = None
 
     # Convert reStructuredText to HTML using Docutils.
-    document = publish_doctree(source=source,
-                               settings_overrides=settings_overrides)
+    document = publish_doctree(source=source, settings_overrides=settings_overrides)
 
     for node in document.traverse():
-        if node.tagname == '#text':
+        if node.tagname == "#text":
             continue
-        if node.hasattr('refuri'):
-            uri = node['refuri']
-        elif node.hasattr('uri'):
-            uri = node['uri']
+        if node.hasattr("refuri"):
+            uri = node["refuri"]
+        elif node.hasattr("uri"):
+            uri = node["uri"]
         else:
             continue
         o = urlparse(uri)
         if o.scheme not in ALLOWED_SCHEMES:
-            raise TransformError('link scheme not allowed: {0}'.format(uri))
+            raise TransformError("link scheme not allowed: {0}".format(uri))
 
     # now turn the transformed document into HTML
-    reader = readers.doctree.Reader(parser_name='null')
-    pub = Publisher(reader, source=io.DocTreeInput(document),
-                    destination_class=io.StringOutput)
-    pub.set_writer('html')
+    reader = readers.doctree.Reader(parser_name="null")
+    pub = Publisher(
+        reader, source=io.DocTreeInput(document), destination_class=io.StringOutput
+    )
+    pub.set_writer("html")
     pub.process_programmatic_settings(None, settings_overrides, None)
     pub.set_destination(None, None)
     pub.publish()
     parts = pub.writer.parts
 
-    output = parts['body']
+    output = parts["body"]
 
-    if output_encoding != 'unicode':
+    if output_encoding != "unicode":
         output = output.encode(output_encoding)
 
     return output
@@ -147,9 +146,9 @@ def process_description(source, output_encoding='unicode'):
 def main():
     filename = sys.argv[1]
     with open(filename) as source:
-        output = process_description(source.read().decode('utf-8'))
+        output = process_description(source.read().decode("utf-8"))
     print(output)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

@@ -36,24 +36,21 @@
     .. moduleauthor::  Sebastian Wiesner  <lunaryorn@gmail.com>
 """
 
-from __future__ import (print_function, division, unicode_literals,
-                        absolute_import)
+from __future__ import absolute_import, division, print_function, unicode_literals
 
+__version__ = "0.11"
 
-__version__ = '0.11'
-
-import sys
 import re
-from os import path
+import sys
 from collections import namedtuple
+from os import path
 
 from docutils import nodes
 from docutils.transforms import Transform
-from sphinx.roles import XRefRole
 from sphinx.addnodes import pending_xref
-from sphinx.util.osutil import copyfile
+from sphinx.roles import XRefRole
 from sphinx.util.console import bold
-
+from sphinx.util.osutil import copyfile
 
 # Python 2/3 compatibility aliases
 if sys.version_info[0] >= 3:
@@ -64,10 +61,10 @@ else:
     text_type = unicode
 
 
-Issue = namedtuple('Issue', 'id title url closed')
+Issue = namedtuple("Issue", "id title url closed")
 
 
-_TrackerConfig = namedtuple('_TrackerConfig', 'project url')
+_TrackerConfig = namedtuple("_TrackerConfig", "project url")
 
 
 class TrackerConfig(_TrackerConfig):
@@ -81,7 +78,7 @@ class TrackerConfig(_TrackerConfig):
 
     def __new__(cls, project, url=None):
         if url:
-            url = url.rstrip('/')
+            url = url.rstrip("/")
         return _TrackerConfig.__new__(cls, project, url)
 
     @classmethod
@@ -108,7 +105,7 @@ class IssueRole(XRefRole):
 
     def process_link(self, env, refnode, has_explicit_title, title, target):
         # store the tracker config in the reference node
-        refnode['trackerconfig'] = TrackerConfig.from_sphinx_config(env.config)
+        refnode["trackerconfig"] = TrackerConfig.from_sphinx_config(env.config)
         return title, target
 
 
@@ -142,11 +139,12 @@ class IssueReferences(Transform):
                 # catch invalid pattern with too many groups
                 if len(match.groups()) != 1:
                     raise ValueError(
-                        'issuetracker_issue_pattern must have '
-                        'exactly one group: {0!r}'.format(match.groups()))
+                        "issuetracker_issue_pattern must have "
+                        "exactly one group: {0!r}".format(match.groups())
+                    )
                 # extract the text between the last issue reference and the
                 # current issue reference and put it into a new text node
-                head = text[last_issue_ref_end:match.start()]
+                head = text[last_issue_ref_end : match.start()]
                 if head:
                     new_nodes.append(nodes.Text(head))
                 # adjust the position of the last issue reference in the
@@ -158,12 +156,13 @@ class IssueReferences(Transform):
                 issue_id = match.group(1)
                 # turn the issue reference into a reference node
                 refnode = pending_xref()
-                refnode['reftarget'] = issue_id
-                refnode['reftype'] = 'issue'
-                refnode['trackerconfig'] = tracker_config
+                refnode["reftarget"] = issue_id
+                refnode["reftype"] = "issue"
+                refnode["trackerconfig"] = tracker_config
                 reftitle = title_template or issuetext
-                refnode.append(nodes.inline(
-                    issuetext, reftitle, classes=['xref', 'issue']))
+                refnode.append(
+                    nodes.inline(issuetext, reftitle, classes=["xref", "issue"])
+                )
                 new_nodes.append(refnode)
             if not new_nodes:
                 # no issue references were found, move on to the next node
@@ -189,11 +188,11 @@ def make_issue_reference(issue, content_node):
     Return a :class:`docutils.nodes.reference` for the issue.
     """
     reference = nodes.reference()
-    reference['refuri'] = issue.url
+    reference["refuri"] = issue.url
     if issue.title:
-        reference['reftitle'] = issue.title
+        reference["reftitle"] = issue.title
     if issue.closed:
-        content_node['classes'].append('closed')
+        content_node["classes"].append("closed")
     reference.append(content_node)
     return reference
 
@@ -215,8 +214,9 @@ def lookup_issue(app, tracker_config, issue_id):
     """
     cache = app.env.issuetracker_cache
     if issue_id not in cache:
-        issue = app.emit_firstresult('issuetracker-lookup-issue',
-                                     tracker_config, issue_id)
+        issue = app.emit_firstresult(
+            "issuetracker-lookup-issue", tracker_config, issue_id
+        )
         cache[issue_id] = issue
     return cache[issue_id]
 
@@ -233,8 +233,8 @@ def lookup_issues(app, doctree):
     along with the environment.
     """
     for node in doctree.traverse(pending_xref):
-        if node['reftype'] == 'issue':
-            lookup_issue(app, node['trackerconfig'], node['reftarget'])
+        if node["reftype"] == "issue":
+            lookup_issue(app, node["trackerconfig"], node["reftarget"])
 
 
 def resolve_issue_reference(app, env, node, contnode):
@@ -262,34 +262,34 @@ def resolve_issue_reference(app, env, node, contnode):
 
     Otherwise, if the issue was not found, the content node is returned.
     """
-    if node['reftype'] != 'issue':
+    if node["reftype"] != "issue":
         return None
 
-    issue = lookup_issue(app, node['trackerconfig'], node['reftarget'])
+    issue = lookup_issue(app, node["trackerconfig"], node["reftarget"])
     if not issue:
         return contnode
     else:
-        classes = contnode['classes']
+        classes = contnode["classes"]
         conttext = text_type(contnode[0])
         formatted_conttext = nodes.Text(conttext.format(issue=issue))
-        formatted_contnode = nodes.inline(conttext, formatted_conttext,
-                                          classes=classes)
+        formatted_contnode = nodes.inline(conttext, formatted_conttext, classes=classes)
         return make_issue_reference(issue, formatted_contnode)
 
 
 def connect_builtin_tracker(app):
     from sphinxcontrib.issuetracker.resolvers import BUILTIN_ISSUE_TRACKERS
+
     if app.config.issuetracker:
         tracker = BUILTIN_ISSUE_TRACKERS[app.config.issuetracker.lower()]
-        app.connect(str('issuetracker-lookup-issue'), tracker)
+        app.connect(str("issuetracker-lookup-issue"), tracker)
 
 
 def add_stylesheet(app):
-    app.add_stylesheet('issuetracker.css')
+    app.add_stylesheet("issuetracker.css")
 
 
 def init_cache(app):
-    if not hasattr(app.env, 'issuetracker_cache'):
+    if not hasattr(app.env, "issuetracker_cache"):
         app.env.issuetracker_cache = {}
 
 
@@ -299,37 +299,35 @@ def init_transformer(app):
 
 
 def copy_stylesheet(app, exception):
-    if app.builder.name != 'html' or exception:
+    if app.builder.name != "html" or exception:
         return
-    app.info(bold('Copying issuetracker stylesheet... '), nonl=True)
-    dest = path.join(app.builder.outdir, '_static', 'issuetracker.css')
-    source = path.join(path.abspath(path.dirname(__file__)),
-                       'issuetracker.css')
+    app.info(bold("Copying issuetracker stylesheet... "), nonl=True)
+    dest = path.join(app.builder.outdir, "_static", "issuetracker.css")
+    source = path.join(path.abspath(path.dirname(__file__)), "issuetracker.css")
     copyfile(source, dest)
-    app.info('done')
+    app.info("done")
 
 
 def setup(app):
-    app.require_sphinx('1.0')
-    app.add_role('issue', IssueRole())
-    app.add_event(str('issuetracker-lookup-issue'))
-    app.connect(str('builder-inited'), connect_builtin_tracker)
+    app.require_sphinx("1.0")
+    app.add_role("issue", IssueRole())
+    app.add_event(str("issuetracker-lookup-issue"))
+    app.connect(str("builder-inited"), connect_builtin_tracker)
     # general configuration
-    app.add_config_value('issuetracker', None, 'env')
-    app.add_config_value('issuetracker_project', None, 'env')
-    app.add_config_value('issuetracker_url', None, 'env')
-    app.add_config_value('issuetracker_redmine_key', None, 'env')
-    app.add_config_value('issuetracker_redmine_username', None, 'env')
-    app.add_config_value('issuetracker_redmine_password', None, 'env')
-    app.add_config_value('issuetracker_redmine_requests', {}, 'env')
+    app.add_config_value("issuetracker", None, "env")
+    app.add_config_value("issuetracker_project", None, "env")
+    app.add_config_value("issuetracker_url", None, "env")
+    app.add_config_value("issuetracker_redmine_key", None, "env")
+    app.add_config_value("issuetracker_redmine_username", None, "env")
+    app.add_config_value("issuetracker_redmine_password", None, "env")
+    app.add_config_value("issuetracker_redmine_requests", {}, "env")
     # configuration specific to plaintext issue references
-    app.add_config_value('issuetracker_plaintext_issues', True, 'env')
-    app.add_config_value('issuetracker_issue_pattern',
-                         re.compile(r'#(\d+)'), 'env')
-    app.add_config_value('issuetracker_title_template', None, 'env')
-    app.connect(str('builder-inited'), add_stylesheet)
-    app.connect(str('builder-inited'), init_cache)
-    app.connect(str('builder-inited'), init_transformer)
-    app.connect(str('doctree-read'), lookup_issues)
-    app.connect(str('missing-reference'), resolve_issue_reference)
-    app.connect(str('build-finished'), copy_stylesheet)
+    app.add_config_value("issuetracker_plaintext_issues", True, "env")
+    app.add_config_value("issuetracker_issue_pattern", re.compile(r"#(\d+)"), "env")
+    app.add_config_value("issuetracker_title_template", None, "env")
+    app.connect(str("builder-inited"), add_stylesheet)
+    app.connect(str("builder-inited"), init_cache)
+    app.connect(str("builder-inited"), init_transformer)
+    app.connect(str("doctree-read"), lookup_issues)
+    app.connect(str("missing-reference"), resolve_issue_reference)
+    app.connect(str("build-finished"), copy_stylesheet)

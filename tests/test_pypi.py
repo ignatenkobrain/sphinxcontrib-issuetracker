@@ -32,17 +32,16 @@
     .. moduleauthor::  Sebastian Wiesner  <lunaryorn@gmail.com>
 """
 
-from __future__ import (print_function, division, unicode_literals,
-                        absolute_import)
+from __future__ import absolute_import, division, print_function, unicode_literals
 
 import os
 import sys
-from subprocess import Popen, PIPE, CalledProcessError
+from subprocess import PIPE, CalledProcessError, Popen
 
 import pytest
 
 
-@pytest.mark.skipif(str('sys.version_info[0] > 2'))
+@pytest.mark.skipif(str("sys.version_info[0] > 2"))
 def test_description_rendering():
     """
     If this test raises any exception ReST rendering on PyPI will fail.
@@ -53,8 +52,8 @@ def test_description_rendering():
     """
     test_directory = os.path.abspath(os.path.dirname(__file__))
     source_directory = os.path.abspath(os.path.join(test_directory, os.pardir))
-    pypi = os.path.join(test_directory, 'pypi.py')
-    readme = os.path.join(source_directory, 'README.rst')
+    pypi = os.path.join(test_directory, "pypi.py")
+    readme = os.path.join(source_directory, "README.rst")
 
     cmd = [sys.executable, pypi, readme]
     proc = Popen(cmd, stdout=PIPE)

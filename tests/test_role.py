@@ -32,8 +32,7 @@
     .. moduleauthor::  Sebastian Wiesner  <lunaryorn@gmail.com>
 """
 
-from __future__ import (print_function, division, unicode_literals,
-                        absolute_import)
+from __future__ import absolute_import, division, print_function, unicode_literals
 
 import pytest
 
@@ -45,29 +44,29 @@ def pytest_funcarg__issue(request):
     A dummy issue, just to trigger issue resolval so that transformations can
     be seen in the output.
     """
-    return Issue(id='10', title='Eggs', closed=False, url='eggs')
+    return Issue(id="10", title="Eggs", closed=False, url="eggs")
 
 
-@pytest.mark.with_content(':issue:`10`')
+@pytest.mark.with_content(":issue:`10`")
 def test_simple(doctree, issue):
     """
     Test simple usage of the role.
     """
-    pytest.assert_issue_pending_xref(doctree, '10', '10')
+    pytest.assert_issue_pending_xref(doctree, "10", "10")
 
 
-@pytest.mark.with_content(':issue:`foo <10>`')
+@pytest.mark.with_content(":issue:`foo <10>`")
 def test_with_title(doctree, issue):
     """
     Test role with an explicit title.
     """
-    pytest.assert_issue_pending_xref(doctree, '10', 'foo')
+    pytest.assert_issue_pending_xref(doctree, "10", "foo")
 
 
 @pytest.mark.confoverrides(issuetracker_plaintext_issues=False)
-@pytest.mark.with_content(':issue:`10` #10')
+@pytest.mark.with_content(":issue:`10` #10")
 def test_without_plaintext_issues(doctree, issue):
     """
     Test that the role still works even if plaintext issues are disabled.
     """
-    pytest.assert_issue_pending_xref(doctree, '10', '10')
+    pytest.assert_issue_pending_xref(doctree, "10", "10")

@@ -32,10 +32,10 @@
     .. moduleauthor::  Sebastian Wiesner  <lunaryorn@gmail.com>
 """
 
-from __future__ import (print_function, division, unicode_literals,
-                        absolute_import)
+from __future__ import absolute_import, division, print_function, unicode_literals
 
 import pytest
+
 from docutils import nodes
 from sphinx.addnodes import pending_xref
 
@@ -47,11 +47,11 @@ def pytest_funcarg__issue(request):
     A dummy issue, just to trigger issue resolval so that transformations can
     be seen in the output.
     """
-    return Issue(id='10', title='Eggs', closed=False, url='eggs')
+    return Issue(id="10", title="Eggs", closed=False, url="eggs")
 
 
 @pytest.mark.confoverrides(issuetracker_plaintext_issues=False)
-@pytest.mark.with_content('#10')
+@pytest.mark.with_content("#10")
 def test_transform_disabled(doctree):
     """
     Test that no reference is inserted if transforming is disabled.
@@ -59,57 +59,55 @@ def test_transform_disabled(doctree):
     assert not doctree.next_node(pending_xref)
 
 
-@pytest.mark.with_content('#10')
+@pytest.mark.with_content("#10")
 def test_transform_simple(doctree):
     """
     Test a simple transform with just an issue id.
     """
-    pytest.assert_issue_pending_xref(doctree, '10', '#10')
+    pytest.assert_issue_pending_xref(doctree, "10", "#10")
 
 
-@pytest.mark.with_content('#10')
-@pytest.mark.confoverrides(
-    issuetracker_title_template='{issue.title} (#{issue.id})')
+@pytest.mark.with_content("#10")
+@pytest.mark.confoverrides(issuetracker_title_template="{issue.title} (#{issue.id})")
 def test_transform_with_title_template(doctree):
     """
     Test transformation with title template.
     """
-    pytest.assert_issue_pending_xref(
-        doctree, '10', '{issue.title} (#{issue.id})')
+    pytest.assert_issue_pending_xref(doctree, "10", "{issue.title} (#{issue.id})")
 
 
-@pytest.mark.with_content('before #10 after')
+@pytest.mark.with_content("before #10 after")
 def test_transform_leading_and_trailing_text(doctree, content):
     """
     Test that transformation leaves leading and trailing text intact.
     """
-    pytest.assert_issue_pending_xref(doctree, '10', '#10')
+    pytest.assert_issue_pending_xref(doctree, "10", "#10")
     assert doctree.astext() == content
 
 
-@pytest.mark.with_content('äöü #10 ß')
+@pytest.mark.with_content("äöü #10 ß")
 def test_transform_non_ascii(doctree, content):
     """
     Test transformation with non-ascii characters.
     """
-    pytest.assert_issue_pending_xref(doctree, '10', '#10')
+    pytest.assert_issue_pending_xref(doctree, "10", "#10")
     assert doctree.astext() == content
 
 
-@pytest.mark.with_content('*#10* **#10**')
+@pytest.mark.with_content("*#10* **#10**")
 def test_transform_inline_markup(doctree):
     """
     Test that issue ids inside inline markup like emphasis are transformed.
     """
     emphasis = doctree.next_node(nodes.emphasis)
     assert emphasis
-    pytest.assert_issue_pending_xref(emphasis, '10', '#10')
+    pytest.assert_issue_pending_xref(emphasis, "10", "#10")
     strong = doctree.next_node(nodes.strong)
     assert strong
-    pytest.assert_issue_pending_xref(strong, '10', '#10')
+    pytest.assert_issue_pending_xref(strong, "10", "#10")
 
 
-@pytest.mark.with_content('``#10``')
+@pytest.mark.with_content("``#10``")
 def test_transform_literal(doctree):
     """
     Test that transformation leaves literals untouched.
@@ -117,14 +115,16 @@ def test_transform_literal(doctree):
     assert not doctree.next_node(pending_xref)
     literal = doctree.next_node(nodes.literal)
     assert literal
-    assert literal.astext() == '#10'
+    assert literal.astext() == "#10"
 
 
-@pytest.mark.with_content("""\
+@pytest.mark.with_content(
+    """\
 spam::
 
    eggs
-      #10""")
+      #10"""
+)
 def test_transform_literal_block(doctree):
     """
     Test that transformation leaves literal blocks untouched.
@@ -132,25 +132,29 @@ def test_transform_literal_block(doctree):
     assert not doctree.next_node(pending_xref)
     literal_block = doctree.next_node(nodes.literal_block)
     assert literal_block
-    assert literal_block.astext() == 'eggs\n   #10'
+    assert literal_block.astext() == "eggs\n   #10"
 
 
-@pytest.mark.with_content("""\
+@pytest.mark.with_content(
+    """\
 .. code-block:: python
 
-   eggs('#10')""")
+   eggs('#10')"""
+)
 def test_transform_code_block(doctree):
     assert not doctree.next_node(pending_xref)
     literal_block = doctree.next_node(nodes.literal_block)
     assert literal_block
     assert literal_block.astext() == "eggs('#10')"
-    assert literal_block['language'] == 'python'
+    assert literal_block["language"] == "python"
 
 
-@pytest.mark.with_content("""\
+@pytest.mark.with_content(
+    """\
 foo:
 
->>> print('#10')""")
+>>> print('#10')"""
+)
 def test_transform_doctest_block(doctree):
     assert not doctree.next_node(pending_xref)
     doctest_block = doctree.next_node(nodes.doctest_block)
@@ -158,8 +162,8 @@ def test_transform_doctest_block(doctree):
     assert doctest_block.astext() == ">>> print('#10')"
 
 
-@pytest.mark.with_content('ab')
-@pytest.mark.confoverrides(issuetracker_issue_pattern=r'(a)(b)')
+@pytest.mark.with_content("ab")
+@pytest.mark.confoverrides(issuetracker_issue_pattern=r"(a)(b)")
 def test_too_many_groups(app):
     """
     Test that using an issue pattern with too many groups fails with an
@@ -168,5 +172,7 @@ def test_too_many_groups(app):
     with pytest.raises(ValueError) as excinfo:
         app.build()
     error = excinfo.value
-    assert str(error) == ('issuetracker_issue_pattern must have '
-                          'exactly one group: {0!r}'.format(('a', 'b')))
+    assert str(error) == (
+        "issuetracker_issue_pattern must have "
+        "exactly one group: {0!r}".format(("a", "b"))
+    )

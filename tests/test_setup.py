@@ -33,15 +33,14 @@
     .. moduleauthor::  Sebastian Wiesner  <lunaryorn@gmail.com>
 """
 
-from __future__ import (print_function, division, unicode_literals,
-                        absolute_import)
+from __future__ import absolute_import, division, print_function, unicode_literals
 
 import re
 
-
-BUILTIN_TRACKER_NAME_PATTERN = re.compile('lookup_(.*)_issue')
+BUILTIN_TRACKER_NAME_PATTERN = re.compile("lookup_(.*)_issue")
 
 import pytest
+
 from sphinx.environment import SphinxStandaloneReader
 
 from sphinxcontrib import issuetracker
@@ -57,7 +56,7 @@ def pytest_funcarg__content(request):
     ready-to-build sphinx application.  Thus the content doesn't matter, but
     still a sphinx application needs some content to build.
     """
-    return 'dummy content'
+    return "dummy content"
 
 
 def test_builtin_issue_trackers():
@@ -69,7 +68,7 @@ def test_builtin_issue_trackers():
     for attr in dir(resolvers):
         match = BUILTIN_TRACKER_NAME_PATTERN.match(attr)
         if match:
-            tracker_name = match.group(1).replace('_', ' ')
+            tracker_name = match.group(1).replace("_", " ")
             assert tracker_name in trackers
             trackers.pop(tracker_name)
     assert not trackers
@@ -79,7 +78,7 @@ def test_unknown_tracker(app):
     """
     Test that setting ``issuetracker`` to an unknown tracker fails.
     """
-    app.config.issuetracker = 'spamtracker'
+    app.config.issuetracker = "spamtracker"
     with pytest.raises(KeyError):
         issuetracker.connect_builtin_tracker(app)
 
@@ -89,7 +88,8 @@ def test_add_stylesheet(app):
     Test that the stylesheet is properly added.
     """
     from sphinx.builders.html import StandaloneHTMLBuilder
-    assert '_static/issuetracker.css' in StandaloneHTMLBuilder.css_files
+
+    assert "_static/issuetracker.css" in StandaloneHTMLBuilder.css_files
 
 
 def test_transform_added(app):

@@ -35,8 +35,7 @@
     .. moduleauthor::  Sebastian Wiesner  <lunaryorn@gmail.com>
 """
 
-from __future__ import (print_function, division, unicode_literals,
-                        absolute_import)
+from __future__ import absolute_import, division, print_function, unicode_literals
 
 import pytest
 
@@ -64,7 +63,7 @@ def pytest_generate_tests(metafunc):
     to resolve to, or with issue ids as string, if the test is expected to be
     unable to resolve the issue.
     """
-    if 'issue' in metafunc.funcargnames:
+    if "issue" in metafunc.funcargnames:
         for testname in sorted(metafunc.cls.issues):
             metafunc.addcall(id=testname, param=testname)
 
@@ -76,7 +75,7 @@ def pytest_funcarg__testname(request):
     This is the parameter added by the test generation hook, or ``None`` if no
     parameter was set, because test generation didn't add a call for this test.
     """
-    return getattr(request, 'param', None)
+    return getattr(request, "param", None)
 
 
 def pytest_funcarg__tracker(request):
@@ -107,7 +106,7 @@ def pytest_funcarg__tracker_config(request):
     cls = request.cls
     if cls is None:
         return None
-    testname = getattr(request, 'param', None)
+    testname = getattr(request, "param", None)
     if testname is None:
         return cls.default_tracker_config
     else:
@@ -126,19 +125,22 @@ def pytest_funcarg__confoverrides(request):
     """
     # configure tracker and enable title expansion to test the title retrieval
     # of builtin trackers, too
-    tracker = request.getfuncargvalue('tracker')
-    confoverrides = dict(issuetracker=tracker,
-                         issuetracker_title_template='{issue.title}')
-    tracker_config = request.getfuncargvalue('tracker_config')
+    tracker = request.getfuncargvalue("tracker")
+    confoverrides = dict(
+        issuetracker=tracker, issuetracker_title_template="{issue.title}"
+    )
+    tracker_config = request.getfuncargvalue("tracker_config")
     if tracker_config:
         # bring tracker configuration in
-        confoverrides.update(issuetracker_project=tracker_config.project,
-                             issuetracker_url=tracker_config.url)
+        confoverrides.update(
+            issuetracker_project=tracker_config.project,
+            issuetracker_url=tracker_config.url,
+        )
     # bring test-class specific overrides in
     if request.cls:
         confoverrides.update(request.cls.confoverrides)
     # add overrides from the test itself
-    confoverrides.update(request.getfuncargvalue('confoverrides'))
+    confoverrides.update(request.getfuncargvalue("confoverrides"))
     return confoverrides
 
 
@@ -150,7 +152,7 @@ def pytest_funcarg__issue_id(request):
     The issue id is taken from the issue defined in the ``issues`` attribute of
     the class this test is defined in.
     """
-    testname = request.getfuncargvalue('testname')
+    testname = request.getfuncargvalue("testname")
     if not testname:
         return None
     issue = request.cls.issues[testname]
@@ -165,7 +167,7 @@ def pytest_funcarg__issue(request):
     The issue id is taken from the issue defined in the ``issues`` attribute of
     the class this test is defined in.
     """
-    testname = request.getfuncargvalue('testname')
+    testname = request.getfuncargvalue("testname")
     issue = request.cls.issues[testname]
     return issue if isinstance(issue, Issue) else None
 
@@ -213,134 +215,176 @@ class ScopedProjectTrackerTest(TrackerTest):
     username is missing.
     """
 
-    @pytest.mark.with_content('#10')
-    @pytest.mark.confoverrides(issuetracker_project='eggs')
+    @pytest.mark.with_content("#10")
+    @pytest.mark.confoverrides(issuetracker_project="eggs")
     def test_project_missing_username(self, app):
         """
         Test that a project name without an username fails with a ValueError.
         """
         with pytest.raises(ValueError) as excinfo:
             app.build()
-        assert str(excinfo.value) == \
-            'username missing in project name: eggs'
+        assert str(excinfo.value) == "username missing in project name: eggs"
 
 
 class TestBitBucket(ScopedProjectTrackerTest):
 
-    name = 'bitbucket'
+    name = "bitbucket"
 
-    default_tracker_config = TrackerConfig('birkenfeld/sphinx')
+    default_tracker_config = TrackerConfig("birkenfeld/sphinx")
 
-    tracker_config = {'no project': TrackerConfig('lunar/foobar')}
+    tracker_config = {"no project": TrackerConfig("lunar/foobar")}
 
-    SPHINX_URL = 'https://bitbucket.org/birkenfeld/sphinx/issue/{0}/'
+    SPHINX_URL = "https://bitbucket.org/birkenfeld/sphinx/issue/{0}/"
     issues = {
-        'resolved': Issue(id='478', closed=True, url=SPHINX_URL.format('478'),
-                          title='Adapt py:decorator from Python docs'),
-        'invalid': Issue(id='327', closed=True, url=SPHINX_URL.format('327'),
-                         title='Spaces at the end of console messages'),
-        'duplicate': Issue(id='733', closed=True, url=SPHINX_URL.format('733'),
-                           title='byte/str conversion fails on Python 3.2'),
-        'no project': '10',
-        'no issue': '10000'
+        "resolved": Issue(
+            id="478",
+            closed=True,
+            url=SPHINX_URL.format("478"),
+            title="Adapt py:decorator from Python docs",
+        ),
+        "invalid": Issue(
+            id="327",
+            closed=True,
+            url=SPHINX_URL.format("327"),
+            title="Spaces at the end of console messages",
+        ),
+        "duplicate": Issue(
+            id="733",
+            closed=True,
+            url=SPHINX_URL.format("733"),
+            title="byte/str conversion fails on Python 3.2",
+        ),
+        "no project": "10",
+        "no issue": "10000",
     }
 
 
 class TestGitHub(ScopedProjectTrackerTest):
 
-    name = 'github'
+    name = "github"
 
-    default_tracker_config = TrackerConfig('lunaryorn/pyudev')
+    default_tracker_config = TrackerConfig("lunaryorn/pyudev")
 
-    tracker_config = {'no project': TrackerConfig('lunaryorn/foobar')}
+    tracker_config = {"no project": TrackerConfig("lunaryorn/foobar")}
 
     issues = {
-        'closed': Issue(id='2', title='python 3 support', closed=True,
-                        url='https://github.com/lunaryorn/pyudev/issues/2'),
-        'no project': '10',
-        'no issue': '1000',
+        "closed": Issue(
+            id="2",
+            title="python 3 support",
+            closed=True,
+            url="https://github.com/lunaryorn/pyudev/issues/2",
+        ),
+        "no project": "10",
+        "no issue": "1000",
     }
 
 
 class TestGoogleCode(TrackerTest):
 
-    name = 'google code'
+    name = "google code"
 
-    default_tracker_config = TrackerConfig('pytox')
+    default_tracker_config = TrackerConfig("pytox")
 
-    tracker_config = {'no project': TrackerConfig('foobar')}
+    tracker_config = {"no project": TrackerConfig("foobar")}
 
-    PYTOX_URL = 'http://code.google.com/p/pytox/issues/detail?id={0}'
+    PYTOX_URL = "http://code.google.com/p/pytox/issues/detail?id={0}"
     issues = {
-        'fixed': Issue(id='2', closed=True, url=PYTOX_URL.format('2'),
-                       title='Hudson exists with SUCCESS status even if tox '
-                       'failed with ERROR'),
-        'invalid': Issue(id='5', title='0.7: "error: File exists"',
-                         closed=True, url=PYTOX_URL.format('5')),
-        'wontfix': Issue(id='6', title='Copy modules from site packages',
-                         closed=True, url=PYTOX_URL.format('6')),
-        'no issue': '1000',
-        'no project': '1',
+        "fixed": Issue(
+            id="2",
+            closed=True,
+            url=PYTOX_URL.format("2"),
+            title="Hudson exists with SUCCESS status even if tox " "failed with ERROR",
+        ),
+        "invalid": Issue(
+            id="5",
+            title='0.7: "error: File exists"',
+            closed=True,
+            url=PYTOX_URL.format("5"),
+        ),
+        "wontfix": Issue(
+            id="6",
+            title="Copy modules from site packages",
+            closed=True,
+            url=PYTOX_URL.format("6"),
+        ),
+        "no issue": "1000",
+        "no project": "1",
     }
 
 
 class TestDebian(TrackerTest):
-    pytestmark = pytest.mark.skipif(str('debianbts is None'))
+    pytestmark = pytest.mark.skipif(str("debianbts is None"))
 
-    name = 'debian'
+    name = "debian"
 
-    tracker_config = {'fixed': TrackerConfig('ldb-tools'),
-                      'no project': TrackerConfig('release.debian.org')}
+    tracker_config = {
+        "fixed": TrackerConfig("ldb-tools"),
+        "no project": TrackerConfig("release.debian.org"),
+    }
 
-    DEBIAN_URL = 'http://bugs.debian.org/cgi-bin/bugreport.cgi?bug={0}'
+    DEBIAN_URL = "http://bugs.debian.org/cgi-bin/bugreport.cgi?bug={0}"
     issues = {
-        'fixed': Issue(id='584227', title='ldb-tools: missing ldb(7) manpage',
-                       closed=True, url=DEBIAN_URL.format('584227')),
-        'no project': '1',
+        "fixed": Issue(
+            id="584227",
+            title="ldb-tools: missing ldb(7) manpage",
+            closed=True,
+            url=DEBIAN_URL.format("584227"),
+        ),
+        "no project": "1",
     }
 
 
 class TestLaunchpad(TrackerTest):
-    pytestmark = pytest.mark.skipif(str('launchpadlib is None'))
+    pytestmark = pytest.mark.skipif(str("launchpadlib is None"))
 
-    name = 'launchpad'
+    name = "launchpad"
 
-    default_tracker_config = TrackerConfig('inkscape')
+    default_tracker_config = TrackerConfig("inkscape")
 
-    tracker_config = {'wrong project': TrackerConfig('foo'),
-                      'invalid': TrackerConfig('eject (Ubuntu)')}
+    tracker_config = {
+        "wrong project": TrackerConfig("foo"),
+        "invalid": TrackerConfig("eject (Ubuntu)"),
+    }
 
     issues = {
-        'closed': Issue('647789', title='tries to install file(s) outside of '
-                        './configure\'s --prefix', closed=True,
-                        url='https://bugs.launchpad.net/bugs/647789'),
-        'invalid': Issue('173307', closed=True,
-                         title='All users should be able to eject CDs and '
-                         'removable media',
-                         url='https://bugs.launchpad.net/bugs/173307'),
-        'wrong project': '1000',
-        'no issue': '1000000',
+        "closed": Issue(
+            "647789",
+            title="tries to install file(s) outside of " "./configure's --prefix",
+            closed=True,
+            url="https://bugs.launchpad.net/bugs/647789",
+        ),
+        "invalid": Issue(
+            "173307",
+            closed=True,
+            title="All users should be able to eject CDs and " "removable media",
+            url="https://bugs.launchpad.net/bugs/173307",
+        ),
+        "wrong project": "1000",
+        "no issue": "1000000",
     }
 
 
 class TestJira(TrackerTest):
 
-    name = 'jira'
+    name = "jira"
 
     issues = {
-        'resolved': Issue('SHERPA-15', closed=True, title='Breadcrumbs and '
-                          'page title missing from admin screens',
-                          url='https://studio.atlassian.com/browse/SHERPA-15'),
+        "resolved": Issue(
+            "SHERPA-15",
+            closed=True,
+            title="Breadcrumbs and " "page title missing from admin screens",
+            url="https://studio.atlassian.com/browse/SHERPA-15",
+        ),
     }
 
     tracker_config = {
-        'resolved': TrackerConfig('Sherpa', 'https://studio.atlassian.com'),
-        'open': TrackerConfig('Pyogp', 'https://jira.secondlife.com'),
+        "resolved": TrackerConfig("Sherpa", "https://studio.atlassian.com"),
+        "open": TrackerConfig("Pyogp", "https://jira.secondlife.com"),
     }
 
-    confoverrides = dict(issuetracker_issue_pattern=r'#([A-Z]+-\d+)')
+    confoverrides = dict(issuetracker_issue_pattern=r"#([A-Z]+-\d+)")
 
-    @pytest.mark.with_content('#FOO-15')
+    @pytest.mark.with_content("#FOO-15")
     def test_no_url(self, app):
         """
         Test that the jira tracker fails with a ValueError, if no URL was
@@ -348,4 +392,4 @@ class TestJira(TrackerTest):
         """
         with pytest.raises(ValueError) as excinfo:
             app.build()
-        assert str(excinfo.value) == 'URL required'
+        assert str(excinfo.value) == "URL required"

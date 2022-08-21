@@ -23,19 +23,18 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
-from __future__ import (print_function, division, unicode_literals,
-                        absolute_import)
+from __future__ import absolute_import, division, print_function, unicode_literals
 
 import pytest
-from mock import Mock
+
 from docutils import nodes
+from mock import Mock
+from sphinx.addnodes import pending_xref
 from sphinx.application import Sphinx
 from sphinx.builders.html import StandaloneHTMLBuilder
 from sphinx.environment import SphinxStandaloneReader
-from sphinx.addnodes import pending_xref
 
 from sphinxcontrib.issuetracker import Issue, IssueReferences
-
 
 #: test configuration
 CONF_PY = """\
@@ -69,12 +68,12 @@ def assert_issue_pending_xref(doctree, issue_id, title):
     assert len(doctree.traverse(pending_xref)) == 1
     xref = doctree.next_node(pending_xref)
     assert xref
-    assert xref['reftarget'] == issue_id
+    assert xref["reftarget"] == issue_id
     assert xref.astext() == title
     content = xref.next_node(nodes.inline)
     assert content
-    classes = set(content['classes'])
-    assert classes == set(['xref', 'issue'])
+    classes = set(content["classes"])
+    assert classes == set(["xref", "issue"])
 
 
 def assert_issue_xref(doctree, issue, title):
@@ -90,15 +89,15 @@ def assert_issue_xref(doctree, issue, title):
     assert len(doctree.traverse(nodes.reference)) == 1
     reference = doctree.next_node(nodes.reference)
     assert reference
-    assert reference['refuri'] == issue.url
-    assert reference.get('reftitle') == issue.title
+    assert reference["refuri"] == issue.url
+    assert reference.get("reftitle") == issue.title
     assert reference.astext() == title
     content = reference.next_node(nodes.inline)
     assert content
-    classes = set(content['classes'])
-    expected_classes = set(['xref', 'issue'])
+    classes = set(content["classes"])
+    expected_classes = set(["xref", "issue"])
     if issue.closed:
-        expected_classes.add('closed')
+        expected_classes.add("closed")
     assert classes == expected_classes
     return reference
 
@@ -110,18 +109,21 @@ def pytest_namespace():
     - :func:`get_index_doctree`
     - :func:`assert_issue_xref`
     """
-    return dict((f.__name__, f) for f in
-                (assert_issue_xref, assert_issue_pending_xref))
+    return dict((f.__name__, f) for f in (assert_issue_xref, assert_issue_pending_xref))
 
 
 def pytest_addoption(parser):
     """
     Add --offline and --fast options to test runner.
     """
-    parser.addoption('--offline', action='store_true',
-                     help='Skip tests which require network connection')
-    parser.addoption('--fast', action='store_true',
-                     help='Skip slow tests, implies --offline')
+    parser.addoption(
+        "--offline",
+        action="store_true",
+        help="Skip tests which require network connection",
+    )
+    parser.addoption(
+        "--fast", action="store_true", help="Skip slow tests, implies --offline"
+    )
 
 
 def pytest_configure(config):
@@ -131,8 +133,8 @@ def pytest_configure(config):
     Evaluates ``--fast`` and ``--offline``, and adds ``confpy`` attribute to
     ``config`` which provides the path to the test ``conf.py`` file.
     """
-    config.run_fast = config.getvalue('fast')
-    config.run_offline = config.run_fast or config.getvalue('offline')
+    config.run_fast = config.getvalue("fast")
+    config.run_offline = config.run_fast or config.getvalue("offline")
 
 
 def pytest_runtest_setup(item):
@@ -140,10 +142,10 @@ def pytest_runtest_setup(item):
     Evaluate ``needs_network`` and ``slow`` markers with respect to
     ``--offline`` and ``--fast``
     """
-    if item.config.run_offline and 'needs_network' in item.keywords:
-        pytest.skip('network test in offline mode')
-    if item.config.run_fast and 'slow' in item.keywords:
-        pytest.skip('skipping slow test in fast mode')
+    if item.config.run_offline and "needs_network" in item.keywords:
+        pytest.skip("network test in offline mode")
+    if item.config.run_fast and "slow" in item.keywords:
+        pytest.skip("skipping slow test in fast mode")
 
 
 def pytest_funcarg__content(request):
@@ -159,14 +161,14 @@ def pytest_funcarg__content(request):
 
     Test modules may override this funcarg to add their own content.
     """
-    content_mark = request.keywords.get('with_content')
+    content_mark = request.keywords.get("with_content")
     if content_mark:
         return content_mark.args[0]
     else:
-        issue_id = request.getfuncargvalue('issue_id')
+        issue_id = request.getfuncargvalue("issue_id")
         if issue_id:
-            return '#{0}'.format(issue_id)
-    raise ValueError('no content provided')
+            return "#{0}".format(issue_id)
+    raise ValueError("no content provided")
 
 
 def pytest_funcarg__srcdir(request):
@@ -177,12 +179,12 @@ def pytest_funcarg__srcdir(request):
     named ``index.rst``.  The content of this document is the return value of
     the ``content`` funcarg.
     """
-    tmpdir = request.getfuncargvalue('tmpdir')
-    srcdir = tmpdir.join('src')
+    tmpdir = request.getfuncargvalue("tmpdir")
+    srcdir = tmpdir.join("src")
     srcdir.ensure(dir=True)
-    srcdir.join('conf.py').write(CONF_PY.encode('utf-8'), 'wb')
-    content = request.getfuncargvalue('content')
-    srcdir.join('index.rst').write(content.encode('utf-8'), 'wb')
+    srcdir.join("conf.py").write(CONF_PY.encode("utf-8"), "wb")
+    content = request.getfuncargvalue("content")
+    srcdir.join("index.rst").write(content.encode("utf-8"), "wb")
     return srcdir
 
 
@@ -190,16 +192,16 @@ def pytest_funcarg__outdir(request):
     """
     The Sphinx output directory for the current test as path.
     """
-    tmpdir = request.getfuncargvalue('tmpdir')
-    return tmpdir.join('html')
+    tmpdir = request.getfuncargvalue("tmpdir")
+    return tmpdir.join("html")
 
 
 def pytest_funcarg__doctreedir(request):
     """
     The Sphinx doctree directory for the current test as path.
     """
-    tmpdir = request.getfuncargvalue('tmpdir')
-    return tmpdir.join('doctrees')
+    tmpdir = request.getfuncargvalue("tmpdir")
+    return tmpdir.join("doctrees")
 
 
 def pytest_funcarg__doctree(request):
@@ -210,9 +212,9 @@ def pytest_funcarg__doctree(request):
 
        This funcarg builds the application before test execution.
     """
-    app = request.getfuncargvalue('app')
+    app = request.getfuncargvalue("app")
     app.build()
-    return app.env.get_doctree('index')
+    return app.env.get_doctree("index")
 
 
 def pytest_funcarg__resolved_doctree(request):
@@ -223,9 +225,9 @@ def pytest_funcarg__resolved_doctree(request):
 
        This funcarg builds the application before test execution.
     """
-    app = request.getfuncargvalue('app')
+    app = request.getfuncargvalue("app")
     app.build()
-    return app.env.get_and_resolve_doctree('index', app.builder)
+    return app.env.get_and_resolve_doctree("index", app.builder)
 
 
 def pytest_funcarg__cache(request):
@@ -236,7 +238,7 @@ def pytest_funcarg__cache(request):
 
        This funcarg builds the application before test execution.
     """
-    app = request.getfuncargvalue('app')
+    app = request.getfuncargvalue("app")
     app.build()
     return app.env.issuetracker_cache
 
@@ -248,10 +250,10 @@ def pytest_funcarg__index_html_file(request):
     This file contains the ``content`` rendered as HTML.  The ``app`` is build
     by this funcarg to generate the ``index.html`` file.
     """
-    app = request.getfuncargvalue('app')
+    app = request.getfuncargvalue("app")
     app.build()
-    outdir = request.getfuncargvalue('outdir')
-    return outdir.join('index.html')
+    outdir = request.getfuncargvalue("outdir")
+    return outdir.join("index.html")
 
 
 def reset_global_state():
@@ -264,7 +266,7 @@ def reset_global_state():
         SphinxStandaloneReader.transforms.remove(IssueReferences)
     except ValueError:
         pass
-    StandaloneHTMLBuilder.css_files.remove('_static/issuetracker.css')
+    StandaloneHTMLBuilder.css_files.remove("_static/issuetracker.css")
 
 
 def pytest_funcarg__confoverrides(request):
@@ -277,7 +279,7 @@ def pytest_funcarg__confoverrides(request):
 
     Test modules may override this funcarg to return custom ``confoverrides``.
     """
-    confoverrides_marker = request.keywords.get('confoverrides')
+    confoverrides_marker = request.keywords.get("confoverrides")
     return confoverrides_marker.kwargs if confoverrides_marker else {}
 
 
@@ -298,18 +300,26 @@ def pytest_funcarg__app(request):
     build before returning it.  Otherwise you need to build explicitly in order
     to get the output.
     """
-    srcdir = request.getfuncargvalue('srcdir')
-    outdir = request.getfuncargvalue('outdir')
-    doctreedir = request.getfuncargvalue('doctreedir')
-    confoverrides = request.getfuncargvalue('confoverrides')
-    app = Sphinx(str(srcdir), str(srcdir), str(outdir), str(doctreedir),
-                 'html', confoverrides=confoverrides, status=None,
-                 warning=None, freshenv=True)
+    srcdir = request.getfuncargvalue("srcdir")
+    outdir = request.getfuncargvalue("outdir")
+    doctreedir = request.getfuncargvalue("doctreedir")
+    confoverrides = request.getfuncargvalue("confoverrides")
+    app = Sphinx(
+        str(srcdir),
+        str(srcdir),
+        str(outdir),
+        str(doctreedir),
+        "html",
+        confoverrides=confoverrides,
+        status=None,
+        warning=None,
+        freshenv=True,
+    )
     request.addfinalizer(reset_global_state)
-    if 'mock_lookup' in request.keywords:
-        lookup_mock_issue = request.getfuncargvalue('mock_lookup')
-        app.connect(str('issuetracker-lookup-issue'), lookup_mock_issue)
-    if 'build_app' in request.keywords:
+    if "mock_lookup" in request.keywords:
+        lookup_mock_issue = request.getfuncargvalue("mock_lookup")
+        app.connect(str("issuetracker-lookup-issue"), lookup_mock_issue)
+    if "build_app" in request.keywords:
         app.build()
     return app
 
@@ -326,7 +336,7 @@ def pytest_funcarg__issue(request):
     Test modules may override this funcarg to provide their own issues for
     tests.
     """
-    issue_marker = request.keywords.get('with_issue')
+    issue_marker = request.keywords.get("with_issue")
     if issue_marker:
         return Issue(*issue_marker.args, **issue_marker.kwargs)
     return None
@@ -341,7 +351,7 @@ def pytest_funcarg__issue_id(request):
     the ``issue`` funcarg.  If the ``issue`` funcarg returns ``None``, this
     funcarg also returns ``None``.
     """
-    issue = request.getfuncargvalue('issue')
+    issue = request.getfuncargvalue("issue")
     if issue:
         return issue.id
     else:
@@ -357,10 +367,12 @@ def pytest_funcarg__mock_lookup(request):
     this issue if the issue id given to the callback matches the id of this
     issue.  Otherwise it will always return ``None``.
     """
-    lookup_mock_issue = Mock(name='lookup_mock_issue', return_value=None)
-    issue = request.getfuncargvalue('issue')
+    lookup_mock_issue = Mock(name="lookup_mock_issue", return_value=None)
+    issue = request.getfuncargvalue("issue")
     if issue:
+
         def lookup(app, tracker_config, issue_id):
             return issue if issue_id == issue.id else None
+
         lookup_mock_issue.side_effect = lookup
     return lookup_mock_issue

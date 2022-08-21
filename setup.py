@@ -26,15 +26,14 @@
 import os
 import re
 
-from setuptools import setup, find_packages
+from setuptools import find_packages, setup
 
-
-with open('README.rst') as stream:
+with open("README.rst") as stream:
     long_desc = stream.read()
 
 
 VERSION_PATTERN = re.compile(r"__version__ = '([^']+)'")
-VERSION_FILE = os.path.join('sphinxcontrib', 'issuetracker', '__init__.py')
+VERSION_FILE = os.path.join("sphinxcontrib", "issuetracker", "__init__.py")
 
 
 def read_version_number():
@@ -44,35 +43,35 @@ def read_version_number():
             if match:
                 return match.group(1)
         else:
-            raise ValueError('Could not extract version number')
+            raise ValueError("Could not extract version number")
 
 
 setup(
-    name='sphinxcontrib-issuetracker',
+    name="sphinxcontrib-issuetracker",
     version=read_version_number(),
-    url='http://sphinxcontrib-issuetracker.readthedocs.org/',
-    license='BSD',
-    author='Sebastian Wiesner',
-    author_email='lunaryorn@gmail.com',
-    description='Sphinx integration with different issuetrackers',
+    url="http://sphinxcontrib-issuetracker.readthedocs.org/",
+    license="BSD",
+    author="Sebastian Wiesner",
+    author_email="lunaryorn@gmail.com",
+    description="Sphinx integration with different issuetrackers",
     long_description=long_desc,
     zip_safe=False,
     classifiers=[
-        'Development Status :: 5 - Production/Stable',
-        'Environment :: Console',
-        'Environment :: Web Environment',
-        'Intended Audience :: Developers',
-        'License :: OSI Approved :: BSD License',
-        'Operating System :: OS Independent',
-        'Programming Language :: Python',
-        'Programming Language :: Python :: 2',
-        'Programming Language :: Python :: 3',
-        'Topic :: Documentation',
-        'Topic :: Utilities',
+        "Development Status :: 5 - Production/Stable",
+        "Environment :: Console",
+        "Environment :: Web Environment",
+        "Intended Audience :: Developers",
+        "License :: OSI Approved :: BSD License",
+        "Operating System :: OS Independent",
+        "Programming Language :: Python",
+        "Programming Language :: Python :: 2",
+        "Programming Language :: Python :: 3",
+        "Topic :: Documentation",
+        "Topic :: Utilities",
     ],
-    platforms='any',
+    platforms="any",
     packages=find_packages(),
     include_package_data=True,
-    install_requires=['Sphinx>=1.1', 'requests>=1.1'],
-    namespace_packages=['sphinxcontrib'],
+    install_requires=["Sphinx>=1.1", "requests>=1.1"],
+    namespace_packages=["sphinxcontrib"],
 )

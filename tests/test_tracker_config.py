@@ -32,8 +32,7 @@
     .. moduleauthor::  Sebastian Wiesner  <lunaryorn@gmail.com>
 """
 
-from __future__ import (print_function, division, unicode_literals,
-                        absolute_import)
+from __future__ import absolute_import, division, print_function, unicode_literals
 
 import pytest
 
@@ -48,32 +47,32 @@ def pytest_funcarg__content(request):
     This test module doesn't need issue references, but just configured sphinx
     application to check creating tracker configs from sphinx config.
     """
-    return 'dummy content'
+    return "dummy content"
 
 
 def test_tracker_config_only_project():
     """
     Test TrackerConfig constructor with a project only.
     """
-    tracker_config = TrackerConfig('eggs')
-    assert tracker_config.project == 'eggs'
+    tracker_config = TrackerConfig("eggs")
+    assert tracker_config.project == "eggs"
 
 
 def test_tracker_config_project_and_url():
     """
     Test TrackerConfig constructor with a project and url.
     """
-    tracker_config = TrackerConfig('eggs', 'http://example.com')
-    assert tracker_config.project == 'eggs'
-    assert tracker_config.url == 'http://example.com'
+    tracker_config = TrackerConfig("eggs", "http://example.com")
+    assert tracker_config.project == "eggs"
+    assert tracker_config.url == "http://example.com"
 
 
 def test_tracker_config_trailing_slash():
     """
     Test that the constructor removes trailing slashes from the url.
     """
-    tracker_config = TrackerConfig('eggs', 'http://example.com//')
-    assert tracker_config.url == 'http://example.com'
+    tracker_config = TrackerConfig("eggs", "http://example.com//")
+    assert tracker_config.url == "http://example.com"
 
 
 def test_tracker_config_equality():
@@ -81,45 +80,44 @@ def test_tracker_config_equality():
     Test equality and inequality of TrackerConfig objects.
     """
     c = TrackerConfig
-    assert c('eggs') == c('eggs')
-    assert c('eggs') != c('spam')
-    assert c('eggs') != c('eggs', 'spam')
-    assert c('eggs', 'spam') == c('eggs', 'spam')
-    assert c('eggs', 'spam') != c('eggs', 'foo')
-    assert c('eggs', 'spam') != c('spam', 'spam')
+    assert c("eggs") == c("eggs")
+    assert c("eggs") != c("spam")
+    assert c("eggs") != c("eggs", "spam")
+    assert c("eggs", "spam") == c("eggs", "spam")
+    assert c("eggs", "spam") != c("eggs", "foo")
+    assert c("eggs", "spam") != c("spam", "spam")
 
 
-@pytest.mark.confoverrides(
-    project='eggs', issuetracker_url='http://example.com')
+@pytest.mark.confoverrides(project="eggs", issuetracker_url="http://example.com")
 def test_tracker_config_from_sphinx_config_implicit_project(app):
     """
     Test that TrackerConfig uses the Sphinx project name, if the issuetracker
     project was not explicitly set.
     """
     tracker_config = TrackerConfig.from_sphinx_config(app.config)
-    assert tracker_config.project == 'eggs'
-    assert tracker_config.url == 'http://example.com'
+    assert tracker_config.project == "eggs"
+    assert tracker_config.url == "http://example.com"
 
 
-@pytest.mark.confoverrides(project='eggs', issuetracker_project='spam',
-                           issuetracker_url='http://example.com')
+@pytest.mark.confoverrides(
+    project="eggs", issuetracker_project="spam", issuetracker_url="http://example.com"
+)
 def test_tracker_config_from_sphinx_config_explicit_project(app):
     """
     Test that TrackerConfig uses the issuetracker project, if it was explicitly
     set.
     """
     tracker_config = TrackerConfig.from_sphinx_config(app.config)
-    assert tracker_config.project == 'spam'
-    assert tracker_config.url == 'http://example.com'
+    assert tracker_config.project == "spam"
+    assert tracker_config.url == "http://example.com"
 
 
-@pytest.mark.confoverrides(
-    project='eggs', issuetracker_url='http://example.com//')
+@pytest.mark.confoverrides(project="eggs", issuetracker_url="http://example.com//")
 def test_tracker_config_from_sphinx_config_trailing_slash(app):
     """
     Test that TrackerConfig strips trailing slashes when creating from sphinx
     config, too.
     """
     tracker_config = TrackerConfig.from_sphinx_config(app.config)
-    assert tracker_config.project == 'eggs'
-    assert tracker_config.url == 'http://example.com'
+    assert tracker_config.project == "eggs"
+    assert tracker_config.url == "http://example.com"

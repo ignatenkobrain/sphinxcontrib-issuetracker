@@ -33,8 +33,7 @@
 """
 
 
-from __future__ import (print_function, division, unicode_literals,
-                        absolute_import)
+from __future__ import absolute_import, division, print_function, unicode_literals
 
 import pickle
 
@@ -50,57 +49,58 @@ def pytest_funcarg__app(request):
     """
     request.applymarker(pytest.mark.mock_lookup)
     request.applymarker(pytest.mark.build_app)
-    return request.getfuncargvalue('app')
+    return request.getfuncargvalue("app")
 
 
-@pytest.mark.with_content('#10')
-@pytest.mark.with_issue(id='10', title='Eggs', closed=False, url='eggs')
+@pytest.mark.with_content("#10")
+@pytest.mark.with_issue(id="10", title="Eggs", closed=False, url="eggs")
 def test_lookup_existing_issue(cache, issue):
     """
     Test resolval of an existing issue.
     """
-    assert cache == {'10': issue}
+    assert cache == {"10": issue}
 
 
-@pytest.mark.with_content('#10')
+@pytest.mark.with_content("#10")
 def test_lookup_missing_issue(cache):
     """
     Test resolval of a missing issue.
     """
-    assert cache == {'10': None}
+    assert cache == {"10": None}
 
 
 @pytest.mark.build_app
-@pytest.mark.with_content('#10 #11')
-@pytest.mark.with_issue(id='10', title='Eggs', closed=True, url='eggs')
+@pytest.mark.with_content("#10 #11")
+@pytest.mark.with_issue(id="10", title="Eggs", closed=True, url="eggs")
 def test_cache_pickled(cache, doctreedir, issue):
-    environment_file = doctreedir.join('environment.pickle')
-    with environment_file.open('rb') as source:
+    environment_file = doctreedir.join("environment.pickle")
+    with environment_file.open("rb") as source:
         env = pickle.load(source)
     # check that the pickled cache matches the real cache
     assert env.issuetracker_cache == cache
     # and check that it actually contains what it is supposed to contain
-    assert env.issuetracker_cache == {'10': issue, '11': None}
+    assert env.issuetracker_cache == {"10": issue, "11": None}
 
 
 @pytest.mark.build_app
-@pytest.mark.with_content('#10')
+@pytest.mark.with_content("#10")
 def test_event_emitted(app, mock_lookup):
     """
     Test that issue resolval emits the event with the right arguments.
     """
     assert mock_lookup.call_count == 1
     mock_lookup.assert_called_with(
-        app, TrackerConfig.from_sphinx_config(app.config), '10')
+        app, TrackerConfig.from_sphinx_config(app.config), "10"
+    )
 
 
 @pytest.mark.build_app
-@pytest.mark.with_content('#10 #10 #11 #11')
-@pytest.mark.with_issue(id='10', title='Eggs', closed=True, url='eggs')
+@pytest.mark.with_content("#10 #10 #11 #11")
+@pytest.mark.with_issue(id="10", title="Eggs", closed=True, url="eggs")
 def test_event_emitted_only_once(app, mock_lookup, issue):
     """
     Test that the resolval event is only emitted once for each issue id, and
     that subsequent lookups hit the cache.
     """
     assert mock_lookup.call_count == 2
-    assert app.env.issuetracker_cache == {'10': issue, '11': None}
+    assert app.env.issuetracker_cache == {"10": issue, "11": None}

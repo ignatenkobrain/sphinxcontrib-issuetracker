@@ -30,31 +30,36 @@ from sphinx import addnodes
 
 from sphinxcontrib import issuetracker
 
-needs_sphinx = '1.0'
+needs_sphinx = "1.0"
 
-extensions = ['sphinx.ext.intersphinx', 'sphinx.ext.autodoc',
-              'sphinxcontrib.issuetracker']
+extensions = [
+    "sphinx.ext.intersphinx",
+    "sphinx.ext.autodoc",
+    "sphinxcontrib.issuetracker",
+]
 
-source_suffix = '.rst'
-master_doc = 'index'
+source_suffix = ".rst"
+master_doc = "index"
 
-project = u'sphinxcontrib-issuetracker'
-copyright = u'2010, 2011, 2012 Sebastian Wiesner'
-version = '.'.join(issuetracker.__version__.split('.')[:2])
+project = "sphinxcontrib-issuetracker"
+copyright = "2010, 2011, 2012 Sebastian Wiesner"
+version = ".".join(issuetracker.__version__.split(".")[:2])
 release = issuetracker.__version__
 
-exclude_patterns = ['_build/*']
+exclude_patterns = ["_build/*"]
 
-html_theme = 'default'
+html_theme = "default"
 html_static_path = []
 
-intersphinx_mapping = {'python': ('http://docs.python.org/', None),
-                       'sphinx': ('http://sphinx.pocoo.org/', None)}
+intersphinx_mapping = {
+    "python": ("http://docs.python.org/", None),
+    "sphinx": ("http://sphinx.pocoo.org/", None),
+}
 
-issuetracker = 'github'
-issuetracker_project = 'lunaryorn/sphinxcontrib-issuetracker'
+issuetracker = "github"
+issuetracker_project = "lunaryorn/sphinxcontrib-issuetracker"
 
-EVENT_SIG_RE = re.compile(r'([a-zA-Z-]+)\s*\((.*)\)')
+EVENT_SIG_RE = re.compile(r"([a-zA-Z-]+)\s*\((.*)\)")
 
 
 def parse_event(env, sig, signode):
@@ -65,7 +70,7 @@ def parse_event(env, sig, signode):
     name, args = m.groups()
     signode += addnodes.desc_name(name, name)
     plist = addnodes.desc_parameterlist()
-    for arg in args.split(','):
+    for arg in args.split(","):
         arg = arg.strip()
         plist += addnodes.desc_parameter(arg, arg)
     signode += plist
@@ -73,6 +78,5 @@ def parse_event(env, sig, signode):
 
 
 def setup(app):
-    app.add_description_unit('confval', 'confval',
-                             'pair: %s; configuration value')
-    app.add_description_unit('event', 'event', 'pair: %s; event', parse_event)
+    app.add_description_unit("confval", "confval", "pair: %s; configuration value")
+    app.add_description_unit("event", "event", "pair: %s; event", parse_event)

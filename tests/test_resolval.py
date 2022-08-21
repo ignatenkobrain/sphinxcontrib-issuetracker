@@ -33,10 +33,10 @@
 """
 
 
-from __future__ import (print_function, division, unicode_literals,
-                        absolute_import)
+from __future__ import absolute_import, division, print_function, unicode_literals
 
 import pytest
+
 from docutils import nodes
 
 
@@ -46,10 +46,10 @@ def pytest_funcarg__app(request):
     ``app``.
     """
     request.applymarker(pytest.mark.mock_lookup)
-    return request.getfuncargvalue('app')
+    return request.getfuncargvalue("app")
 
 
-@pytest.mark.with_content('#10')
+@pytest.mark.with_content("#10")
 def test_no_issue(resolved_doctree):
     """
     Test that no reference is created if an issue could not be resolved.
@@ -57,54 +57,54 @@ def test_no_issue(resolved_doctree):
     assert not resolved_doctree.next_node(nodes.reference)
 
 
-@pytest.mark.with_issue(id='10', title='Spam', url='spam', closed=False)
+@pytest.mark.with_issue(id="10", title="Spam", url="spam", closed=False)
 def test_open_issue(app, resolved_doctree, issue):
     """
     Test resolval of an open issue.
     """
-    assert app.env.issuetracker_cache == {'10': issue}
-    pytest.assert_issue_xref(resolved_doctree, issue, '#10')
+    assert app.env.issuetracker_cache == {"10": issue}
+    pytest.assert_issue_xref(resolved_doctree, issue, "#10")
 
 
-@pytest.mark.with_issue(id='10', title='Eggs', url='eggs', closed=True)
+@pytest.mark.with_issue(id="10", title="Eggs", url="eggs", closed=True)
 def test_closed_issue(resolved_doctree, issue):
     """
     Test resolval of a closed issue.
     """
-    pytest.assert_issue_xref(resolved_doctree, issue, '#10')
+    pytest.assert_issue_xref(resolved_doctree, issue, "#10")
 
 
-@pytest.mark.with_issue(id='10', title=None, url='eggs', closed=True)
+@pytest.mark.with_issue(id="10", title=None, url="eggs", closed=True)
 def test_issue_without_title(resolved_doctree, issue):
     """
     Test resolval of issues without title.
     """
-    pytest.assert_issue_xref(resolved_doctree, issue, '#10')
+    pytest.assert_issue_xref(resolved_doctree, issue, "#10")
 
 
-@pytest.mark.with_issue(id='10', title='Eggs', url='eggs', closed=True)
-@pytest.mark.with_content(':issue:`{issue.title} (#{issue.id})<10>`')
+@pytest.mark.with_issue(id="10", title="Eggs", url="eggs", closed=True)
+@pytest.mark.with_content(":issue:`{issue.title} (#{issue.id})<10>`")
 def test_with_formatted_title(resolved_doctree, issue):
     """
     Test issue with format in title.
     """
-    pytest.assert_issue_xref(resolved_doctree, issue, 'Eggs (#10)')
+    pytest.assert_issue_xref(resolved_doctree, issue, "Eggs (#10)")
 
 
-@pytest.mark.with_issue(id='10', title=None, url='eggs', closed=True)
-@pytest.mark.with_content(':issue:`{{issue.title}} (#{issue.id}) <10>`')
+@pytest.mark.with_issue(id="10", title=None, url="eggs", closed=True)
+@pytest.mark.with_content(":issue:`{{issue.title}} (#{issue.id}) <10>`")
 def test_with_escaped_formatted_title(resolved_doctree, issue):
     """
     Test issue with escaped formats in title.
     """
-    pytest.assert_issue_xref(resolved_doctree, issue, '{issue.title} (#10)')
+    pytest.assert_issue_xref(resolved_doctree, issue, "{issue.title} (#10)")
 
 
-@pytest.mark.with_issue(id='10', title='öäüß', url='eggs', closed=True)
-@pytest.mark.with_content(':issue:`{issue.title} <10>`')
+@pytest.mark.with_issue(id="10", title="öäüß", url="eggs", closed=True)
+@pytest.mark.with_content(":issue:`{issue.title} <10>`")
 def test_non_ascii_title(resolved_doctree, issue):
     """
     Test issues with non-ascii titles.
     """
-    pytest.assert_issue_xref(resolved_doctree, issue, 'öäüß')
-    assert resolved_doctree.astext() == 'öäüß'
+    pytest.assert_issue_xref(resolved_doctree, issue, "öäüß")
+    assert resolved_doctree.astext() == "öäüß"
