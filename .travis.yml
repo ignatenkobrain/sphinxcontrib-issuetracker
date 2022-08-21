@@ -1,9 +1,0 @@
-language: python
-env:
-    - TOXENV=py26
-    - TOXENV=py27
-    - TOXENV=py31
-    - TOXENV=py32
-    - TOXENV=pypy
-install: pip install --use-mirrors tox
-script: tox -- --junitxml=tests.xml -rfEsxX
