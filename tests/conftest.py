@@ -102,16 +102,6 @@ def assert_issue_xref(doctree, issue, title):
     return reference
 
 
-def pytest_namespace():
-    """
-    Add the following functions to the pytest namespace:
-
-    - :func:`get_index_doctree`
-    - :func:`assert_issue_xref`
-    """
-    return dict((f.__name__, f) for f in (assert_issue_xref, assert_issue_pending_xref))
-
-
 def pytest_addoption(parser):
     """
     Add --offline and --fast options to test runner.
@@ -135,6 +125,15 @@ def pytest_configure(config):
     """
     config.run_fast = config.getvalue("fast")
     config.run_offline = config.run_fast or config.getvalue("offline")
+
+    """
+    Add the following functions to the pytest namespace:
+
+    - :func:`get_index_doctree`
+    - :func:`assert_issue_xref`
+    """
+    pytest.assert_issue_xref = assert_issue_xref
+    pytest.assert_issue_pending_xref = assert_issue_pending_xref
 
 
 def pytest_runtest_setup(item):
