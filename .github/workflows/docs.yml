@@ -26,7 +26,6 @@ jobs:
               - 'docs/**'
               - 'examples/**'
             python_files:
-              - 'sphinxcontrib/**'
               - 'sphinx_autoissues/**'
               - pyproject.toml
               - poetry.lock
