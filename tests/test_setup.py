@@ -37,14 +37,14 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import re
 
-BUILTIN_TRACKER_NAME_PATTERN = re.compile("lookup_(.*)_issue")
-
 import pytest
 
 from sphinx.environment import SphinxStandaloneReader
 
 from sphinxcontrib import issuetracker
 from sphinxcontrib.issuetracker import resolvers
+
+BUILTIN_TRACKER_NAME_PATTERN = re.compile("lookup_(.*)_issue")
 
 
 def pytest_funcarg__content(request):

@@ -42,7 +42,6 @@ import sys
 
 # Work around docutils #3596884, see
 # http://sourceforge.net/tracker/?func=detail&aid=3596884&group_id=38414&atid=422030
-import docutils.utils
 from docutils import io, readers
 from docutils.core import Publisher, publish_doctree
 from docutils.transforms import TransformError

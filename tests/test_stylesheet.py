@@ -41,9 +41,6 @@ import pytest
 if sys.version_info[0] < 3:
     sip = pytest.importorskip("sip")
     sip.setapi("QString", 2)
-    text_type = unicode
-else:
-    text_type = str
 
 QtCore = pytest.importorskip("PyQt4.QtCore")
 QtGui = pytest.importorskip("PyQt4.QtGui")
@@ -85,7 +82,7 @@ def pytest_funcarg__web_page(request):
     # http://www.developer.nokia.com/Community/Wiki/How_to_wait_synchronously_for_a_Signal_in_Qt
     loop = QtCore.QEventLoop()
     main_frame.loadFinished.connect(loop.quit)
-    main_frame.load(QtCore.QUrl(text_type(index_html_file)))
+    main_frame.load(QtCore.QUrl(str(index_html_file)))
     loop.exec_()
     return web_page
 

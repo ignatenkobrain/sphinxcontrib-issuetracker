@@ -41,7 +41,6 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 __version__ = "0.11"
 
 import re
-import sys
 from collections import namedtuple
 from os import path
 
@@ -51,15 +50,6 @@ from sphinx.addnodes import pending_xref
 from sphinx.roles import XRefRole
 from sphinx.util.console import bold
 from sphinx.util.osutil import copyfile
-
-# Python 2/3 compatibility aliases
-if sys.version_info[0] >= 3:
-    string_type = str
-    text_type = str
-else:
-    string_type = basestring
-    text_type = unicode
-
 
 Issue = namedtuple("Issue", "id title url closed")
 
@@ -125,14 +115,14 @@ class IssueReferences(Transform):
         tracker_config = TrackerConfig.from_sphinx_config(config)
         issue_pattern = config.issuetracker_issue_pattern
         title_template = config.issuetracker_title_template
-        if isinstance(issue_pattern, string_type):
+        if isinstance(issue_pattern, str):
             issue_pattern = re.compile(issue_pattern)
         for node in self.document.traverse(nodes.Text):
             parent = node.parent
             if isinstance(parent, (nodes.literal, nodes.FixedTextElement)):
                 # ignore inline and block literal text
                 continue
-            text = text_type(node)
+            text = str(node)
             new_nodes = []
             last_issue_ref_end = 0
             for match in issue_pattern.finditer(text):
@@ -270,7 +260,7 @@ def resolve_issue_reference(app, env, node, contnode):
         return contnode
     else:
         classes = contnode["classes"]
-        conttext = text_type(contnode[0])
+        conttext = str(contnode[0])
         formatted_conttext = nodes.Text(conttext.format(issue=issue))
         formatted_contnode = nodes.inline(conttext, formatted_conttext, classes=classes)
         return make_issue_reference(issue, formatted_contnode)

@@ -229,7 +229,7 @@ def lookup_redmine_issue(app, tracker_config, issue_id):
         return Issue(
             id=issue_id,
             title=issue.subject,
-            closed=issue.status is "Closed",
+            closed=issue.status == "Closed",
             url=issue.url,
         )
 
