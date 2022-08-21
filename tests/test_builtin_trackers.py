@@ -63,7 +63,7 @@ def pytest_generate_tests(metafunc):
     to resolve to, or with issue ids as string, if the test is expected to be
     unable to resolve the issue.
     """
-    if "issue" in metafunc.funcargnames:
+    if "issue" in metafunc.fixturenames:
         for testname in sorted(metafunc.cls.issues):
             metafunc.addcall(id=testname, param=testname)
 
