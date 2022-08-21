@@ -34,12 +34,12 @@ from sphinx.application import Sphinx
 from sphinx.builders.html import StandaloneHTMLBuilder
 from sphinx.io import SphinxStandaloneReader
 
-from sphinxcontrib.issuetracker import Issue, IssueReferences
+from sphinx_autoissues import Issue, IssueReferences
 
 #: test configuration
 CONF_PY = """\
 
-extensions = ['sphinxcontrib.issuetracker']
+extensions = ['sphinx_autoissues']
 
 source_suffix = '.rst'
 
@@ -326,7 +326,7 @@ def pytest_funcarg__app(request):
 
 def pytest_funcarg__issue(request):
     """
-    An :class:`~sphinxcontrib.issuetracker.Issue` for the current test, or
+    An :class:`~sphinx_autoissues.Issue` for the current test, or
     ``None``, if no issue is to be used.
 
     By default, this funcarg creates an issue from the arguments of the

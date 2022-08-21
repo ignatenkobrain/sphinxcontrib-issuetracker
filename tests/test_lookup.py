@@ -39,7 +39,7 @@ import pickle
 
 import pytest
 
-from sphinxcontrib.issuetracker import TrackerConfig
+from sphinx_autoissues import TrackerConfig
 
 
 def pytest_funcarg__app(request):

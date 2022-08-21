@@ -39,7 +39,7 @@ import pytest
 from docutils import nodes
 from sphinx.addnodes import pending_xref
 
-from sphinxcontrib.issuetracker import Issue
+from sphinx_autoissues import Issue
 
 
 def pytest_funcarg__issue(request):

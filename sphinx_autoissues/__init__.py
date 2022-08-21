@@ -25,15 +25,16 @@
 
 
 """
-    sphinxcontrib.issuetracker
-    ==========================
+    sphinx_autoissues
+    =================
 
     Integration with issue trackers.
 
     Provide explicit and (optionally) implicit (e.g. ``#10``) references to
     issues in issue trackers.
 
-    .. moduleauthor::  Sebastian Wiesner  <lunaryorn@gmail.com>
+    .. moduleauthor::  Tony Narlock <tony@git-pull.com,
+       Sebastian Wiesner  <lunaryorn@gmail.com>
 """
 
 from __future__ import absolute_import, division, print_function, unicode_literals
@@ -267,7 +268,7 @@ def resolve_issue_reference(app, env, node, contnode):
 
 
 def connect_builtin_tracker(app):
-    from sphinxcontrib.issuetracker.resolvers import BUILTIN_ISSUE_TRACKERS
+    from sphinx_autoissues.resolvers import BUILTIN_ISSUE_TRACKERS
 
     if app.config.issuetracker:
         tracker = BUILTIN_ISSUE_TRACKERS[app.config.issuetracker.lower()]

@@ -25,10 +25,10 @@
 
 
 """
-    sphinxcontrib.issuetracker.resolvers
-    ====================================
+    sphinx_autoissues.resolvers
+    ===========================
 
-    Builtin resolvers for :mod:`sphinxcontrib.issuetracker`.
+    Builtin resolvers for :mod:`sphinx_autoissues`.
 
     .. moduleauthor::  Sebastian Wiesner  <lunaryorn@gmail.com>
 """
@@ -40,7 +40,7 @@ from xml.etree import ElementTree as etree
 
 import requests
 
-from sphinxcontrib.issuetracker import Issue, __version__
+from sphinx_autoissues import Issue, __version__
 
 GITHUB_API_URL = "https://api.github.com/repos/{0.project}/issues/{1}"
 BITBUCKET_URL = "https://bitbucket.org/{0.project}/issue/{1}/"
@@ -70,7 +70,7 @@ def check_project_with_username(tracker_config):
         )
 
 
-HEADERS = {"User-Agent": "sphinxcontrib-issuetracker v{0}".format(__version__)}
+HEADERS = {"User-Agent": "sphinx_autoissues v{0}".format(__version__)}
 
 
 def get(app, url):
@@ -153,7 +153,7 @@ def lookup_debian_issue(app, tracker_config, issue_id):
 def lookup_launchpad_issue(app, tracker_config, issue_id):
     from launchpadlib.launchpad import Launchpad
 
-    launchpad = Launchpad.login_anonymously("sphinxcontrib.issuetracker")
+    launchpad = Launchpad.login_anonymously("sphinx_autoissues")
     try:
         # get the bug
         bug = launchpad.bugs[issue_id]

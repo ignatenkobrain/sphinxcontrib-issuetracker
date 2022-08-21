@@ -33,7 +33,7 @@ homepage = "https://sphinx-autoissues.git-pull.com"
 readme = "README.rst"
 
 packages = [
-  { include = "sphinxcontrib" },
+  { include = "sphinx_autoissues" },
 ]
 include = [
   { path = "tests", format = "sdist" },

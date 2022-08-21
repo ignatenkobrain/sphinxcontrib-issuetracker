@@ -1,4 +1,4 @@
-sphinxcontrib.issuetracker -- Reference issues in issue trackers
+sphinx_autoissues -- Reference issues in issue trackers
 ================================================================
 
 A Sphinx_ extension to reference issues in an issue tracker.
@@ -13,7 +13,7 @@ Installation
 Use ``pip`` to install this extension straight from the `Python Package
 Index`_::
 
-   pip install sphinxcontrib-issuetracker
+   pip install sphinx_autoissues
 
 This extension requires Sphinx 1.1 and Python 2.6 or Python 3.1.
 
@@ -29,10 +29,10 @@ Usage
 Add this extension to :confval:`extensions` and configure the issue tracker to
 use and the project in your :file:`conf.py`::
 
-   extensions = ['sphinxcontrib.issuetracker']
+   extensions = ['sphinx_autoissues']
 
    issuetracker = 'github'
-   issuetracker_project = 'lunaryorn/sphinxcontrib-issuetracker'
+   issuetracker_project = 'tony/sphinx_autoissues'
 
 Now issue references like ``#10`` are replaced with links to the `issue
 tracker`_ of this extension, unless the reference occurs in literal text like
@@ -69,7 +69,7 @@ Development
 
 The source code is hosted on Github_:
 
-   git clone https://github.com/lunaryorn/sphinxcontrib-issuetracker
+   git clone https://github.com/tony/sphinx_autoissues
 
 Please fork the repository and send pull requests with your fixes or cool new
 features, but respect the following rules:
@@ -101,8 +101,8 @@ Contents
    changes
    license
 
-.. _Github: https://github.com/lunaryorn/sphinxcontrib-issuetracker
+.. _Github: https://github.com/tony/sphinx_autoissues
 .. _Sphinx: http://sphinx.pocoo.org/
-.. _issue tracker: https://github.com/lunaryorn/sphinxcontrib-issuetracker/issues/
+.. _issue tracker: https://github.com/tony/sphinx_autoissues/issues/
 .. _pep8: http://pypi.python.org/pypi/pep8/
-.. _python package index: http://pypi.python.org/pypi/sphinxcontrib-issuetracker
+.. _python package index: http://pypi.python.org/pypi/sphinx_autoissues

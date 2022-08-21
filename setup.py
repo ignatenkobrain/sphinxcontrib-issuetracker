@@ -47,9 +47,9 @@ def read_version_number():
 
 
 setup(
-    name="sphinxcontrib-issuetracker",
+    name="sphinx_autoissues",
     version=read_version_number(),
-    url="http://sphinxcontrib-issuetracker.readthedocs.org/",
+    url="http://sphinx_autoissues.git-pull.com/",
     license="BSD",
     author="Sebastian Wiesner",
     author_email="lunaryorn@gmail.com",

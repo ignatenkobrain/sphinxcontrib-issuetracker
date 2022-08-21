@@ -36,7 +36,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import pytest
 
-from sphinxcontrib.issuetracker import TrackerConfig
+from sphinx_autoissues import TrackerConfig
 
 
 def pytest_funcarg__content(request):

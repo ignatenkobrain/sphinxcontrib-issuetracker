@@ -28,23 +28,23 @@ import re
 
 from sphinx import addnodes
 
-from sphinxcontrib import issuetracker
+import sphinx_autoissues
 
 needs_sphinx = "1.0"
 
 extensions = [
     "sphinx.ext.intersphinx",
     "sphinx.ext.autodoc",
-    "sphinxcontrib.issuetracker",
+    "sphinx_autoissues",
 ]
 
 source_suffix = ".rst"
 master_doc = "index"
 
-project = "sphinxcontrib-issuetracker"
-copyright = "2010, 2011, 2012 Sebastian Wiesner"
-version = ".".join(issuetracker.__version__.split(".")[:2])
-release = issuetracker.__version__
+project = "sphinx_autoissues"
+copyright = "2022- Tony Narlock (revived version), 2010, 2011, 2012 Sebastian Wiesner"
+version = ".".join(sphinx_autoissues.__version__.split(".")[:2])
+release = sphinx_autoissues.__version__
 
 exclude_patterns = ["_build/*"]
 
@@ -57,7 +57,7 @@ intersphinx_mapping = {
 }
 
 issuetracker = "github"
-issuetracker_project = "lunaryorn/sphinxcontrib-issuetracker"
+issuetracker_project = "tony/sphinx_autoissues"
 
 EVENT_SIG_RE = re.compile(r"([a-zA-Z-]+)\s*\((.*)\)")
 

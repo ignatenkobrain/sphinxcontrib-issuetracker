@@ -1,7 +1,7 @@
 Customization
 =============
 
-.. module:: sphinxcontrib.issuetracker
+.. module:: sphinx_autoissues
    :synopsis: Parse issue references and link to the corresponding issues
 
 To use an issue tracker not supported by this extension, set
@@ -79,4 +79,4 @@ Supporting classes
 
    .. versionadded:: 0.8
 
-.. _builtin trackers: https://github.com/lunaryorn/sphinxcontrib-issuetracker/blob/master/sphinxcontrib/issuetracker/resolvers.py
+.. _builtin trackers: https://github.com/lunaryorn/sphinx_autoissues/blob/master/sphinx_autoissues/resolvers.py

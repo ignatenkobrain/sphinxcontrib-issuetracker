@@ -1,11 +1,16 @@
-##########################
-sphinxcontrib-issuetracker
-##########################
+#################
+sphinx_autoissues
+#################
 
-.. image:: https://secure.travis-ci.org/lunaryorn/sphinxcontrib-issuetracker.png
-   :target: http://travis-ci.org/lunaryorn/sphinxcontrib-issuetracker
+.. image:: https://secure.travis-ci.org/tony/sphinx_autoissues.png
+   :target: http://travis-ci.org/tony/sphinx_autoissues
 
-http://sphinxcontrib-issuetracker.readthedocs.org/
+http://sphinx_autoissues.git-pull.com/
+
+This is a fork of Sebastian Wiesner <lunaryorn@gmail.com>'s excellent
+sphinxcontrib-issuetracker_ plugin.
+
+.. _sphinxcontrib-issuetracker: https://github.com/lunaryorn/sphinxcontrib-issuetracker
 
 A Sphinx_ extension to reference issues in issue trackers, either explicitly
 with an "issue" role or optionally implicitly by issue ids like ``#10`` in
@@ -30,7 +35,7 @@ Installation
 
 This extension can be installed from the `Python Package Index`_::
 
-   pip install sphinxcontrib-issuetracker
+   pip install sphinx_autoissues
 
 This extension requires Sphinx 1.1 and Python 2.6 or Python 3.1.
 
@@ -40,10 +45,10 @@ Usage
 
 Just add this extension to ``extensions`` and configure your issue tracker::
 
-   extensions = ['sphinxcontrib.issuetracker']
+   extensions = ['sphinx_autoissues']
 
    issuetracker = 'github'
-   issuetracker_project = 'lunaryorn/sphinxcontrib-issuetracker'
+   issuetracker_project = 'tony/sphinx_autoissues'
 
 Now issue references like ``#10`` are replaced with links to the issue tracker
 of this extension, unless the reference occurs in literal text like inline
@@ -78,7 +83,7 @@ Development
 
 The source code is hosted on Github_:
 
-   git clone https://github.com/lunaryorn/sphinxcontrib-issuetracker
+   git clone https://github.com/tony/sphinx_autoissues
 
 Please fork the repository and send pull requests with your fixes or cool new
 features, but respect the following rules:
@@ -97,7 +102,7 @@ features, but respect the following rules:
 
 
 .. _Sphinx: http://sphinx.pocoo.org/latest
-.. _documentation: http://sphinxcontrib-issuetracker.readthedocs.org
-.. _Python package index: http://pypi.python.org/pypi/sphinxcontrib-issuetracker
-.. _issue tracker: https://github.com/lunaryorn/sphinxcontrib-issuetracker/issues/
+.. _documentation: http://sphinx_autoissues.readthedocs.org
+.. _Python package index: http://pypi.python.org/pypi/sphinx_autoissues
+.. _issue tracker: https://github.com/tony/sphinx_autoissues/issues/
 .. _pep8: http://pypi.python.org/pypi/pep8/

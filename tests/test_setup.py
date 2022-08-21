@@ -41,8 +41,8 @@ import pytest
 
 from sphinx.environment import SphinxStandaloneReader
 
-from sphinxcontrib import issuetracker
-from sphinxcontrib.issuetracker import resolvers
+import sphinx_autoissues
+from sphinx_autoissues import resolvers
 
 BUILTIN_TRACKER_NAME_PATTERN = re.compile("lookup_(.*)_issue")
 
@@ -80,7 +80,7 @@ def test_unknown_tracker(app):
     """
     app.config.issuetracker = "spamtracker"
     with pytest.raises(KeyError):
-        issuetracker.connect_builtin_tracker(app)
+        sphinx_autoissues.connect_builtin_tracker(app)
 
 
 def test_add_stylesheet(app):
@@ -89,14 +89,14 @@ def test_add_stylesheet(app):
     """
     from sphinx.builders.html import StandaloneHTMLBuilder
 
-    assert "_static/issuetracker.css" in StandaloneHTMLBuilder.css_files
+    assert "_static/sphinx_autoissues.css" in StandaloneHTMLBuilder.css_files
 
 
 def test_transform_added(app):
     """
     Test that the transformer is properly added.
     """
-    assert issuetracker.IssueReferences in SphinxStandaloneReader.transforms
+    assert sphinx_autoissues.IssueReferences in SphinxStandaloneReader.transforms
 
 
 @pytest.mark.confoverrides(issuetracker_plaintext_issues=False)
@@ -105,4 +105,4 @@ def test_transform_not_added(app):
     Test that the transformer is not added if transformations are disabled.
     """
     transforms = SphinxStandaloneReader.transforms
-    assert issuetracker.IssueReferences not in transforms
+    assert sphinx_autoissues.IssueReferences not in transforms

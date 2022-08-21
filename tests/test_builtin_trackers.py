@@ -39,7 +39,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import pytest
 
-from sphinxcontrib.issuetracker import Issue, TrackerConfig
+from sphinx_autoissues import Issue, TrackerConfig
 
 try:
     import debianbts
