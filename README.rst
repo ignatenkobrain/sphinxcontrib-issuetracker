@@ -29,6 +29,27 @@ A simple API is provided to add support for other issue trackers.  If you added
 support for a new tracker, please consider sending a patch to make your work
 available to other users of this extension.
 
+What's changed from sphinx-issuetracker?
+----------------------------------------
+The old codebase has most of its commits from 2010-2012. For that time,
+the quality is impeccable, but a lot has happened tooling wise.
+
+We've incorporated the python toolset from git-pull projects like tmuxp /
+libvcs / cihai: mypy, black, isort, pytest, markdown docs w/ doctests,
+github workflows, etc. In addition:
+
+- Python 2.x support removed via `pyupgrade` and by hand
+  - Compat import, `__future__` statements
+- Poetry
+- Minimum python version 3.7
+- Updated to latest sphinx (from 1.1)
+  - Import changes
+  - See `sphinx deprecations
+    <https://www.sphinx-doc.org/en/master/extdev/deprecated.html>`_`
+- Updated to latest pytest (from 2.2)
+  - Remove `funcargs` and marker usage that wouldn't work in pytest 7+
+  - See `pytest deprecations
+    <module://docs.pytest.org/en/7.1.x/deprecations.html>`_
 
 Installation
 ------------
