@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright (c) 2010, 2011, 2012 Sebastian Wiesner <lunaryorn@gmail.com>
 # All rights reserved.
 
@@ -37,7 +36,6 @@
        Sebastian Wiesner  <lunaryorn@gmail.com>
 """
 
-from __future__ import absolute_import, division, print_function, unicode_literals
 
 __version__ = "0.0.1a0"
 
@@ -140,7 +138,7 @@ class IssueReferences(Transform):
                 if len(match.groups()) != 1:
                     raise ValueError(
                         "issuetracker_issue_pattern must have "
-                        "exactly one group: {0!r}".format(match.groups())
+                        "exactly one group: {!r}".format(match.groups())
                     )
                 # extract the text between the last issue reference and the
                 # current issue reference and put it into a new text node
@@ -281,7 +279,7 @@ def connect_builtin_tracker(app):
 
     if app.config.issuetracker:
         tracker = BUILTIN_ISSUE_TRACKERS[app.config.issuetracker.lower()]
-        app.connect(str("issuetracker-lookup-issue"), tracker)
+        app.connect("issuetracker-lookup-issue", tracker)
 
 
 def add_stylesheet(app):
@@ -311,8 +309,8 @@ def copy_stylesheet(app, exception):
 def setup(app):
     app.require_sphinx("1.0")
     app.add_role("issue", IssueRole())
-    app.add_event(str("issuetracker-lookup-issue"))
-    app.connect(str("builder-inited"), connect_builtin_tracker)
+    app.add_event("issuetracker-lookup-issue")
+    app.connect("builder-inited", connect_builtin_tracker)
     # general configuration
     app.add_config_value("issuetracker", None, "env")
     app.add_config_value("issuetracker_project", None, "env")
@@ -325,9 +323,9 @@ def setup(app):
     app.add_config_value("issuetracker_plaintext_issues", True, "env")
     app.add_config_value("issuetracker_issue_pattern", re.compile(r"#(\d+)"), "env")
     app.add_config_value("issuetracker_title_template", None, "env")
-    app.connect(str("builder-inited"), add_stylesheet)
-    app.connect(str("builder-inited"), init_cache)
-    app.connect(str("builder-inited"), init_transformer)
-    app.connect(str("doctree-read"), lookup_issues)
-    app.connect(str("missing-reference"), resolve_issue_reference)
-    app.connect(str("build-finished"), copy_stylesheet)
+    app.connect("builder-inited", add_stylesheet)
+    app.connect("builder-inited", init_cache)
+    app.connect("builder-inited", init_transformer)
+    app.connect("doctree-read", lookup_issues)
+    app.connect("missing-reference", resolve_issue_reference)
+    app.connect("build-finished", copy_stylesheet)

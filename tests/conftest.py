@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright (c) 2011, Sebastian Wiesner <lunaryorn@gmail.com>
 # All rights reserved.
 
@@ -23,12 +22,12 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
-from __future__ import absolute_import, division, print_function, unicode_literals
+
+from unittest.mock import Mock
 
 import pytest
 
 from docutils import nodes
-from mock import Mock
 from sphinx.addnodes import pending_xref
 from sphinx.application import Sphinx
 from sphinx.builders.html import StandaloneHTMLBuilder
@@ -73,7 +72,7 @@ def assert_issue_pending_xref(doctree, issue_id, title):
     content = xref.next_node(nodes.inline)
     assert content
     classes = set(content["classes"])
-    assert classes == set(["xref", "issue"])
+    assert classes == {"xref", "issue"}
 
 
 def assert_issue_xref(doctree, issue, title):
@@ -95,7 +94,7 @@ def assert_issue_xref(doctree, issue, title):
     content = reference.next_node(nodes.inline)
     assert content
     classes = set(content["classes"])
-    expected_classes = set(["xref", "issue"])
+    expected_classes = {"xref", "issue"}
     if issue.closed:
         expected_classes.add("closed")
     assert classes == expected_classes
@@ -167,7 +166,7 @@ def content(request: pytest.FixtureRequest):
     else:
         issue_id = request.getfixturevalue("issue_id")
         if issue_id:
-            return "#{0}".format(issue_id)
+            return f"#{issue_id}"
     raise ValueError("no content provided")
 
 
@@ -327,7 +326,7 @@ def app(request: pytest.FixtureRequest):
     request.addfinalizer(reset_global_state)
     if "mock_lookup" in request.keywords:
         lookup_mock_issue = request.getfixturevalue("mock_lookup")
-        app.connect(str("issuetracker-lookup-issue"), lookup_mock_issue)
+        app.connect("issuetracker-lookup-issue", lookup_mock_issue)
     if "build_app" in request.keywords:
         app.build()
     return app

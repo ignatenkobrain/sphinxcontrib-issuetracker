@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright (c) 2010, 2011, 2012, 2013 Sebastian Wiesner <lunaryorn@gmail.com>
 # All rights reserved.
 
@@ -33,7 +32,6 @@
     .. moduleauthor::  Sebastian Wiesner  <lunaryorn@gmail.com>
 """
 
-from __future__ import absolute_import, division, print_function, unicode_literals
 
 import time
 from xml.etree import ElementTree as etree
@@ -68,12 +66,10 @@ JIRA_API_URL = (
 
 def check_project_with_username(tracker_config):
     if "/" not in tracker_config.project:
-        raise ValueError(
-            "username missing in project name: {0.project}".format(tracker_config)
-        )
+        raise ValueError(f"username missing in project name: {tracker_config.project}")
 
 
-HEADERS = {"User-Agent": "sphinx_autoissues v{0}".format(__version__)}
+HEADERS = {"User-Agent": f"sphinx_autoissues v{__version__}"}
 
 
 def get(app, url):
@@ -119,9 +115,7 @@ def lookup_github_issue(app, tracker_config, issue_id):
                 id=issue_id, title=issue["title"], closed=closed, url=issue["html_url"]
             )
     else:
-        logger.warn(
-            "Github rate limit exceeded, not resolving issue {0}".format(issue_id)
-        )
+        logger.warn(f"Github rate limit exceeded, not resolving issue {issue_id}")
         return None
 
 
@@ -186,8 +180,8 @@ def lookup_google_code_issue(app, tracker_config, issue_id):
     response = get(app, url)
     if response:
         issue = etree.fromstring(response.content)
-        state = issue.find("{0}state".format(GOOGLE_ISSUE_NS))
-        title_node = issue.find("{0}title".format(ATOM_NS))
+        state = issue.find(f"{GOOGLE_ISSUE_NS}state")
+        title_node = issue.find(f"{ATOM_NS}title")
         title = title_node.text if title_node is not None else None
         closed = state is not None and state.text == "closed"
         return Issue(

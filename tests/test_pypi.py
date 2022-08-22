@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright (c) 2011, 2012 Sebastian Wiesner <lunaryorn@gmail.com>
 # All rights reserved.
 
@@ -32,7 +31,6 @@
     .. moduleauthor::  Sebastian Wiesner  <lunaryorn@gmail.com>
 """
 
-from __future__ import absolute_import, division, print_function, unicode_literals
 
 import os
 import sys
@@ -41,7 +39,7 @@ from subprocess import PIPE, CalledProcessError, Popen
 import pytest
 
 
-@pytest.mark.skipif(str("sys.version_info[0] > 2"))
+@pytest.mark.skipif("sys.version_info[0] > 2")
 def test_description_rendering():
     """
     If this test raises any exception ReST rendering on PyPI will fail.

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright (c) 2011, 2012, 2013, Sebastian Wiesner <lunaryorn@gmail.com>
 # All rights reserved.
 
@@ -35,7 +34,6 @@
     .. moduleauthor::  Sebastian Wiesner  <lunaryorn@gmail.com>
 """
 
-from __future__ import absolute_import, division, print_function, unicode_literals
 
 import pytest
 
@@ -179,7 +177,7 @@ def issue(request: pytest.FixtureRequest):
     return issue if isinstance(issue, Issue) else None
 
 
-class TrackerTest(object):
+class TrackerTest:
     """
     Base class for tests for builtin issue trackers.
 
@@ -320,7 +318,7 @@ class TestGoogleCode(TrackerTest):
 
 
 class TestDebian(TrackerTest):
-    pytestmark = pytest.mark.skipif(str("debianbts is None"))
+    pytestmark = pytest.mark.skipif("debianbts is None")
 
     name = "debian"
 
@@ -342,7 +340,7 @@ class TestDebian(TrackerTest):
 
 
 class TestLaunchpad(TrackerTest):
-    pytestmark = pytest.mark.skipif(str("launchpadlib is None"))
+    pytestmark = pytest.mark.skipif("launchpadlib is None")
 
     name = "launchpad"
 

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright (c) 2009 Python Software Foundation
 # Copyright (c) 2013 Sebastian Wiesner <lunaryorn@gmail.com>
 #
@@ -36,7 +35,6 @@
     different license of this file.
 """
 
-from __future__ import absolute_import, division, print_function, unicode_literals
 
 import sys
 from urllib.parse import urlparse
@@ -121,7 +119,7 @@ def process_description(source, output_encoding="unicode"):
             continue
         o = urlparse(uri)
         if o.scheme not in ALLOWED_SCHEMES:
-            raise TransformError("link scheme not allowed: {0}".format(uri))
+            raise TransformError(f"link scheme not allowed: {uri}")
 
     # now turn the transformed document into HTML
     reader = readers.doctree.Reader(parser_name="null")

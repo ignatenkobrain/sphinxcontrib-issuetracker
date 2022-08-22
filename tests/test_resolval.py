@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright (c) 2011, Sebastian Wiesner <lunaryorn@gmail.com>
 # All rights reserved.
 
@@ -32,8 +31,6 @@
     .. moduleauthor::  Sebastian Wiesner  <lunaryorn@gmail.com>
 """
 
-
-from __future__ import absolute_import, division, print_function, unicode_literals
 
 import pytest
 

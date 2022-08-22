@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright (c) 2011, Sebastian Wiesner <lunaryorn@gmail.com>
 # All rights reserved.
 
