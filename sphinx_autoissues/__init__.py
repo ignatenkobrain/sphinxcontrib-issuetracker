@@ -125,7 +125,7 @@ class IssueReferences(Transform):
         title_template = config.issuetracker_title_template
         if isinstance(issue_pattern, str):
             issue_pattern = re.compile(issue_pattern)
-        for node in self.document.traverse(nodes.Text):
+        for node in self.document.findall(nodes.Text):
             parent = node.parent
             if isinstance(parent, (nodes.literal, nodes.FixedTextElement)):
                 # ignore inline and block literal text
@@ -230,7 +230,7 @@ def lookup_issues(app, doctree):
     The cache is available at ``app.env.issuetracker_cache`` and is pickled
     along with the environment.
     """
-    for node in doctree.traverse(pending_xref):
+    for node in doctree.findall(pending_xref):
         if node["reftype"] == "issue":
             lookup_issue(app, node["trackerconfig"], node["reftarget"])
 
