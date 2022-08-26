@@ -34,7 +34,6 @@
 
 
 import time
-from xml.etree import ElementTree as etree
 
 import requests
 from sphinx.util import logging
@@ -44,24 +43,6 @@ from sphinx_autoissues import Issue, __version__
 logger = logging.getLogger(__name__)
 
 GITHUB_API_URL = "https://api.github.com/repos/{0.project}/issues/{1}"
-BITBUCKET_URL = "https://bitbucket.org/{0.project}/issue/{1}/"
-BITBUCKET_API_URL = (
-    "https://api.bitbucket.org/1.0/repositories/" "{0.project}/issues/{1}/"
-)
-DEBIAN_URL = "http://bugs.debian.org/cgi-bin/bugreport.cgi?bug={0}"
-LAUNCHPAD_URL = "https://bugs.launchpad.net/bugs/{0}"
-GOOGLE_CODE_URL = "http://code.google.com/p/{0.project}/issues/detail?id={1}"
-GOOGLE_CODE_API_URL = (
-    "http://code.google.com/feeds/issues/p/" "{0.project}/issues/full/{1}"
-)
-# namespaces required to parse XML returned by Google Code
-GOOGLE_ISSUE_NS = "{http://schemas.google.com/projecthosting/issues/2009}"
-ATOM_NS = "{http://www.w3.org/2005/Atom}"
-JIRA_API_URL = (
-    "{0.url}/si/jira.issueviews:issue-xml/{1}/{1}.xml?"
-    # only request the required fields
-    "field=link&field=resolution&field=summary&field=project"
-)
 
 
 def check_project_with_username(tracker_config):
@@ -119,126 +100,6 @@ def lookup_github_issue(app, tracker_config, issue_id):
         return None
 
 
-def lookup_bitbucket_issue(app, tracker_config, issue_id):
-    check_project_with_username(tracker_config)
-
-    url = BITBUCKET_API_URL.format(tracker_config, issue_id)
-    response = get(app, url)
-    if response:
-        issue = response.json()
-        closed = issue["status"] not in ("new", "open")
-        url = BITBUCKET_URL.format(tracker_config, issue_id)
-        return Issue(id=issue_id, title=issue["title"], closed=closed, url=url)
-
-
-def lookup_debian_issue(app, tracker_config, issue_id):
-    import debianbts
-
-    try:
-        # get the bug
-        bug = debianbts.get_status(issue_id)[0]
-    except IndexError:
-        return None
-
-    # check if issue matches project
-    if tracker_config.project not in (bug.package, bug.source):
-        return None
-
-    return Issue(
-        id=issue_id, title=bug.subject, closed=bug.done, url=DEBIAN_URL.format(issue_id)
-    )
-
-
-def lookup_launchpad_issue(app, tracker_config, issue_id):
-    from launchpadlib.launchpad import Launchpad
-
-    launchpad = Launchpad.login_anonymously("sphinx_autoissues")
-    try:
-        # get the bug
-        bug = launchpad.bugs[issue_id]
-    except KeyError:
-        return None
-
-    project_tasks = [
-        task for task in bug.bug_tasks if task.bug_target_name == tracker_config.project
-    ]
-    if not project_tasks:
-        # no matching task found
-        return None
-
-    is_complete = all(t.is_complete for t in project_tasks)
-    return Issue(
-        id=issue_id,
-        title=bug.title,
-        closed=is_complete,
-        url=LAUNCHPAD_URL.format(issue_id),
-    )
-
-
-def lookup_google_code_issue(app, tracker_config, issue_id):
-    url = GOOGLE_CODE_API_URL.format(tracker_config, issue_id)
-    response = get(app, url)
-    if response:
-        issue = etree.fromstring(response.content)
-        state = issue.find(f"{GOOGLE_ISSUE_NS}state")
-        title_node = issue.find(f"{ATOM_NS}title")
-        title = title_node.text if title_node is not None else None
-        closed = state is not None and state.text == "closed"
-        return Issue(
-            id=issue_id,
-            title=title,
-            closed=closed,
-            url=GOOGLE_CODE_URL.format(tracker_config, issue_id),
-        )
-
-
-def lookup_jira_issue(app, tracker_config, issue_id):
-    if not tracker_config.url:
-        raise ValueError("URL required")
-    url = JIRA_API_URL.format(tracker_config, issue_id)
-    response = get(app, url)
-    if response:
-        issue = etree.fromstring(response.content)
-        project = issue.find("*/item/project").text
-        if project != tracker_config.project:
-            return None
-
-        url = issue.find("*/item/link").text
-        state = issue.find("*/item/resolution").text
-        # summary contains the title without the issue id
-        title = issue.find("*/item/summary").text
-        closed = state.lower() != "unresolved"
-        return Issue(id=issue_id, title=title, closed=closed, url=url)
-
-
-def lookup_redmine_issue(app, tracker_config, issue_id):
-    from redmine import Redmine
-
-    if not tracker_config.url:
-        raise ValueError("URL required")
-    redmine = Redmine(
-        tracker_config.url,
-        key=app.config.issuetracker_redmine_key,
-        username=app.config.issuetracker_redmine_username,
-        password=app.config.issuetracker_redmine_password,
-        requests=app.config.issuetracker_redmine_requests,
-    )
-    if redmine:
-        issue = redmine.issue.get(issue_id)
-        return Issue(
-            id=issue_id,
-            title=issue.subject,
-            closed=issue.status == "Closed",
-            url=issue.url,
-        )
-
-
 BUILTIN_ISSUE_TRACKERS = {
     "github": lookup_github_issue,
-    "bitbucket": lookup_bitbucket_issue,
-    "debian": lookup_debian_issue,
-    "launchpad": lookup_launchpad_issue,
-    "google code": lookup_google_code_issue,
-    "jira": lookup_jira_issue,
-    "redmine": lookup_redmine_issue,
 }
