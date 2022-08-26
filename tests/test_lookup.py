@@ -2,7 +2,7 @@ import typing as t
 
 from sphinx.testing.util import SphinxTestApp
 
-from sphinx_autoissues import Issue, TrackerConfig
+from sphinx_autoissues.types import Issue, TrackerConfig
 
 if t.TYPE_CHECKING:
     from .conftest import MakeAppParams
