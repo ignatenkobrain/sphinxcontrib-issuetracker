@@ -1,11 +1,8 @@
 #################
-sphinx_autoissues
+sphinx-autoissues
 #################
 
-.. image:: https://secure.travis-ci.org/tony/sphinx_autoissues.png
-   :target: http://travis-ci.org/tony/sphinx_autoissues
-
-http://sphinx_autoissues.git-pull.com/
+https://sphinx-autoissues.git-pull.com/
 
 This is a fork of Sebastian Wiesner <lunaryorn@gmail.com>'s excellent
 sphinxcontrib-issuetracker_ plugin.
@@ -49,7 +46,7 @@ Installation
 
 This extension can be installed from the `Python Package Index`_::
 
-   pip install sphinx_autoissues
+   pip install sphinx-autoissues
 
 This extension requires Sphinx 1.1 and Python 2.6 or Python 3.1.
 
@@ -62,7 +59,7 @@ Just add this extension to ``extensions`` and configure your issue tracker::
    extensions = ['sphinx_autoissues']
 
    issuetracker = 'github'
-   issuetracker_project = 'tony/sphinx_autoissues'
+   issuetracker_project = 'tony/sphinx-autoissues'
 
 Now issue references like ``#10`` are replaced with links to the issue tracker
 of this extension, unless the reference occurs in literal text like inline
@@ -97,7 +94,7 @@ Development
 
 The source code is hosted on Github_:
 
-   git clone https://github.com/tony/sphinx_autoissues
+   git clone https://github.com/tony/sphinx-autoissues
 
 Please fork the repository and send pull requests with your fixes or cool new
 features, but respect the following rules:
@@ -116,7 +113,7 @@ features, but respect the following rules:
 
 
 .. _Sphinx: http://sphinx.pocoo.org/latest
-.. _documentation: http://sphinx_autoissues.readthedocs.org
-.. _Python package index: http://pypi.python.org/pypi/sphinx_autoissues
-.. _issue tracker: https://github.com/tony/sphinx_autoissues/issues/
+.. _documentation: http://sphinx-autoissues.git-pull.com
+.. _Python package index: http://pypi.python.org/pypi/sphinx-autoissues
+.. _issue tracker: https://github.com/tony/sphinx-autoissues/issues/
 .. _pep8: http://pypi.python.org/pypi/pep8/
