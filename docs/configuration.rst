@@ -4,7 +4,7 @@ Configuration
 General configuration
 ---------------------
 
-Add ``sphinxcontrib.issuetracker`` to the configuration value
+Add ``sphinx_autoissues`` to the configuration value
 :confval:`extensions` to enable this extensions and configure the extension:
 
 .. confval:: issuetracker
@@ -147,5 +147,4 @@ use a custom reference title:
 .. _launchpadlib: http://pypi.python.org/pypi/launchpadlib/
 .. _debianbts: http://pypi.python.org/pypi/python-debianbts/
 .. _SOAPpy: http://pypi.python.org/pypi/SOAPpy/
-.. _sphinx-contrib: https://github.com/lunaryorn/sphinxcontrib-issuetracker
 .. _format string: http://docs.python.org/library/string.html#format-string-syntax

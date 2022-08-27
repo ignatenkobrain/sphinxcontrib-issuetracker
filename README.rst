@@ -1,11 +1,16 @@
-##########################
-sphinxcontrib-issuetracker
-##########################
+#################
+sphinx_autoissues
+#################
 
-.. image:: https://secure.travis-ci.org/lunaryorn/sphinxcontrib-issuetracker.png
-   :target: http://travis-ci.org/lunaryorn/sphinxcontrib-issuetracker
+.. image:: https://secure.travis-ci.org/tony/sphinx_autoissues.png
+   :target: http://travis-ci.org/tony/sphinx_autoissues
 
-http://sphinxcontrib-issuetracker.readthedocs.org/
+http://sphinx_autoissues.git-pull.com/
+
+This is a fork of Sebastian Wiesner <lunaryorn@gmail.com>'s excellent
+sphinxcontrib-issuetracker_ plugin.
+
+.. _sphinxcontrib-issuetracker: https://github.com/lunaryorn/sphinxcontrib-issuetracker
 
 A Sphinx_ extension to reference issues in issue trackers, either explicitly
 with an "issue" role or optionally implicitly by issue ids like ``#10`` in
@@ -24,13 +29,34 @@ A simple API is provided to add support for other issue trackers.  If you added
 support for a new tracker, please consider sending a patch to make your work
 available to other users of this extension.
 
+What's changed from sphinx-issuetracker?
+----------------------------------------
+The old codebase has most of its commits from 2010-2012. For that time,
+the quality is impeccable, but a lot has happened tooling wise.
+
+We've incorporated the python toolset from git-pull projects like tmuxp /
+libvcs / cihai: mypy, black, isort, pytest, markdown docs w/ doctests,
+github workflows, etc. In addition:
+
+- Python 2.x support removed via `pyupgrade` and by hand
+  - Compat import, `__future__` statements
+- Poetry
+- Minimum python version 3.7
+- Updated to latest sphinx (from 1.1)
+  - Import changes
+  - See `sphinx deprecations
+    <https://www.sphinx-doc.org/en/master/extdev/deprecated.html>`_`
+- Updated to latest pytest (from 2.2)
+  - Remove `funcargs` and marker usage that wouldn't work in pytest 7+
+  - See `pytest deprecations
+    <module://docs.pytest.org/en/7.1.x/deprecations.html>`_
 
 Installation
 ------------
 
 This extension can be installed from the `Python Package Index`_::
 
-   pip install sphinxcontrib-issuetracker
+   pip install sphinx_autoissues
 
 This extension requires Sphinx 1.1 and Python 2.6 or Python 3.1.
 
@@ -40,10 +66,10 @@ Usage
 
 Just add this extension to ``extensions`` and configure your issue tracker::
 
-   extensions = ['sphinxcontrib.issuetracker']
+   extensions = ['sphinx_autoissues']
 
    issuetracker = 'github'
-   issuetracker_project = 'lunaryorn/sphinxcontrib-issuetracker'
+   issuetracker_project = 'tony/sphinx_autoissues'
 
 Now issue references like ``#10`` are replaced with links to the issue tracker
 of this extension, unless the reference occurs in literal text like inline
@@ -78,7 +104,7 @@ Development
 
 The source code is hosted on Github_:
 
-   git clone https://github.com/lunaryorn/sphinxcontrib-issuetracker
+   git clone https://github.com/tony/sphinx_autoissues
 
 Please fork the repository and send pull requests with your fixes or cool new
 features, but respect the following rules:
@@ -97,7 +123,7 @@ features, but respect the following rules:
 
 
 .. _Sphinx: http://sphinx.pocoo.org/latest
-.. _documentation: http://sphinxcontrib-issuetracker.readthedocs.org
-.. _Python package index: http://pypi.python.org/pypi/sphinxcontrib-issuetracker
-.. _issue tracker: https://github.com/lunaryorn/sphinxcontrib-issuetracker/issues/
+.. _documentation: http://sphinx_autoissues.readthedocs.org
+.. _Python package index: http://pypi.python.org/pypi/sphinx_autoissues
+.. _issue tracker: https://github.com/tony/sphinx_autoissues/issues/
 .. _pep8: http://pypi.python.org/pypi/pep8/

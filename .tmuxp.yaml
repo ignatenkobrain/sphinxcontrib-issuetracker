@@ -1,0 +1,16 @@
+session_name: sphinx-autoissues
+start_directory: ./ # load session relative to config location (project root).
+before_script: ./.tmuxp-before-script.sh
+shell_command_before:
+- '[ -f .venv/bin/activate ] && source .venv/bin/activate && reset'
+windows:
+- window_name: sphinx-autoissues
+  focus: True
+  layout: main-horizontal
+  options:
+    main-pane-height: 35
+  panes:
+  - focus: true
+  - pane 
+  - make watch_mypy
+  - make start

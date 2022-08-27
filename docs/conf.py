@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright (c) 2011, Sebastian Wiesner <lunaryorn@gmail.com>
 # All rights reserved.
 
@@ -23,51 +22,36 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
-"""
-    test_role
-    =========
 
-    Test the ``issue`` role.
+import typing as t
 
-    .. moduleauthor::  Sebastian Wiesner  <lunaryorn@gmail.com>
-"""
+import sphinx_autoissues
 
-from __future__ import (print_function, division, unicode_literals,
-                        absolute_import)
+needs_sphinx = "1.0"
 
-import pytest
+extensions = [
+    "sphinx.ext.intersphinx",
+    "sphinx.ext.autodoc",
+    "sphinx_autoissues",
+]
 
-from sphinxcontrib.issuetracker import Issue
+source_suffix = ".rst"
+master_doc = "index"
 
+project = "sphinx_autoissues"
+copyright = "2022- Tony Narlock (revived version), 2010, 2011, 2012 Sebastian Wiesner"
+version = ".".join(sphinx_autoissues.__version__.split(".")[:2])
+release = sphinx_autoissues.__version__
 
-def pytest_funcarg__issue(request):
-    """
-    A dummy issue, just to trigger issue resolval so that transformations can
-    be seen in the output.
-    """
-    return Issue(id='10', title='Eggs', closed=False, url='eggs')
+exclude_patterns = ["_build/*"]
 
+html_theme = "default"
+html_static_path: t.List[str] = []
 
-@pytest.mark.with_content(':issue:`10`')
-def test_simple(doctree, issue):
-    """
-    Test simple usage of the role.
-    """
-    pytest.assert_issue_pending_xref(doctree, '10', '10')
+intersphinx_mapping = {
+    "python": ("http://docs.python.org/", None),
+    "sphinx": ("http://sphinx.pocoo.org/", None),
+}
 
-
-@pytest.mark.with_content(':issue:`foo <10>`')
-def test_with_title(doctree, issue):
-    """
-    Test role with an explicit title.
-    """
-    pytest.assert_issue_pending_xref(doctree, '10', 'foo')
-
-
-@pytest.mark.confoverrides(issuetracker_plaintext_issues=False)
-@pytest.mark.with_content(':issue:`10` #10')
-def test_without_plaintext_issues(doctree, issue):
-    """
-    Test that the role still works even if plaintext issues are disabled.
-    """
-    pytest.assert_issue_pending_xref(doctree, '10', '10')
+issuetracker = "github"
+issuetracker_project = "tony/sphinx_autoissues"

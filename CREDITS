@@ -1,8 +1,8 @@
 Credits
 -------
 
-sphinxcontrib-issuetracker is written and maintained by Sebastian Wiesner
-<lunaryorn@gmail.com>
+sphinx-autoissues is a modernized fork of sphinxcontrib-issuetracker, which is
+written and maintained by Sebastian Wiesner <lunaryorn@gmail.com>.
 
 The following people, listed alphabetically, contributed to this extension or
 supported its development otherwise:
