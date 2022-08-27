@@ -1,5 +1,8 @@
 # Makefile for Sphinx documentation
 #
+SHELL := /bin/bash
+HTTP_PORT     = 8052
+WATCH_FILES= find .. -type f -not -path '*/\.*' | grep -i '.*[.]\(rst\|md\)\$\|.*[.]py\$\|CHANGES\|TODO\|.*conf\.py' 2> /dev/null
 
 # You can set these variables from the command line.
 SPHINXOPTS    =
@@ -11,6 +14,7 @@ BUILDDIR      = _build
 PAPEROPT_a4     = -D latex_paper_size=a4
 PAPEROPT_letter = -D latex_paper_size=letter
 ALLSPHINXOPTS   = -d $(BUILDDIR)/doctrees $(PAPEROPT_$(PAPER)) $(SPHINXOPTS) .
+I18NSPHINXOPTS  = $(PAPEROPT_$(PAPER)) $(SPHINXOPTS) .
 
 .PHONY: help clean html dirhtml singlehtml pickle json htmlhelp qthelp devhelp epub latex latexpdf text man changes linkcheck doctest
 
@@ -128,3 +132,35 @@ doctest:
 	$(SPHINXBUILD) -b doctest $(ALLSPHINXOPTS) $(BUILDDIR)/doctest
 	@echo "Testing of doctests in the sources finished, look at the " \
 	      "results in $(BUILDDIR)/doctest/output.txt."
+
+redirects:
+	$(SPHINXBUILD) -b rediraffewritediff $(ALLSPHINXOPTS) $(BUILDDIR)/redirect
+	@echo
+	@echo "Build finished. The redirects are in rediraffe_redirects."
+
+checkbuild:
+	rm -rf $(BUILDDIR)
+	$(SPHINXBUILD) -n -q ./ $(BUILDDIR)
+
+watch:
+	if command -v entr > /dev/null; then ${WATCH_FILES} | entr -c $(MAKE) html; else $(MAKE) html; fi
+
+serve:
+	@echo '=============================================================='
+	@echo
+	@echo 'docs server running at http://localhost:${HTTP_PORT}/'
+	@echo
+	@echo '=============================================================='
+	poetry run python -m http.server ${HTTP_PORT} --directory _build/html
+
+dev:
+	$(MAKE) -j watch serve
+
+start:
+	poetry run sphinx-autobuild "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) --port ${HTTP_PORT} $(O)
+
+design:
+	# This adds additional watch directories (for _static file changes) and disable incremental builds
+	poetry run sphinx-autobuild "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) --port ${HTTP_PORT} \
+		--watch ".." --ignore "../.*" --ignore "_build" -a \
+		$(O)
