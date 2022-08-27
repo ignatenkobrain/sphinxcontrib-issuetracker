@@ -30,7 +30,7 @@ keywords = [
   "pull requests"
 ]
 homepage = "https://sphinx-autoissues.git-pull.com"
-readme = "README.rst"
+readme = "README.md"
 
 packages = [
   { include = "sphinx_autoissues" },
