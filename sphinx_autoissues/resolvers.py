@@ -73,7 +73,7 @@ def get(app: Sphinx, url: str) -> t.Optional[requests.Response]:
         return response
     elif response.status_code != requests.codes.not_found:
         msg = "GET {0.url} failed with code {0.status_code}"
-        logger.warn(msg.format(response))
+        logger.warning(msg.format(response))
 
     return None
 
@@ -99,7 +99,7 @@ def lookup_github_issue(
                 rate_remaining = response.headers.get("X-RateLimit-Remaining")
                 assert rate_remaining is not None
                 if rate_remaining.isdigit() and int(rate_remaining) == 0:
-                    logger.warn("Github rate limit hit")
+                    logger.warning("Github rate limit hit")
                     env.github_rate_limit = (time.time(), True)
                 issue = response.json()
                 closed = issue["state"] == "closed"
@@ -110,7 +110,7 @@ def lookup_github_issue(
                     url=issue["html_url"],
                 )
         else:
-            logger.warn(
+            logger.warning(
                 "Github rate limit exceeded, not resolving issue {0}".format(issue_id)
             )
     return None
