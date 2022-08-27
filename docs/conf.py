@@ -89,7 +89,7 @@ rediraffe_branch = "master~1"
 
 intersphinx_mapping = {
     "py": ("https://docs.python.org/3", None),
-    "sphinx": ("https://sphinx.pocoo.org/", None),
+    "sphinx": ("https://www.sphinx-doc.org/en/master", None),
 }
 
 issuetracker = "github"
