@@ -3,9 +3,7 @@ sphinx_autoissues -- Reference issues in issue trackers
 
 A Sphinx_ extension to reference issues in an issue tracker.
 
-The extension is available under the terms of the BSD license, see
-:doc:`license` for more information.
-
+The extension is available under the terms of the BSD license.
 
 Installation
 ------------
@@ -15,13 +13,7 @@ Index`_::
 
    pip install sphinx-autoissues
 
-This extension requires Sphinx 1.1 and Python 2.6 or Python 3.1.
-
-.. note::
-
-   Some builtin issue trackers do *not* support Python 3 currently. Refer to
-   :confval:`issuetracker` for more information.
-
+This extension requires Sphinx 5.0+ and Python 3.7+
 
 Usage
 -----
