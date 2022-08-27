@@ -16,14 +16,7 @@ A Sphinx_ extension to reference issues in issue trackers, either explicitly
 with an "issue" role or optionally implicitly by issue ids like ``#10`` in
 plaintext.
 
-Currently the following issue trackers are supported:
-
-- `GitHub <http://github.com>`_
-- `BitBucket <http://bitbucket.org>`_
-- `Launchpad <https://launchpad.net>`_
-- `Google Code <http://code.google.com>`_
-- `Debian BTS <http://bugs.debian.org>`_
-- `Jira <http://www.atlassian.com/software/jira/>`_
+Currently the following issue trackers are supported: `GitHub <http://github.com>`_
 
 A simple API is provided to add support for other issue trackers.  If you added
 support for a new tracker, please consider sending a patch to make your work
