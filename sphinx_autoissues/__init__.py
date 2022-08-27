@@ -241,8 +241,8 @@ def connect_builtin_tracker(app: Sphinx) -> None:
         app.connect(str("issuetracker-lookup-issue"), tracker)
 
 
-def add_stylesheet(app: Sphinx) -> None:
-    app.add_stylesheet("issuetracker.css")
+def add_css_file(app: Sphinx) -> None:
+    app.add_css_file("issuetracker.css")
 
 
 def copy_stylesheet(app: Sphinx, exception: Exception) -> None:
@@ -272,7 +272,7 @@ def setup(app: Sphinx) -> t.Dict[str, t.Any]:
     app.add_config_value("issuetracker_plaintext_issues", True, "env")
     app.add_config_value("issuetracker_issue_pattern", re.compile(r"#(\d+)"), "env")
     app.add_config_value("issuetracker_title_template", None, "env")
-    app.connect("builder-inited", add_stylesheet)
+    app.connect("builder-inited", add_css_file)
     app.connect("builder-inited", init_cache)
     app.connect("builder-inited", init_transformer)
     app.connect("doctree-read", lookup_issues)
