@@ -5,12 +5,14 @@
    :synopsis: Parse issue references and link to the corresponding issues
 ```
 
-To use an issue tracker not supported by this extension, set
-{confval}`issuetracker` to `None` or leave it unset, and connect your own
-callback to the event {event}`issuetracker-lookup-issue`:
+To use an issue tracker not supported by this extension, set {confval}`issuetracker` to `None` or
+leave it unset, and connect your own callback to the event {ref}`issuetracker-lookup-issue`:
 
-```{eval-rst}
-.. event:: issuetracker-lookup-issue(app, tracker_config, issue_id)
+(issuetracker-lookup-issue)=
+
+## Event: Lookup issue
+
+```{confval} issuetracker-lookup-issue(app, tracker_config, issue_id)
 
    Emitted if the issue with the given ``issue_id`` should be looked up in the
    issue tracker.  Issue tracker configured is provided by ``tracker_config``.
@@ -22,14 +24,6 @@ callback to the event {event}`issuetracker-lookup-issue`:
    A callback should return an :class:`Issue` object containing the looked up
    issue, or ``None`` if it could not find the issue.  In the latter case other
    callbacks connected to this event are be invoked by Sphinx.
-
-   .. versionchanged:: 0.8
-      Replaced ``project`` argument with ``tracker_config``, changed return
-      value from dictionary to :class:`Issue`
-
-   .. versionchanged:: 0.9
-      Renamed from :event:`issuetracker-resolve-issue` to
-      :event:`issuetracker-lookup-issue`
 ```
 
 Refer to the [builtin trackers] for examples.
@@ -62,7 +56,7 @@ Refer to the [builtin trackers] for examples.
       The issue id as string.
 
       If you are writing your own custom callback for
-      :event:`issuetracker-lookup-issue`, set this attribute to the
+      :ref:`issuetracker-lookup-issue`, set this attribute to the
       ``issue_id`` that was given as argument.
 
    .. attribute:: title
@@ -84,4 +78,5 @@ Refer to the [builtin trackers] for examples.
    .. versionadded:: 0.8
 ```
 
-[builtin trackers]: https://github.com/lunaryorn/sphinx_autoissues/blob/master/sphinx_autoissues/resolvers.py
+[builtin trackers]:
+  https://github.com/lunaryorn/sphinx_autoissues/blob/master/sphinx_autoissues/resolvers.py
