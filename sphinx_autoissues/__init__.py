@@ -246,6 +246,7 @@ def add_css_file(app: Sphinx) -> None:
 
 
 def copy_stylesheet(app: Sphinx, exception: Exception) -> None:
+    assert app.builder is not None
     if app.builder.name != "html" or exception:
         return
     logger.info("Copying issuetracker stylesheet... ", nonl=True)
