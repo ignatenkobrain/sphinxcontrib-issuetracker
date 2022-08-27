@@ -3,7 +3,7 @@ name = "sphinx-autoissues"
 version = "0.0.1a0"
 description = "Sphinx integration with different issuetrackers"
 
-license = "MIT"
+license = "BSD"
 authors = ["Tony Narlock <tony@git-pull.com>"]
 
 classifiers = [
